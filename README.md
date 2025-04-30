@@ -19,10 +19,3 @@ This is the React-based frontend for the [IMPACT Dashboard](https://impact.wavon
 
 ## 📦 Folder Structure
 
-
-## 🔧 Local Development
-
-```bash
-npm install
-npm start
-npm run build
