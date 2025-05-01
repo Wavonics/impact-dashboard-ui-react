@@ -15,7 +15,8 @@ export default function NavBar() {
     flexDirection: 'column',
     alignItems: 'center',
     borderRight: '1px solid #1f2937',
-    boxSizing: 'border-box'
+    boxSizing: 'border-box',
+    fontFamily: "'Inter', 'Segoe UI', 'Helvetica', sans-serif"
   };
 
   const logoStyle = {
@@ -27,7 +28,8 @@ export default function NavBar() {
   const listStyle = {
     listStyle: 'none',
     padding: 0,
-    width: '100%'
+    width: '100%',
+    margin: 0
   };
 
   const linkStyle = (path) => ({
@@ -35,13 +37,16 @@ export default function NavBar() {
     alignItems: 'center',
     textDecoration: 'none',
     color: '#fff',
+    fontFamily: "'Inter', 'Segoe UI', 'Helvetica', sans-serif",
+    fontSize: '16px',
     padding: '12px 20px',
     borderLeft: location.pathname === path ? '4px solid #f97316' : '4px solid transparent',
     backgroundColor: location.pathname === path ? '#1f2937' : 'transparent',
-    fontWeight: location.pathname === path ? '600' : 'normal',
+    fontWeight: location.pathname === path ? '600' : '500',
     transition: 'all 0.2s ease',
     marginBottom: '4px',
     width: '100%',
+    boxSizing: 'border-box',
     cursor: 'pointer'
   });
 
@@ -63,7 +68,7 @@ export default function NavBar() {
 
   const iconStyle = (path) => ({
     marginRight: '10px',
-    fontSize: '18px',
+    fontSize: '22px',
     color: iconColors[path]
   });
 
