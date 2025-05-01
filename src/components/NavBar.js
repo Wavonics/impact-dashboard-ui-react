@@ -20,7 +20,7 @@ export default function NavBar() {
   };
 
   const logoStyle = {
-    width: '160px',
+    width: '220px',
     marginBottom: '30px',
     objectFit: 'contain'
   };
