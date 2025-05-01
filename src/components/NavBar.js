@@ -19,10 +19,30 @@ export default function NavBar() {
     fontFamily: "'Inter', 'Segoe UI', 'Helvetica', sans-serif"
   };
 
+  const logoContainerStyle = {
+    border: '2px solid #f97316',
+    borderRadius: '8px',
+    padding: '8px',
+    marginTop: '20px',
+    marginBottom: '10px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '200px'
+  };
+
   const logoStyle = {
     width: '220px',
-    marginTop: '30px',
+    height: 'auto',
     objectFit: 'contain'
+  };
+
+  const taglineStyle = {
+    fontSize: '13px',
+    color: '#9ca3af',
+    textAlign: 'center',
+    maxWidth: '200px',
+    marginBottom: '30px'
   };
 
   const listStyle = {
@@ -74,7 +94,10 @@ export default function NavBar() {
 
   return (
     <nav style={navStyle}>
-      <img src="/logo.png" alt="IMPACT Logo" style={logoStyle} />
+      <div style={logoContainerStyle}>
+        <img src="/logo.png" alt="IMPACT Logo" style={logoStyle} />
+      </div>
+      <p style={taglineStyle}>Driving Strategic Impact through IT Spend, Budget Tracking, and Contract Visibility.</p>
       <ul style={listStyle}>
         <li><Link to="/" style={linkStyle('/')}><FaHome style={iconStyle('/')} />Home</Link></li>
         <li><Link to="/assets" style={linkStyle('/assets')}><FaCubes style={iconStyle('/assets')} />Assets</Link></li>
