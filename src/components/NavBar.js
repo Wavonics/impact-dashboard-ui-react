@@ -9,9 +9,7 @@ export default function NavBar() {
     height: '100vh',
     width: '200px',
     borderRight: '1px solid #ccc',
-    position: 'fixed',
-    top: 0,
-    left: 0
+    flexShrink: 0
   };
 
   const linkStyle = {
