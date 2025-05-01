@@ -20,10 +20,10 @@ export default function NavBar() {
   };
 
   const logoStyle = {
-    width: '200px',
+    width: '220px',
     height: 'auto',
     marginTop: '20px',
-    marginBottom: '40px',
+    marginBottom: '20px',
     objectFit: 'contain'
   };
 
