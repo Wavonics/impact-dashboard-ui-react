@@ -21,9 +21,7 @@ export default function NavBar() {
 
   const logoStyle = {
     width: '220px',
-    height: 'auto',
-    marginTop: '20px',
-    marginBottom: '20px',
+    marginTop: '30px',
     objectFit: 'contain'
   };
 
