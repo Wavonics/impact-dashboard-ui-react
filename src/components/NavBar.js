@@ -40,13 +40,31 @@ export default function NavBar() {
     backgroundColor: location.pathname === path ? '#1f2937' : 'transparent',
     fontWeight: location.pathname === path ? '600' : 'normal',
     transition: 'all 0.2s ease',
-    marginBottom: '4px'
+    marginBottom: '4px',
+    width: '100%',
+    cursor: 'pointer'
   });
+
+  const iconColors = {
+    '/': '#ffffff',
+    '/assets': '#f97316',
+    '/contracts': '#f97316',
+    '/projects': '#f97316',
+    '/po': '#f97316',
+    '/budget-lines': '#10b981',
+    '/ownership': '#9ca3af',
+    '/procurement-methods': '#3b82f6',
+    '/funding-sources': '#10b981',
+    '/departments': '#9ca3af',
+    '/strategic-plans': '#facc15',
+    '/audit-logs': '#8b5cf6',
+    '/alerts': '#ef4444'
+  };
 
   const iconStyle = (path) => ({
     marginRight: '10px',
     fontSize: '18px',
-    color: location.pathname === path ? '#f97316' : '#9ca3af'
+    color: iconColors[path]
   });
 
   return (
