@@ -43,28 +43,29 @@ export default function NavBar() {
     marginBottom: '4px'
   });
 
-  const iconStyle = {
+  const iconStyle = (path) => ({
     marginRight: '10px',
-    fontSize: '18px'
-  };
+    fontSize: '18px',
+    color: location.pathname === path ? '#f97316' : '#9ca3af'
+  });
 
   return (
     <nav style={navStyle}>
       <img src="/logo.png" alt="IMPACT Logo" style={logoStyle} />
       <ul style={listStyle}>
-        <li><Link to="/" style={linkStyle('/')}><FaHome style={iconStyle}/>Home</Link></li>
-        <li><Link to="/assets" style={linkStyle('/assets')}><FaCubes style={iconStyle}/>Assets</Link></li>
-        <li><Link to="/contracts" style={linkStyle('/contracts')}><FaFileContract style={iconStyle}/>Contracts</Link></li>
-        <li><Link to="/projects" style={linkStyle('/projects')}><FaProjectDiagram style={iconStyle}/>Projects</Link></li>
-        <li><Link to="/po" style={linkStyle('/po')}><FaFileInvoice style={iconStyle}/>Purchase Orders</Link></li>
-        <li><Link to="/budget-lines" style={linkStyle('/budget-lines')}><FaMoneyBillWave style={iconStyle}/>Budget Lines</Link></li>
-        <li><Link to="/ownership" style={linkStyle('/ownership')}><FaWarehouse style={iconStyle}/>Ownership</Link></li>
-        <li><Link to="/procurement-methods" style={linkStyle('/procurement-methods')}><FaClipboardList style={iconStyle}/>Procurement Methods</Link></li>
-        <li><Link to="/funding-sources" style={linkStyle('/funding-sources')}><FaPiggyBank style={iconStyle}/>Funding Sources</Link></li>
-        <li><Link to="/departments" style={linkStyle('/departments')}><FaBuilding style={iconStyle}/>Departments</Link></li>
-        <li><Link to="/strategic-plans" style={linkStyle('/strategic-plans')}><FaLightbulb style={iconStyle}/>Strategic Plans</Link></li>
-        <li><Link to="/audit-logs" style={linkStyle('/audit-logs')}><FaHistory style={iconStyle}/>Audit Logs</Link></li>
-        <li><Link to="/alerts" style={linkStyle('/alerts')}><FaBell style={iconStyle}/>Alerts</Link></li>
+        <li><Link to="/" style={linkStyle('/')}><FaHome style={iconStyle('/')} />Home</Link></li>
+        <li><Link to="/assets" style={linkStyle('/assets')}><FaCubes style={iconStyle('/assets')} />Assets</Link></li>
+        <li><Link to="/contracts" style={linkStyle('/contracts')}><FaFileContract style={iconStyle('/contracts')} />Contracts</Link></li>
+        <li><Link to="/projects" style={linkStyle('/projects')}><FaProjectDiagram style={iconStyle('/projects')} />Projects</Link></li>
+        <li><Link to="/po" style={linkStyle('/po')}><FaFileInvoice style={iconStyle('/po')} />Purchase Orders</Link></li>
+        <li><Link to="/budget-lines" style={linkStyle('/budget-lines')}><FaMoneyBillWave style={iconStyle('/budget-lines')} />Budget Lines</Link></li>
+        <li><Link to="/ownership" style={linkStyle('/ownership')}><FaWarehouse style={iconStyle('/ownership')} />Ownership</Link></li>
+        <li><Link to="/procurement-methods" style={linkStyle('/procurement-methods')}><FaClipboardList style={iconStyle('/procurement-methods')} />Procurement Methods</Link></li>
+        <li><Link to="/funding-sources" style={linkStyle('/funding-sources')}><FaPiggyBank style={iconStyle('/funding-sources')} />Funding Sources</Link></li>
+        <li><Link to="/departments" style={linkStyle('/departments')}><FaBuilding style={iconStyle('/departments')} />Departments</Link></li>
+        <li><Link to="/strategic-plans" style={linkStyle('/strategic-plans')}><FaLightbulb style={iconStyle('/strategic-plans')} />Strategic Plans</Link></li>
+        <li><Link to="/audit-logs" style={linkStyle('/audit-logs')}><FaHistory style={iconStyle('/audit-logs')} />Audit Logs</Link></li>
+        <li><Link to="/alerts" style={linkStyle('/alerts')}><FaBell style={iconStyle('/alerts')} />Alerts</Link></li>
       </ul>
     </nav>
   );
