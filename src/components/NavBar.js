@@ -32,17 +32,19 @@ export default function NavBar() {
   };
 
   const logoStyle = {
-    width: '220px',
+    width: '225px',
     height: 'auto',
     objectFit: 'contain'
   };
 
   const taglineStyle = {
-    fontSize: '13px',
-    color: '#9ca3af',
+    fontSize: '14px',
+    color: '#f97316',
     textAlign: 'center',
     maxWidth: '200px',
-    marginBottom: '30px'
+    marginBottom: '30px',
+    fontStyle: 'italic',
+    lineHeight: '1.4'
   };
 
   const listStyle = {
