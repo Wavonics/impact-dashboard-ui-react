@@ -9,7 +9,7 @@ export default function NavBar() {
     padding: '20px 0',
     backgroundColor: '#111827',
     color: '#fff',
-    height: '100vh',
+    height: '50vh',
     width: '240px',
     display: 'flex',
     flexDirection: 'column',
@@ -39,13 +39,12 @@ export default function NavBar() {
 
   const taglineStyle = {
     fontSize: '15px',
-    color: '#ffffff',
+    color: '#9ca3af',
     textAlign: 'center',
     maxWidth: '200px',
     marginBottom: '30px',
     fontWeight: '700',
     letterSpacing: '0.5px',
-    textTransform: 'uppercase',
     lineHeight: '1.4'
   };
 
@@ -76,9 +75,9 @@ export default function NavBar() {
 
   const iconColors = {
     '/': '#ffffff',
-    '/assets': '#f97316',
+    '/assets': '#00ff00',
     '/contracts': '#f97316',
-    '/projects': '#f97316',
+    '/projects': '#00ffff',
     '/po': '#f97316',
     '/budget-lines': '#10b981',
     '/ownership': '#9ca3af',
