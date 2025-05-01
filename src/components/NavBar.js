@@ -38,12 +38,14 @@ export default function NavBar() {
   };
 
   const taglineStyle = {
-    fontSize: '14px',
-    color: '#f97316',
+    fontSize: '15px',
+    color: '#ffffff',
     textAlign: 'center',
     maxWidth: '200px',
     marginBottom: '30px',
-    fontStyle: 'italic',
+    fontWeight: '700',
+    letterSpacing: '0.5px',
+    textTransform: 'uppercase',
     lineHeight: '1.4'
   };
 
