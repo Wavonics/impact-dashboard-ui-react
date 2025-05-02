@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FaHome, FaCubes, FaFileContract, FaProjectDiagram, FaFileInvoice, FaMoneyBillWave, FaWarehouse, FaClipboardList, FaPiggyBank, FaBuilding, FaLightbulb, FaHistory, FaBell } from 'react-icons/fa';
+import { FaHome, FaCubes, FaFileContract, FaProjectDiagram, FaFileInvoice, FaMoneyBillWave, FaWarehouse, FaClipboardList, FaPiggyBank, FaBuilding, FaLightbulb, FaHistory, FaBell, FaMoon, FaSun } from 'react-icons/fa';
+import { ThemeContext } from '../ThemeContext';
 
 export default function NavBar() {
   const location = useLocation();
+  const { theme, toggleTheme } = useContext(ThemeContext);
 
   const navStyle = {
     padding: '20px 0',
-    backgroundColor: '#111827',
-    color: '#fff',
+    backgroundColor: theme === 'dark' ? '#111827' : '#f3f4f6',
+    color: theme === 'dark' ? '#fff' : '#111827',
     height: '100vh',
     width: '240px',
     display: 'flex',
@@ -39,7 +41,7 @@ export default function NavBar() {
 
   const taglineStyle = {
     fontSize: '15px',
-    color: '#9ca3af',
+    color: theme === 'dark' ? '#9ca3af' : '#4b5563',
     textAlign: 'center',
     maxWidth: '200px',
     marginBottom: '30px',
@@ -52,19 +54,20 @@ export default function NavBar() {
     listStyle: 'none',
     padding: 0,
     width: '100%',
-    margin: 0
+    margin: 0,
+    flexGrow: 1
   };
 
   const linkStyle = (path) => ({
     display: 'flex',
     alignItems: 'center',
     textDecoration: 'none',
-    color: '#fff',
+    color: theme === 'dark' ? '#fff' : '#111827',
     fontFamily: "'Inter', 'Segoe UI', 'Helvetica', sans-serif",
     fontSize: '16px',
     padding: '12px 20px',
     borderLeft: location.pathname === path ? '4px solid #f97316' : '4px solid transparent',
-    backgroundColor: location.pathname === path ? '#1f2937' : 'transparent',
+    backgroundColor: location.pathname === path ? (theme === 'dark' ? '#1f2937' : '#e5e7eb') : 'transparent',
     fontWeight: location.pathname === path ? '600' : '500',
     transition: 'all 0.2s ease',
     marginBottom: '4px',
@@ -74,7 +77,7 @@ export default function NavBar() {
   });
 
   const iconColors = {
-    '/': '#ffffff',
+    '/': theme === 'dark' ? '#ffffff' : '#111827',
     '/assets': '#00ff00',
     '/contracts': '#f97316',
     '/projects': '#00ffff',
@@ -94,6 +97,15 @@ export default function NavBar() {
     fontSize: '22px',
     color: iconColors[path]
   });
+
+  const toggleButtonStyle = {
+    backgroundColor: 'transparent',
+    border: 'none',
+    color: theme === 'dark' ? '#f97316' : '#ea580c',
+    fontSize: '20px',
+    cursor: 'pointer',
+    marginTop: '20px'
+  };
 
   return (
     <nav style={navStyle}>
@@ -116,6 +128,9 @@ export default function NavBar() {
         <li><Link to="/audit-logs" style={linkStyle('/audit-logs')}><FaHistory style={iconStyle('/audit-logs')} />Audit Logs</Link></li>
         <li><Link to="/alerts" style={linkStyle('/alerts')}><FaBell style={iconStyle('/alerts')} />Alerts</Link></li>
       </ul>
+      <button onClick={toggleTheme} style={toggleButtonStyle}>
+        {theme === 'dark' ? <FaSun /> : <FaMoon />}
+      </button>
     </nav>
   );
 }
