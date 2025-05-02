@@ -22,9 +22,8 @@ export default function App() {
   };
 
   const logoStyle = {
-    width: '400px',
-    objectFit: 'contain'
-    height: 'auto',
+    width: '350px',
+    marginBottom: '20px'
   };
 
   const titleStyle = {
