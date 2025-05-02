@@ -1,7 +1,16 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FaUser, FaLock } from 'react-icons/fa';
 
 export default function Login() {
+  const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // TODO: authentication logic could go here
+    navigate('/dashboard');
+  };
+
   const containerStyle = {
     display: 'flex',
     flexDirection: 'column',
@@ -25,7 +34,7 @@ export default function Login() {
   };
 
   const logoStyle = {
-    width: '300px',
+    width: '325px',
     marginBottom: '20px'
   };
 
@@ -84,7 +93,7 @@ export default function Login() {
       <div style={formContainerStyle}>
         <img src="/logo.png" alt="IMPACT Logo" style={logoStyle} />
         <h1 style={titleStyle}>Login to IMPACT Dashboard</h1>
-        <form style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <div style={inputWrapperStyle}>
             <FaUser style={iconStyle} />
             <input
