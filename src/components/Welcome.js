@@ -34,54 +34,78 @@ export default function Welcome() {
 
   const boxStyle = {
     border: '2px solid #f97316',
-    borderRadius: '8px',
-    padding: '40px',
-    maxWidth: '400px',
+    borderRadius: '12px',
+    padding: '50px',
+    maxWidth: '420px',
     width: '100%',
     textAlign: 'center',
-    boxShadow: '0 4px 20px rgba(0,0,0,0.3)'
+    boxShadow: '0 6px 30px rgba(0,0,0,0.4)',
+    backgroundColor: '#1f2937'
   };
 
   const titleStyle = {
-    fontSize: '24px',
-    fontWeight: '700',
-    marginBottom: '15px'
+    fontSize: '26px',
+    fontWeight: '800',
+    marginBottom: '18px',
+    color: '#f97316'
   };
 
   const textStyle = {
     fontSize: '16px',
+    marginBottom: '12px',
+    lineHeight: '1.5'
+  };
+
+  const noteStyle = {
+    fontSize: '14px',
+    color: '#9ca3af',
     marginBottom: '20px'
   };
 
-  const buttonStyle = {
+  const primaryButtonStyle = {
     backgroundColor: '#f97316',
     color: '#fff',
     border: 'none',
-    borderRadius: '5px',
+    borderRadius: '6px',
     padding: '12px',
     cursor: 'pointer',
-    width: '80%',
-    fontSize: '14px',
-    fontWeight: '500',
-    marginBottom: '10px'
+    width: '100%',
+    fontSize: '15px',
+    fontWeight: '600',
+    marginBottom: '12px',
+    transition: 'background 0.2s ease'
+  };
+
+  const secondaryButtonStyle = {
+    backgroundColor: 'transparent',
+    color: '#f97316',
+    border: '2px solid #f97316',
+    borderRadius: '6px',
+    padding: '12px',
+    cursor: 'pointer',
+    width: '100%',
+    fontSize: '15px',
+    fontWeight: '600',
+    transition: 'background 0.2s ease'
   };
 
   const messageStyle = {
     color: '#facc15',
     fontSize: '14px',
-    marginBottom: '10px'
+    marginBottom: '15px'
   };
 
   return (
     <div style={containerStyle}>
       <div style={boxStyle}>
-        <h1 style={titleStyle}>Welcome to IMPACT Dashboard</h1>
+        <h1 style={titleStyle}>🎉 Welcome to IMPACT Dashboard!</h1>
         <p style={textStyle}>
-          Please check your email to verify your account before logging in.
+          Your account has been created successfully! Please check your email to verify before logging in.
         </p>
+        <p style={noteStyle}>Didn’t get the email? Click below to resend.</p>
         {message && <p style={messageStyle}>{message}</p>}
-        <button onClick={handleResend} style={buttonStyle}>Resend Verification Email</button>
-        <button onClick={() => navigate('/login')} style={buttonStyle}>Go to Login</button>
+        <button onClick={() => navigate('/login')} style={primaryButtonStyle}>Go to Login</button>
+        <button onClick={handleResend} style={secondaryButtonStyle}>Resend Verification Email</button>
       </div>
     </div>
   );
