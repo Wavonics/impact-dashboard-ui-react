@@ -1,22 +1,21 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../firebase';
 
 export default function ResetPassword() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
   const [error, setError] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
     sendPasswordResetEmail(auth, email)
       .then(() => {
-        setMessage('Password reset email sent! Please check your inbox.');
-        setError('');
+        navigate('/reset-confirmation');
       })
       .catch((err) => {
         setError('Error sending reset email. Please check the email address.');
-        setMessage('');
         console.error(err);
       });
   };
@@ -73,6 +72,12 @@ export default function ResetPassword() {
     transition: 'background-color 0.3s'
   };
 
+  const errorStyle = {
+    color: '#f87171',
+    fontSize: '14px',
+    marginTop: '10px'
+  };
+
   const handleHover = (e, isEnter) => {
     e.target.style.backgroundColor = isEnter ? '#ea580c' : '#f97316';
   };
@@ -98,8 +103,7 @@ export default function ResetPassword() {
             Send Reset Link
           </button>
         </form>
-        {message && <p style={{ color: '#f97316', marginTop: '10px' }}>{message}</p>}
-        {error && <p style={{ color: '#f87171', marginTop: '10px' }}>{error}</p>}
+        {error && <p style={errorStyle}>{error}</p>}
       </div>
     </div>
   );
