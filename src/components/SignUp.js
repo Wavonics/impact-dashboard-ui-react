@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaUser, FaLock } from 'react-icons/fa';
 import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
+import { getFirestore, setDoc, doc } from 'firebase/firestore';
 import { auth } from '../firebase';
 
 export default function SignUp() {
@@ -10,17 +11,21 @@ export default function SignUp() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        sendEmailVerification(userCredential.user);
-        navigate('/welcome');
-      })
-      .catch((err) => {
-        setError(err.message);
-        console.error(err);
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const db = getFirestore();
+      await setDoc(doc(db, 'users', userCredential.user.uid), {
+        email: userCredential.user.email,
+        role: 'Viewer'  // default role
       });
+      await sendEmailVerification(userCredential.user);
+      navigate('/welcome');
+    } catch (err) {
+      setError(err.message);
+      console.error(err);
+    }
   };
 
   const containerStyle = {
@@ -46,7 +51,7 @@ export default function SignUp() {
   };
 
   const logoStyle = {
-    width: '325px',
+    width: '225px',
     marginBottom: '20px'
   };
 
