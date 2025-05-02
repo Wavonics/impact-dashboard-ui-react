@@ -11,8 +11,12 @@ export default function App() {
     fontFamily: "'Inter', 'Segoe UI', 'Helvetica', sans-serif"
   };
 
-  const headerStyle = {
-    padding: '40px 20px 20px 20px',
+  const headerContainerStyle = {
+    border: '2px solid #f97316',
+    borderRadius: '8px',
+    padding: '20px',
+    maxWidth: '600px',
+    margin: '40px auto 20px auto',
     textAlign: 'center'
   };
 
@@ -81,7 +85,7 @@ export default function App() {
 
   return (
     <div style={containerStyle}>
-      <div style={headerStyle}>
+      <div style={headerContainerStyle}>
         <h1 style={titleStyle}>Welcome to IMPACT Dashboard</h1>
         <p style={subtitleStyle}>Track IT Assets, Contracts, Budgets & more</p>
       </div>
