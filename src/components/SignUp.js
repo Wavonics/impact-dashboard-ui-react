@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaUser, FaLock } from 'react-icons/fa';
+import { FaUser, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import { getFirestore, setDoc, doc } from 'firebase/firestore';
 import { auth } from '../firebase';
@@ -9,16 +9,23 @@ export default function SignUp() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (password !== confirmPassword) {
+      setError('Passwords do not match.');
+      return;
+    }
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const db = getFirestore();
       await setDoc(doc(db, 'users', userCredential.user.uid), {
         email: userCredential.user.email,
-        role: 'Viewer'  // default role
+        role: 'Viewer'
       });
       await sendEmailVerification(userCredential.user);
       navigate('/welcome');
@@ -50,17 +57,8 @@ export default function SignUp() {
     boxShadow: '0 4px 20px rgba(0,0,0,0.3)'
   };
 
-  const logoStyle = {
-    width: '325px',
-    marginBottom: '20px'
-  };
-
-  const titleStyle = {
-    fontSize: '28px',
-    fontWeight: '700',
-    marginBottom: '10px'
-  };
-
+  const logoStyle = { width: '325px', marginBottom: '20px' };
+  const titleStyle = { fontSize: '28px', fontWeight: '700', marginBottom: '10px' };
   const inputWrapperStyle = {
     display: 'flex',
     alignItems: 'center',
@@ -71,12 +69,7 @@ export default function SignUp() {
     border: '1px solid #1f2937',
     width: '80%'
   };
-
-  const iconStyle = {
-    color: '#9ca3af',
-    marginRight: '8px'
-  };
-
+  const iconStyle = { color: '#9ca3af', marginRight: '8px' };
   const inputStyle = {
     flex: 1,
     backgroundColor: 'transparent',
@@ -87,11 +80,7 @@ export default function SignUp() {
     padding: '12px',
     fontFamily: "'Inter', 'Segoe UI', 'Helvetica', sans-serif"
   };
-
-  const inputFocusStyle = {
-    outlineColor: '#f97316'
-  };
-
+  const inputFocusStyle = { outlineColor: '#f97316' };
   const buttonStyle = {
     backgroundColor: '#f97316',
     color: '#fff',
@@ -104,12 +93,7 @@ export default function SignUp() {
     fontWeight: '500',
     marginTop: '10px'
   };
-
-  const errorStyle = {
-    color: '#f87171',
-    fontSize: '14px',
-    marginBottom: '10px'
-  };
+  const errorStyle = { color: '#f87171', fontSize: '14px', marginBottom: '10px' };
 
   return (
     <div style={containerStyle}>
@@ -133,7 +117,7 @@ export default function SignUp() {
           <div style={inputWrapperStyle}>
             <FaLock style={iconStyle} />
             <input
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -141,6 +125,28 @@ export default function SignUp() {
               onFocus={(e) => (e.target.style.outlineColor = inputFocusStyle.outlineColor)}
               onBlur={(e) => (e.target.style.outlineColor = '')}
             />
+            {showPassword ? (
+              <FaEyeSlash onClick={() => setShowPassword(false)} style={{ ...iconStyle, cursor: 'pointer' }} />
+            ) : (
+              <FaEye onClick={() => setShowPassword(true)} style={{ ...iconStyle, cursor: 'pointer' }} />
+            )}
+          </div>
+          <div style={inputWrapperStyle}>
+            <FaLock style={iconStyle} />
+            <input
+              type={showConfirmPassword ? 'text' : 'password'}
+              placeholder="Confirm Password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              style={inputStyle}
+              onFocus={(e) => (e.target.style.outlineColor = inputFocusStyle.outlineColor)}
+              onBlur={(e) => (e.target.style.outlineColor = '')}
+            />
+            {showConfirmPassword ? (
+              <FaEyeSlash onClick={() => setShowConfirmPassword(false)} style={{ ...iconStyle, cursor: 'pointer' }} />
+            ) : (
+              <FaEye onClick={() => setShowConfirmPassword(true)} style={{ ...iconStyle, cursor: 'pointer' }} />
+            )}
           </div>
           <button type="submit" style={buttonStyle}>Sign Up</button>
         </form>
