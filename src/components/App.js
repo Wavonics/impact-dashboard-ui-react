@@ -22,7 +22,7 @@ export default function App() {
   };
 
   const logoStyle = {
-    width: '300px',
+    width: '400px',
     marginBottom: '20px'
   };
 
