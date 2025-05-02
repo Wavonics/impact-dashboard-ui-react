@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaUser, FaLock } from 'react-icons/fa';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import { auth } from '../firebase';
 
 export default function SignUp() {
@@ -13,8 +13,9 @@ export default function SignUp() {
   const handleSubmit = (e) => {
     e.preventDefault();
     createUserWithEmailAndPassword(auth, email, password)
-      .then(() => {
-        navigate('/dashboard');
+      .then((userCredential) => {
+        sendEmailVerification(userCredential.user);
+        navigate('/welcome');
       })
       .catch((err) => {
         setError(err.message);
