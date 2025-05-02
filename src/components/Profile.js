@@ -1,17 +1,33 @@
 import React, { useEffect, useState } from 'react';
-import { auth } from '../firebase';
-import { sendEmailVerification } from 'firebase/auth';
+import { auth, db } from '../firebase';
+import { sendEmailVerification, updateProfile } from 'firebase/auth';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 
 export default function Profile() {
   const [user, setUser] = useState(null);
+  const [profileData, setProfileData] = useState({ displayName: '', role: '' });
+  const [newDisplayName, setNewDisplayName] = useState('');
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+    const unsubscribe = auth.onAuthStateChanged(async (currentUser) => {
       if (currentUser) {
         setUser(currentUser);
+        try {
+          const docRef = doc(db, 'users', currentUser.uid);
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            setProfileData({ displayName: data.displayName || '', role: data.role || '' });
+            setNewDisplayName(data.displayName || '');
+          } else {
+            setMessage('User profile data not found in database.');
+          }
+        } catch (error) {
+          setMessage('Error fetching profile data.');
+        }
       } else {
         navigate('/login');
       }
@@ -24,6 +40,21 @@ export default function Profile() {
       sendEmailVerification(user)
         .then(() => setMessage('Verification email sent!'))
         .catch((err) => setMessage('Error sending verification email.'));
+    }
+  };
+
+  const handleSaveDisplayName = async () => {
+    if (!newDisplayName.trim()) {
+      setMessage('Display name cannot be empty.');
+      return;
+    }
+    try {
+      await updateProfile(user, { displayName: newDisplayName });
+      await setDoc(doc(db, 'users', user.uid), { ...profileData, displayName: newDisplayName }, { merge: true });
+      setProfileData((prev) => ({ ...prev, displayName: newDisplayName }));
+      setMessage('Display name updated!');
+    } catch (error) {
+      setMessage('Error updating display name.');
     }
   };
 
@@ -54,9 +85,17 @@ export default function Profile() {
     marginBottom: '15px'
   };
 
-  const emailStyle = {
+  const fieldStyle = {
     fontSize: '16px',
-    marginBottom: '20px'
+    marginBottom: '15px'
+  };
+
+  const inputStyle = {
+    padding: '10px',
+    borderRadius: '6px',
+    border: '1px solid #ccc',
+    width: '100%',
+    marginBottom: '12px'
   };
 
   const buttonStyle = {
@@ -80,18 +119,38 @@ export default function Profile() {
     <div style={containerStyle}>
       <div style={boxStyle}>
         <h1 style={titleStyle}>User Profile</h1>
-        {user && <p style={emailStyle}>Email: {user.email} {user.emailVerified ? '(Verified)' : '(Not Verified)'}</p>}
-        {!user?.emailVerified && (
-          <button
-            style={buttonStyle}
-            onClick={handleResendVerification}
-            onMouseEnter={(e) => handleHover(e, true)}
-            onMouseLeave={(e) => handleHover(e, false)}
-          >
-            Resend Verification Email
-          </button>
+        {user && (
+          <>
+            <p style={fieldStyle}><strong>Email:</strong> {user.email} {user.emailVerified ? '(Verified)' : '(Not Verified)'}</p>
+            <p style={fieldStyle}><strong>Role:</strong> {profileData.role || 'N/A'}</p>
+            <label style={fieldStyle}><strong>Display Name:</strong></label>
+            <input
+              type="text"
+              value={newDisplayName}
+              onChange={(e) => setNewDisplayName(e.target.value)}
+              style={inputStyle}
+            />
+            <button
+              style={buttonStyle}
+              onClick={handleSaveDisplayName}
+              onMouseEnter={(e) => handleHover(e, true)}
+              onMouseLeave={(e) => handleHover(e, false)}
+            >
+              Save Display Name
+            </button>
+            {!user.emailVerified && (
+              <button
+                style={buttonStyle}
+                onClick={handleResendVerification}
+                onMouseEnter={(e) => handleHover(e, true)}
+                onMouseLeave={(e) => handleHover(e, false)}
+              >
+                Resend Verification Email
+              </button>
+            )}
+            {message && <p style={{ color: '#facc15', marginTop: '12px' }}>{message}</p>}
+          </>
         )}
-        {message && <p style={{ color: '#f97316', marginTop: '10px' }}>{message}</p>}
       </div>
     </div>
   );
