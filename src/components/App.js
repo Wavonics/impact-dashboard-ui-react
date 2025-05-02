@@ -2,16 +2,18 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 export default function App() {
-  const pageStyle = {
+  const containerStyle = {
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
     minHeight: '100vh',
     backgroundColor: '#111827',
     color: '#fff',
-    fontFamily: "'Inter', 'Segoe UI', 'Helvetica', sans-serif",
-    padding: '40px 20px'
+    fontFamily: "'Inter', 'Segoe UI', 'Helvetica', sans-serif"
+  };
+
+  const headerStyle = {
+    padding: '40px 20px 20px 20px',
+    textAlign: 'center'
   };
 
   const titleStyle = {
@@ -23,20 +25,20 @@ export default function App() {
   const subtitleStyle = {
     fontSize: '18px',
     fontWeight: '400',
-    marginBottom: '40px',
     color: '#9ca3af'
   };
 
-  const gridContainerStyle = {
+  const gridWrapperStyle = {
+    flexGrow: 1,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    flexGrow: 1
+    padding: '20px'
   };
 
   const gridStyle = {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
     gap: '30px',
     width: '100%',
     maxWidth: '1000px'
@@ -47,11 +49,11 @@ export default function App() {
     color: '#fff',
     border: '1px solid #1f2937',
     borderRadius: '10px',
-    padding: '30px',
+    padding: '40px',
     textAlign: 'center',
     textDecoration: 'none',
     fontWeight: '500',
-    fontSize: '18px',
+    fontSize: '20px',
     transition: 'all 0.2s ease',
     cursor: 'pointer'
   };
@@ -78,10 +80,12 @@ export default function App() {
   ];
 
   return (
-    <div style={pageStyle}>
-      <h1 style={titleStyle}>Welcome to IMPACT Dashboard</h1>
-      <p style={subtitleStyle}>Track IT Assets, Contracts, Budgets & more</p>
-      <div style={gridContainerStyle}>
+    <div style={containerStyle}>
+      <div style={headerStyle}>
+        <h1 style={titleStyle}>Welcome to IMPACT Dashboard</h1>
+        <p style={subtitleStyle}>Track IT Assets, Contracts, Budgets & more</p>
+      </div>
+      <div style={gridWrapperStyle}>
         <div style={gridStyle}>
           {modules.map((mod) => (
             <Link
