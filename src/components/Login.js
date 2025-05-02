@@ -1,4 +1,5 @@
 import React from 'react';
+import { FaUser, FaLock } from 'react-icons/fa';
 
 export default function Login() {
   const containerStyle = {
@@ -20,13 +21,11 @@ export default function Login() {
     maxWidth: '400px',
     width: '100%',
     textAlign: 'center',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center'
+    boxShadow: '0 4px 20px rgba(0,0,0,0.3)'
   };
 
   const logoStyle = {
-    width: '225px',
+    width: '275px',
     marginBottom: '20px'
   };
 
@@ -36,13 +35,35 @@ export default function Login() {
     marginBottom: '10px'
   };
 
-  const inputStyle = {
-    width: '100%',
-    padding: '12px',
-    margin: '10px 0',
+  const inputWrapperStyle = {
+    display: 'flex',
+    alignItems: 'center',
+    backgroundColor: '#1f2937',
     borderRadius: '5px',
+    padding: '0 10px',
+    margin: '10px 0',
     border: '1px solid #1f2937',
-    fontSize: '14px'
+    width: '80%'
+  };
+
+  const iconStyle = {
+    color: '#9ca3af',
+    marginRight: '8px'
+  };
+
+  const inputStyle = {
+    flex: 1,
+    backgroundColor: 'transparent',
+    color: '#fff',
+    border: 'none',
+    outline: 'none',
+    fontSize: '14px',
+    padding: '12px',
+    fontFamily: "'Inter', 'Segoe UI', 'Helvetica', sans-serif"
+  };
+
+  const inputFocusStyle = {
+    outlineColor: '#f97316'
   };
 
   const buttonStyle = {
@@ -52,7 +73,7 @@ export default function Login() {
     borderRadius: '5px',
     padding: '12px',
     cursor: 'pointer',
-    width: '100%',
+    width: '80%',
     fontSize: '14px',
     fontWeight: '500',
     marginTop: '10px'
@@ -63,9 +84,27 @@ export default function Login() {
       <div style={formContainerStyle}>
         <img src="/logo.png" alt="IMPACT Logo" style={logoStyle} />
         <h1 style={titleStyle}>Login to IMPACT Dashboard</h1>
-        <form style={{ width: '100%' }}>
-          <input type="text" placeholder="Username" style={inputStyle} />
-          <input type="password" placeholder="Password" style={inputStyle} />
+        <form style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <div style={inputWrapperStyle}>
+            <FaUser style={iconStyle} />
+            <input
+              type="text"
+              placeholder="Username"
+              style={inputStyle}
+              onFocus={(e) => (e.target.style.outlineColor = inputFocusStyle.outlineColor)}
+              onBlur={(e) => (e.target.style.outlineColor = '')}
+            />
+          </div>
+          <div style={inputWrapperStyle}>
+            <FaLock style={iconStyle} />
+            <input
+              type="password"
+              placeholder="Password"
+              style={inputStyle}
+              onFocus={(e) => (e.target.style.outlineColor = inputFocusStyle.outlineColor)}
+              onBlur={(e) => (e.target.style.outlineColor = '')}
+            />
+          </div>
           <button type="submit" style={buttonStyle}>Login</button>
         </form>
       </div>
