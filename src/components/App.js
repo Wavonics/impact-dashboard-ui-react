@@ -8,16 +8,24 @@ export default function App() {
     minHeight: '100vh',
     backgroundColor: '#111827',
     color: '#fff',
-    fontFamily: "'Inter', 'Segoe UI', 'Helvetica', sans-serif"
+    fontFamily: "'Inter', 'Segoe UI', 'Helvetica', sans-serif",
+    alignItems: 'center',
+    padding: '20px'
   };
 
-  const headerContainerStyle = {
+  const landingStyle = {
     border: '2px solid #f97316',
     borderRadius: '8px',
-    padding: '20px',
-    maxWidth: '600px',
-    margin: '40px auto 20px auto',
-    textAlign: 'center'
+    padding: '30px',
+    maxWidth: '700px',
+    textAlign: 'center',
+    marginTop: '40px',
+    marginBottom: '40px'
+  };
+
+  const logoStyle = {
+    width: '180px',
+    marginBottom: '20px'
   };
 
   const titleStyle = {
@@ -26,18 +34,24 @@ export default function App() {
     marginBottom: '10px'
   };
 
-  const subtitleStyle = {
-    fontSize: '18px',
-    fontWeight: '400',
-    color: '#9ca3af'
+  const taglineStyle = {
+    fontSize: '16px',
+    color: '#f97316',
+    fontWeight: '600',
+    marginBottom: '20px'
   };
 
-  const gridWrapperStyle = {
-    flexGrow: 1,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: '20px'
+  const buttonStyle = {
+    backgroundColor: '#f97316',
+    color: '#fff',
+    border: 'none',
+    borderRadius: '5px',
+    padding: '12px 24px',
+    margin: '0 10px',
+    cursor: 'pointer',
+    textDecoration: 'none',
+    fontSize: '14px',
+    fontWeight: '500'
   };
 
   const gridStyle = {
@@ -45,7 +59,8 @@ export default function App() {
     gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
     gap: '30px',
     width: '100%',
-    maxWidth: '1000px'
+    maxWidth: '1000px',
+    marginTop: '30px'
   };
 
   const cardStyle = {
@@ -85,24 +100,27 @@ export default function App() {
 
   return (
     <div style={containerStyle}>
-      <div style={headerContainerStyle}>
+      <div style={landingStyle}>
+        <img src="/logo.png" alt="IMPACT Logo" style={logoStyle} />
         <h1 style={titleStyle}>Welcome to IMPACT Dashboard</h1>
-        <p style={subtitleStyle}>Track IT Assets, Contracts, Budgets & more</p>
-      </div>
-      <div style={gridWrapperStyle}>
-        <div style={gridStyle}>
-          {modules.map((mod) => (
-            <Link
-              to={mod.path}
-              key={mod.path}
-              style={cardStyle}
-              onMouseEnter={(e) => Object.assign(e.currentTarget.style, hoverStyle)}
-              onMouseLeave={(e) => Object.assign(e.currentTarget.style, cardStyle)}
-            >
-              {mod.label}
-            </Link>
-          ))}
+        <p style={taglineStyle}>Driving Strategic Impact through IT Spend, Budget Tracking, and Contract Visibility</p>
+        <div>
+          <a href="#" style={buttonStyle}>Demo</a>
+          <a href="#" style={buttonStyle}>Learn More</a>
         </div>
+      </div>
+      <div style={gridStyle}>
+        {modules.map((mod) => (
+          <Link
+            to={mod.path}
+            key={mod.path}
+            style={cardStyle}
+            onMouseEnter={(e) => Object.assign(e.currentTarget.style, hoverStyle)}
+            onMouseLeave={(e) => Object.assign(e.currentTarget.style, cardStyle)}
+          >
+            {mod.label}
+          </Link>
+        ))}
       </div>
     </div>
   );
