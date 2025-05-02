@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaUser, FaLock } from 'react-icons/fa';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { auth } from '../firebase';
 
 export default function Login() {
@@ -13,11 +13,16 @@ export default function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
     signInWithEmailAndPassword(auth, email, password)
-      .then(() => {
-        navigate('/dashboard');
+      .then((userCredential) => {
+        if (userCredential.user.emailVerified) {
+          navigate('/dashboard');
+        } else {
+          signOut(auth);
+          setError('Please verify your email before logging in.');
+        }
       })
       .catch((err) => {
-        setError('Invalid email or password');
+        setError('Invalid email or password.');
         console.error(err);
       });
   };
