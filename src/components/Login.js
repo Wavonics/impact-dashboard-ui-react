@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { FaUser, FaLock } from 'react-icons/fa';
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { auth } from '../firebase';
@@ -110,6 +110,13 @@ export default function Login() {
     marginBottom: '10px'
   };
 
+  const forgotStyle = {
+    color: '#f97316',
+    fontSize: '12px',
+    marginTop: '10px',
+    textDecoration: 'none'
+  };
+
   return (
     <div style={containerStyle}>
       <div style={formContainerStyle}>
@@ -142,6 +149,7 @@ export default function Login() {
             />
           </div>
           <button type="submit" style={buttonStyle}>Login</button>
+          <Link to="/reset-password" style={forgotStyle}>Forgot Password?</Link>
         </form>
       </div>
     </div>
