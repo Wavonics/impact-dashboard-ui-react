@@ -1,15 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { auth, db } from '../firebase';
-import { sendEmailVerification, updateProfile } from 'firebase/auth';
+import React, { useEffect, useState, useRef } from 'react';
+import { auth, db, storage } from '../firebase';
+import { sendEmailVerification, updateProfile, updatePassword } from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useNavigate } from 'react-router-dom';
 
 export default function Profile() {
   const [user, setUser] = useState(null);
-  const [profileData, setProfileData] = useState({ displayName: '', role: '' });
+  const [profileData, setProfileData] = useState({ displayName: '', role: '', photoURL: '' });
   const [newDisplayName, setNewDisplayName] = useState('');
   const [message, setMessage] = useState('');
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [previewURL, setPreviewURL] = useState('');
   const navigate = useNavigate();
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (currentUser) => {
@@ -20,8 +24,9 @@ export default function Profile() {
           const docSnap = await getDoc(docRef);
           if (docSnap.exists()) {
             const data = docSnap.data();
-            setProfileData({ displayName: data.displayName || '', role: data.role || '' });
+            setProfileData({ displayName: data.displayName || '', role: data.role || '', photoURL: data.photoURL || '' });
             setNewDisplayName(data.displayName || '');
+            if (data.photoURL) setPreviewURL(data.photoURL);
           } else {
             setMessage('User profile data not found in database.');
           }
@@ -58,6 +63,59 @@ export default function Profile() {
     }
   };
 
+  const handleFileSelect = (e) => {
+    const file = e.target.files[0];
+    setSelectedFile(file);
+    setPreviewURL(URL.createObjectURL(file));
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    setSelectedFile(file);
+    setPreviewURL(URL.createObjectURL(file));
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
+
+  const handleUploadPhoto = async () => {
+    if (!selectedFile) {
+      setMessage('Please select a file first.');
+      return;
+    }
+    try {
+      const storageRef = ref(storage, `profile_pics/${user.uid}`);
+      await uploadBytes(storageRef, selectedFile);
+      const downloadURL = await getDownloadURL(storageRef);
+      await updateProfile(user, { photoURL: downloadURL });
+      await setDoc(doc(db, 'users', user.uid), { ...profileData, photoURL: downloadURL }, { merge: true });
+      setProfileData((prev) => ({ ...prev, photoURL: downloadURL }));
+      setMessage('Profile picture uploaded!');
+    } catch (error) {
+      setMessage('Error uploading photo.');
+    }
+  };
+
+  const handleChangePassword = async () => {
+    const newPass = prompt('Enter new password (min 6 chars):');
+    if (newPass && newPass.length >= 6) {
+      try {
+        await updatePassword(user, newPass);
+        setMessage('Password updated!');
+      } catch (error) {
+        setMessage('Error updating password.');
+      }
+    } else {
+      setMessage('Password must be at least 6 characters.');
+    }
+  };
+
+  const handleLogout = () => {
+    auth.signOut().then(() => navigate('/login'));
+  };
+
   const containerStyle = {
     display: 'flex',
     flexDirection: 'column',
@@ -87,7 +145,7 @@ export default function Profile() {
 
   const fieldStyle = {
     fontSize: '16px',
-    marginBottom: '15px'
+    marginBottom: '10px'
   };
 
   const inputStyle = {
@@ -115,10 +173,19 @@ export default function Profile() {
     e.target.style.backgroundColor = isEnter ? '#ea580c' : '#f97316';
   };
 
+  const dropzoneStyle = {
+    border: '2px dashed #f97316',
+    borderRadius: '8px',
+    padding: '20px',
+    cursor: 'pointer',
+    marginBottom: '12px'
+  };
+
   return (
     <div style={containerStyle}>
       <div style={boxStyle}>
         <h1 style={titleStyle}>User Profile</h1>
+        {previewURL && <img src={previewURL} alt="Preview" style={{ width: '150px', borderRadius: '50%', marginBottom: '15px' }} />}
         {user && (
           <>
             <p style={fieldStyle}><strong>Email:</strong> {user.email} {user.emailVerified ? '(Verified)' : '(Not Verified)'}</p>
@@ -138,6 +205,29 @@ export default function Profile() {
             >
               Save Display Name
             </button>
+            <div
+              style={dropzoneStyle}
+              onDrop={handleDrop}
+              onDragOver={handleDragOver}
+              onClick={() => fileInputRef.current.click()}
+            >
+              Drag & Drop Image Here or Click to Select
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileSelect}
+                style={{ display: 'none' }}
+                accept="image/*"
+              />
+            </div>
+            <button
+              style={buttonStyle}
+              onClick={handleUploadPhoto}
+              onMouseEnter={(e) => handleHover(e, true)}
+              onMouseLeave={(e) => handleHover(e, false)}
+            >
+              Upload Profile Picture
+            </button>
             {!user.emailVerified && (
               <button
                 style={buttonStyle}
@@ -148,6 +238,22 @@ export default function Profile() {
                 Resend Verification Email
               </button>
             )}
+            <button
+              style={buttonStyle}
+              onClick={handleChangePassword}
+              onMouseEnter={(e) => handleHover(e, true)}
+              onMouseLeave={(e) => handleHover(e, false)}
+            >
+              Change Password
+            </button>
+            <button
+              style={buttonStyle}
+              onClick={handleLogout}
+              onMouseEnter={(e) => handleHover(e, true)}
+              onMouseLeave={(e) => handleHover(e, false)}
+            >
+              Logout
+            </button>
             {message && <p style={{ color: '#facc15', marginTop: '12px' }}>{message}</p>}
           </>
         )}
