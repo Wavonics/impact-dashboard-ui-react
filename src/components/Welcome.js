@@ -1,23 +1,22 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { sendEmailVerification } from 'firebase/auth';
 import { auth } from '../firebase';
 
 export default function Welcome() {
   const [message, setMessage] = useState('');
+  const navigate = useNavigate();
 
-  const handleResend = () => {
-    const user = auth.currentUser;
-    if (user) {
-      sendEmailVerification(user)
-        .then(() => {
-          setMessage('Verification email resent! Please check your inbox.');
-        })
-        .catch((err) => {
-          setMessage('Error resending verification email.');
-          console.error(err);
-        });
-    } else {
-      setMessage('No user found. Please sign in again.');
+  const handleResend = async () => {
+    try {
+      if (auth.currentUser) {
+        await sendEmailVerification(auth.currentUser);
+        setMessage('Verification email resent! Please check your inbox.');
+      } else {
+        setMessage('No user is signed in.');
+      }
+    } catch (error) {
+      setMessage(error.message);
     }
   };
 
@@ -30,25 +29,26 @@ export default function Welcome() {
     backgroundColor: '#111827',
     color: '#fff',
     fontFamily: "'Inter', 'Segoe UI', 'Helvetica', sans-serif",
-    padding: '20px',
-    textAlign: 'center'
+    padding: '20px'
   };
 
   const boxStyle = {
     border: '2px solid #f97316',
-    borderRadius: '12px',
-    padding: '50px',
-    maxWidth: '500px',
-    boxShadow: '0 8px 24px rgba(0,0,0,0.4)'
+    borderRadius: '8px',
+    padding: '40px',
+    maxWidth: '400px',
+    width: '100%',
+    textAlign: 'center',
+    boxShadow: '0 4px 20px rgba(0,0,0,0.3)'
   };
 
   const titleStyle = {
-    fontSize: '30px',
+    fontSize: '24px',
     fontWeight: '700',
     marginBottom: '15px'
   };
 
-  const messageStyle = {
+  const textStyle = {
     fontSize: '16px',
     marginBottom: '20px'
   };
@@ -57,37 +57,31 @@ export default function Welcome() {
     backgroundColor: '#f97316',
     color: '#fff',
     border: 'none',
-    borderRadius: '8px',
-    padding: '12px 24px',
+    borderRadius: '5px',
+    padding: '12px',
     cursor: 'pointer',
+    width: '80%',
     fontSize: '14px',
-    fontWeight: '600',
-    boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
-    transition: 'background-color 0.3s'
+    fontWeight: '500',
+    marginBottom: '10px'
   };
 
-  const handleHover = (e, isEnter) => {
-    e.target.style.backgroundColor = isEnter ? '#ea580c' : '#f97316';
+  const messageStyle = {
+    color: '#facc15',
+    fontSize: '14px',
+    marginBottom: '10px'
   };
 
   return (
     <div style={containerStyle}>
       <div style={boxStyle}>
-        <h1 style={titleStyle}>Welcome to IMPACT Dashboard!</h1>
-        <p style={messageStyle}>
-          Your account has been created successfully.
-          <br />
+        <h1 style={titleStyle}>Welcome to IMPACT Dashboard</h1>
+        <p style={textStyle}>
           Please check your email to verify your account before logging in.
         </p>
-        <button
-          style={buttonStyle}
-          onClick={handleResend}
-          onMouseEnter={(e) => handleHover(e, true)}
-          onMouseLeave={(e) => handleHover(e, false)}
-        >
-          Resend Verification Email
-        </button>
-        {message && <p style={{ marginTop: '15px', color: '#f97316' }}>{message}</p>}
+        {message && <p style={messageStyle}>{message}</p>}
+        <button onClick={handleResend} style={buttonStyle}>Resend Verification Email</button>
+        <button onClick={() => navigate('/login')} style={buttonStyle}>Go to Login</button>
       </div>
     </div>
   );
