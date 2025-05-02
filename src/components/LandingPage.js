@@ -23,7 +23,7 @@ export default function LandingPage() {
   };
 
   const logoStyle = {
-    width: '350px',
+    width: '450px',
     marginBottom: '20px'
   };
 
@@ -46,11 +46,12 @@ export default function LandingPage() {
     border: 'none',
     borderRadius: '5px',
     padding: '12px 24px',
-    margin: '0 10px',
+    margin: '0 10px 10px 10px',
     cursor: 'pointer',
     textDecoration: 'none',
     fontSize: '14px',
-    fontWeight: '500'
+    fontWeight: '500',
+    display: 'inline-block'
   };
 
   return (
@@ -61,6 +62,7 @@ export default function LandingPage() {
         <p style={taglineStyle}>Driving Strategic Impact through IT Spend, Budget Tracking, and Contract Visibility</p>
         <div>
           <Link to="/login" style={buttonStyle}>Login</Link>
+          <Link to="/signup" style={buttonStyle}>Sign Up</Link>
           <a href="#" style={buttonStyle}>Demo</a>
           <a href="#" style={buttonStyle}>Learn More</a>
         </div>
