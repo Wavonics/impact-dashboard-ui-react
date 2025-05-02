@@ -51,7 +51,7 @@ export default function SignUp() {
   };
 
   const logoStyle = {
-    width: '225px',
+    width: '325px',
     marginBottom: '20px'
   };
 
