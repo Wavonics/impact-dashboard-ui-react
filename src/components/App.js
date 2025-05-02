@@ -23,6 +23,7 @@ export default function App() {
 
   const logoStyle = {
     width: '400px',
+    objectFit: 'contain'
     marginBottom: '20px'
   };
 
