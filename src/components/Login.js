@@ -19,7 +19,10 @@ export default function Login() {
     padding: '40px',
     maxWidth: '400px',
     width: '100%',
-    textAlign: 'center'
+    textAlign: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
   };
 
   const logoStyle = {
@@ -47,7 +50,7 @@ export default function Login() {
     color: '#fff',
     border: 'none',
     borderRadius: '5px',
-    padding: '12px 24px',
+    padding: '12px',
     cursor: 'pointer',
     width: '100%',
     fontSize: '14px',
@@ -60,7 +63,7 @@ export default function Login() {
       <div style={formContainerStyle}>
         <img src="/logo.png" alt="IMPACT Logo" style={logoStyle} />
         <h1 style={titleStyle}>Login to IMPACT Dashboard</h1>
-        <form>
+        <form style={{ width: '100%' }}>
           <input type="text" placeholder="Username" style={inputStyle} />
           <input type="password" placeholder="Password" style={inputStyle} />
           <button type="submit" style={buttonStyle}>Login</button>
