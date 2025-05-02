@@ -25,7 +25,7 @@ export default function Login() {
   };
 
   const logoStyle = {
-    width: '275px',
+    width: '300px',
     marginBottom: '20px'
   };
 
