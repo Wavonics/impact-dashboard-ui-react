@@ -6,6 +6,7 @@ import Login from './components/Login';
 import SignUp from './components/SignUp';
 import Welcome from './components/Welcome';
 import ResetPassword from './components/ResetPassword';
+import ResetConfirmation from './components/ResetConfirmation';
 import App from './App';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -18,6 +19,7 @@ root.render(
       <Route path="/signup" element={<SignUp />} />
       <Route path="/welcome" element={<Welcome />} />
       <Route path="/reset-password" element={<ResetPassword />} />
+      <Route path="/reset-confirmation" element={<ResetConfirmation />} />
       <Route path="/dashboard/*" element={<App />} />
     </Routes>
   </BrowserRouter>
