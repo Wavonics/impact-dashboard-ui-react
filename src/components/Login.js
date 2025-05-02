@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { FaUser, FaLock } from 'react-icons/fa';
+import { FaUser, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { auth } from '../firebase';
 
@@ -8,6 +8,7 @@ export default function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
 
   const handleSubmit = (e) => {
@@ -139,7 +140,7 @@ export default function Login() {
           <div style={inputWrapperStyle}>
             <FaLock style={iconStyle} />
             <input
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -147,6 +148,11 @@ export default function Login() {
               onFocus={(e) => (e.target.style.outlineColor = inputFocusStyle.outlineColor)}
               onBlur={(e) => (e.target.style.outlineColor = '')}
             />
+            {showPassword ? (
+              <FaEyeSlash onClick={() => setShowPassword(false)} style={{ ...iconStyle, cursor: 'pointer' }} />
+            ) : (
+              <FaEye onClick={() => setShowPassword(true)} style={{ ...iconStyle, cursor: 'pointer' }} />
+            )}
           </div>
           <button type="submit" style={buttonStyle}>Login</button>
           <Link to="/reset-password" style={forgotStyle}>Forgot Password?</Link>
