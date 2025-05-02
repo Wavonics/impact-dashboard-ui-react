@@ -23,7 +23,7 @@ export default function Login() {
   };
 
   const logoStyle = {
-    width: '150px',
+    width: '225px',
     marginBottom: '20px'
   };
 
