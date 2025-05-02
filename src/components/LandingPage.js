@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export default function LandingPage() {
   const containerStyle = {
@@ -59,7 +60,7 @@ export default function LandingPage() {
         <h1 style={titleStyle}>Welcome to IMPACT Dashboard</h1>
         <p style={taglineStyle}>Driving Strategic Impact through IT Spend, Budget Tracking, and Contract Visibility</p>
         <div>
-          <a href="/login" style={buttonStyle}>Login</a>
+          <Link to="/login" style={buttonStyle}>Login</Link>
           <a href="#" style={buttonStyle}>Demo</a>
           <a href="#" style={buttonStyle}>Learn More</a>
         </div>
