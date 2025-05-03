@@ -59,7 +59,13 @@ export default function Profile() {
       const currentUser = auth.currentUser;
       await updateProfile(currentUser, { displayName: newDisplayName });
       await setDoc(doc(db, 'users', currentUser.uid), { ...profileData, displayName: newDisplayName }, { merge: true });
-      setProfileData((prev) => ({ ...prev, displayName: newDisplayName }));
+
+      // 🔥 Refetch Firestore document after update
+      const updatedDocSnap = await getDoc(doc(db, 'users', currentUser.uid));
+      if (updatedDocSnap.exists()) {
+        setProfileData(updatedDocSnap.data());
+      }
+
       setMessage('Display name updated!');
       setTimeout(() => setMessage(''), 3000);
     } catch (error) {
@@ -94,7 +100,12 @@ export default function Profile() {
       const downloadURL = await getDownloadURL(storageRef);
       await updateProfile(user, { photoURL: downloadURL });
       await setDoc(doc(db, 'users', user.uid), { ...profileData, photoURL: downloadURL }, { merge: true });
-      setProfileData((prev) => ({ ...prev, photoURL: downloadURL }));
+
+      const updatedDocSnap = await getDoc(doc(db, 'users', user.uid));
+      if (updatedDocSnap.exists()) {
+        setProfileData(updatedDocSnap.data());
+      }
+
       setMessage('Profile picture uploaded & saved!');
       setTimeout(() => setMessage(''), 3000);
     } catch (error) {
@@ -123,6 +134,7 @@ export default function Profile() {
     auth.signOut().then(() => navigate('/login'));
   };
 
+  // Styling
   const containerStyle = {
     display: 'flex',
     flexDirection: 'column',
@@ -133,7 +145,7 @@ export default function Profile() {
     color: '#fff',
     fontFamily: "'Inter', 'Segoe UI', 'Helvetica', sans-serif",
     padding: '20px',
-    textAlign: 'center'
+    textAlign: 'center',
   };
 
   const boxStyle = {
@@ -141,8 +153,7 @@ export default function Profile() {
     borderRadius: '12px',
     padding: '50px',
     maxWidth: '500px',
-    width: '90%',
-    boxShadow: '0 8px 24px rgba(0,0,0,0.4)'
+    boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
   };
 
   const fieldStyle = { fontSize: '16px', marginBottom: '10px' };
@@ -151,8 +162,8 @@ export default function Profile() {
     padding: '10px',
     borderRadius: '6px',
     border: '1px solid #ccc',
-    width: '80%', // ✅ reduced width
-    marginBottom: '12px'
+    width: '100%',
+    marginBottom: '12px',
   };
 
   const buttonStyle = {
@@ -165,8 +176,8 @@ export default function Profile() {
     fontSize: '14px',
     fontWeight: '600',
     boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
+    marginTop: '10px',
     marginBottom: '12px',
-    width: '100%'
   };
 
   const dropzoneStyle = {
@@ -174,8 +185,7 @@ export default function Profile() {
     borderRadius: '8px',
     padding: '20px',
     cursor: 'pointer',
-    marginBottom: '12px',
-    width: '100%'
+    marginBottom: '20px', // 🔥 increased bottom margin to separate from button
   };
 
   const handleHover = (e, isEnter) => {
@@ -186,30 +196,39 @@ export default function Profile() {
     <div style={containerStyle}>
       <div style={boxStyle}>
         <h1 style={{ fontSize: '28px', fontWeight: '700', marginBottom: '15px' }}>User Profile</h1>
-        {previewURL && <img src={previewURL} alt="Preview" style={{ width: '150px', borderRadius: '50%', marginBottom: '15px' }} />}
+        {previewURL && (
+          <img
+            src={previewURL}
+            alt="Preview"
+            style={{ width: '150px', borderRadius: '50%', marginBottom: '15px' }}
+          />
+        )}
         {user && (
           <>
-            <p style={fieldStyle}><strong>Email:</strong> {user.email} {user.emailVerified ? '(Verified)' : '(Not Verified)'}</p>
-            <p style={fieldStyle}><strong>Role:</strong> {profileData.role || 'N/A'}</p>
-
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '20px' }}>
-              <label style={fieldStyle}><strong>Display Name:</strong></label>
-              <input
-                type="text"
-                value={newDisplayName}
-                onChange={(e) => setNewDisplayName(e.target.value)}
-                style={inputStyle}
-              />
-              <button
-                style={{ ...buttonStyle, width: 'auto', padding: '10px 20px' }}
-                onClick={handleSaveDisplayName}
-                onMouseEnter={(e) => handleHover(e, true)}
-                onMouseLeave={(e) => handleHover(e, false)}
-              >
-                Save Display Name
-              </button>
-            </div>
-
+            <p style={fieldStyle}>
+              <strong>Email:</strong> {user.email} {user.emailVerified ? '(Verified)' : '(Not Verified)'}
+            </p>
+            <p style={fieldStyle}>
+              <strong>Role:</strong> {profileData.role || 'N/A'}
+            </p>
+            <p style={fieldStyle}>
+              <strong>Display Name:</strong> {profileData.displayName || 'N/A'}
+            </p>
+            <label style={fieldStyle}><strong>Edit Display Name:</strong></label>
+            <input
+              type="text"
+              value={newDisplayName}
+              onChange={(e) => setNewDisplayName(e.target.value)}
+              style={inputStyle}
+            />
+            <button
+              style={buttonStyle}
+              onClick={handleSaveDisplayName}
+              onMouseEnter={(e) => handleHover(e, true)}
+              onMouseLeave={(e) => handleHover(e, false)}
+            >
+              Save Display Name
+            </button>
             <div
               style={dropzoneStyle}
               onDrop={handleDrop}
@@ -225,7 +244,6 @@ export default function Profile() {
                 accept="image/*"
               />
             </div>
-
             <button
               style={buttonStyle}
               onClick={handleUploadPhoto}
@@ -234,7 +252,6 @@ export default function Profile() {
             >
               Upload Profile Picture
             </button>
-
             {!user.emailVerified && (
               <button
                 style={buttonStyle}
@@ -245,7 +262,6 @@ export default function Profile() {
                 Resend Verification Email
               </button>
             )}
-
             <button
               style={buttonStyle}
               onClick={handleChangePassword}
@@ -254,7 +270,6 @@ export default function Profile() {
             >
               Change Password
             </button>
-
             <button
               style={buttonStyle}
               onClick={handleLogout}
@@ -263,29 +278,28 @@ export default function Profile() {
             >
               Logout
             </button>
-
             <button
               style={{ ...buttonStyle, backgroundColor: showJson ? '#10b981' : '#f97316' }}
               onClick={() => setShowJson(!showJson)}
             >
               {showJson ? 'Hide Profile JSON' : 'View Profile JSON'}
             </button>
-
             {showJson && (
-              <pre style={{
-                textAlign: 'left',
-                fontSize: '12px',
-                backgroundColor: '#1f2937',
-                padding: '10px',
-                marginTop: '10px',
-                borderRadius: '8px',
-                maxHeight: '200px',
-                overflowY: 'auto'
-              }}>
+              <pre
+                style={{
+                  textAlign: 'left',
+                  fontSize: '12px',
+                  backgroundColor: '#1f2937',
+                  padding: '10px',
+                  marginTop: '10px',
+                  borderRadius: '8px',
+                  maxHeight: '200px',
+                  overflowY: 'auto',
+                }}
+              >
                 {JSON.stringify(profileData, null, 2)}
               </pre>
             )}
-
             {message && <p style={{ color: '#facc15', marginTop: '12px' }}>{message}</p>}
           </>
         )}
