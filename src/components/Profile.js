@@ -72,11 +72,12 @@ export default function Profile() {
   };
 
   const handleGoToDashboard = () => {
-    if (!profileData.displayName || profileData.displayName.trim() === '') {
+    const displayNameToCheck = newDisplayName.trim() || profileData.displayName.trim();
+    if (!displayNameToCheck) {
       setMessage('Please save your display name before returning to dashboard.');
       return;
     }
-    navigate('/');
+    navigate('/dashboard');
   };
 
   const handleFileSelect = (e) => {
@@ -249,9 +250,8 @@ export default function Profile() {
               </button>
               <button
                 type="button"
-                style={{ ...buttonStyle, opacity: profileData.displayName ? 1 : 0.7 }}
+                style={buttonStyle}
                 onClick={handleGoToDashboard}
-                disabled={!profileData.displayName}
                 onMouseEnter={(e) => handleHover(e, true)}
                 onMouseLeave={(e) => handleHover(e, false)}
               >
