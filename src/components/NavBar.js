@@ -184,15 +184,15 @@ export default function NavBar() {
           <FaSignOutAlt />
         </button>
         <button onClick={toggleTheme} style={smallButtonStyle} title="Toggle Theme">
-          {theme === 'dark' ? <FaSun /> : <FaMoon />}
-        </button>
+          {theme === 'dark' ? <FaSun /> : <FaMoon />}        </button>
       </div>
     </nav>
+  );
+}
 
 // src/components/Profile.js
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
 import { ThemeContext } from '../ThemeContext';
 
 export default function Profile() {
@@ -205,7 +205,9 @@ export default function Profile() {
     padding: '10px 20px',
     borderRadius: '4px',
     cursor: 'pointer',
-    backgroundColor: hover ? (theme === 'dark' ? '#1f2937' : '#005b99') : (theme === 'dark' ? '#374151' : '#007acc'),
+    backgroundColor: hover
+      ? (theme === 'dark' ? '#1f2937' : '#005b99')
+      : (theme === 'dark' ? '#374151' : '#007acc'),
     color: '#fff',
     border: 'none',
     transition: 'background-color 0.2s ease'
@@ -214,7 +216,14 @@ export default function Profile() {
   return (
     <div style={{ padding: '20px' }}>
       <h1>Your Profile</h1>
-      {/* existing profile fields and preferences go here */}
+      {/* Display Name Field */}
+      <label htmlFor="displayName">Edit Display Name:</label>
+      <input
+        id="displayName"
+        type="text"
+        placeholder="Enter Display Name"
+        style={{ display: 'block', marginTop: '8px', padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
+      />
       <button
         style={buttonStyle}
         onClick={() => navigate('/')}
