@@ -163,7 +163,7 @@ export default function Profile() {
     borderRadius: '6px',
     border: '1px solid #ccc',
     width: '80%',
-    marginBottom: '10px',
+    marginBottom: '20px',
   };
 
   const buttonStyle = {
