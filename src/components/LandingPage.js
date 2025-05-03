@@ -107,6 +107,14 @@ export default function LandingPage() {
           >
             Learn More
           </a>
+          <Link
+            to="/profile"
+            style={buttonStyle}
+            onMouseEnter={(e) => handleHover(e, true)}
+            onMouseLeave={(e) => handleHover(e, false)}
+          >
+            Go to Profile
+          </Link>
         </div>
       </div>
     </div>
