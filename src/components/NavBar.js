@@ -190,52 +190,6 @@ export default function NavBar() {
   );
 }
 
-// src/components/Profile.js
-import React, { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ThemeContext } from '../ThemeContext';
-
-export default function Profile() {
-  const navigate = useNavigate();
-  const { theme } = useContext(ThemeContext);
-  const [hover, setHover] = useState(false);
-
-  const buttonStyle = {
-    marginTop: '20px',
-    padding: '10px 20px',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    backgroundColor: hover
-      ? (theme === 'dark' ? '#1f2937' : '#005b99')
-      : (theme === 'dark' ? '#374151' : '#007acc'),
-    color: '#fff',
-    border: 'none',
-    transition: 'background-color 0.2s ease'
-  };
-
-  return (
-    <div style={{ padding: '20px' }}>
-      <h1>Your Profile</h1>
-      {/* Display Name Field */}
-      <label htmlFor="displayName">Edit Display Name:</label>
-      <input
-        id="displayName"
-        type="text"
-        placeholder="Enter Display Name"
-        style={{ display: 'block', marginTop: '8px', padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
-      />
-      <button
-        style={buttonStyle}
-        onClick={() => navigate('/')}
-        onMouseEnter={() => setHover(true)}
-        onMouseLeave={() => setHover(false)}
-      >
-        Go to Dashboard
-      </button>
-    </div>
-  );
-}
-
 // src/index.js
 import React from 'react';
 import ReactDOM from 'react-dom/client';
