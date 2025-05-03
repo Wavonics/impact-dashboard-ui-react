@@ -25,7 +25,7 @@ export default function LandingPage() {
   };
 
   const logoStyle = {
-    width: '550px',
+    width: '450px',
     marginBottom: '20px'
   };
 
