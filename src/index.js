@@ -15,8 +15,8 @@ import App from './App';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
-  <ThemeProvider>
-    <BrowserRouter>
+  <BrowserRouter>
+    <ThemeProvider>
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
@@ -27,7 +27,8 @@ root.render(
         <Route path="/profile" element={<Profile />} />
         <Route path="/audit-logs" element={<AuditLogs />} />
         <Route path="/dashboard/*" element={<App />} />
+        <Route path="*" element={<LandingPage />} /> {/* fallback route */}
       </Routes>
-    </BrowserRouter>
-  </ThemeProvider>
+    </ThemeProvider>
+  </BrowserRouter>
 );
