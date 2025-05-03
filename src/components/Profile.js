@@ -179,7 +179,7 @@ export default function Profile() {
     marginTop: '10px',
     marginBottom: '12px',
     width: '200px', // ✅ explicitly set width here
-    maxWidth: '100%' // ✅ ensures it won’t overflow parent
+    maxWidth: '80%' // ✅ ensures it won’t overflow parent
   };
 
   const dropzoneStyle = {
