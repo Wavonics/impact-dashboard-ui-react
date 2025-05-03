@@ -162,7 +162,7 @@ export default function Profile() {
     padding: '10px',
     borderRadius: '6px',
     border: '1px solid #ccc',
-    width: '100%',
+    width: '80%',
     marginBottom: '12px',
   };
 
