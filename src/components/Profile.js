@@ -71,6 +71,14 @@ export default function Profile() {
     }
   };
 
+  const handleGoToDashboard = () => {
+    if (!profileData.displayName || profileData.displayName.trim() === '') {
+      setMessage('Please save your display name before returning to dashboard.');
+      return;
+    }
+    navigate('/');
+  };
+
   const handleFileSelect = (e) => {
     const file = e.target.files[0];
     setSelectedFile(file);
@@ -176,6 +184,14 @@ export default function Profile() {
     maxWidth: '90%',
   };
 
+  const buttonContainerStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: '12px',
+    marginBottom: '20px',
+  };
+
   const buttonRowStyle = {
     display: 'flex',
     justifyContent: 'center',
@@ -218,24 +234,30 @@ export default function Profile() {
               type="text"
               value={newDisplayName}
               onChange={(e) => setNewDisplayName(e.target.value)}
+              placeholder="Enter display name"
               style={inputStyle}
             />
-            <button
-              style={buttonStyle}
-              onClick={handleSaveDisplayName}
-              onMouseEnter={(e) => handleHover(e, true)}
-              onMouseLeave={(e) => handleHover(e, false)}
-            >
-              Save Display Name
-            </button>
-            <button
-              style={buttonStyle}
-              onClick={() => navigate('/')}
-              onMouseEnter={(e) => handleHover(e, true)}
-              onMouseLeave={(e) => handleHover(e, false)}
-            >
-              Go to Dashboard
-            </button>
+            <div style={buttonContainerStyle}>
+              <button
+                type="button"
+                style={buttonStyle}
+                onClick={handleSaveDisplayName}
+                onMouseEnter={(e) => handleHover(e, true)}
+                onMouseLeave={(e) => handleHover(e, false)}
+              >
+                Save Display Name
+              </button>
+              <button
+                type="button"
+                style={{ ...buttonStyle, opacity: profileData.displayName ? 1 : 0.7 }}
+                onClick={handleGoToDashboard}
+                disabled={!profileData.displayName}
+                onMouseEnter={(e) => handleHover(e, true)}
+                onMouseLeave={(e) => handleHover(e, false)}
+              >
+                Go to Dashboard
+              </button>
+            </div>
 
             <div
               style={dropzoneStyle}
@@ -255,6 +277,7 @@ export default function Profile() {
 
             <div style={buttonRowStyle}>
               <button
+                type="button"
                 style={buttonStyle}
                 onClick={handleUploadPhoto}
                 onMouseEnter={(e) => handleHover(e, true)}
@@ -264,6 +287,7 @@ export default function Profile() {
               </button>
               {!user.emailVerified && (
                 <button
+                  type="button"
                   style={buttonStyle}
                   onClick={handleResendVerification}
                   onMouseEnter={(e) => handleHover(e, true)}
@@ -273,6 +297,7 @@ export default function Profile() {
                 </button>
               )}
               <button
+                type="button"
                 style={buttonStyle}
                 onClick={handleChangePassword}
                 onMouseEnter={(e) => handleHover(e, true)}
@@ -281,6 +306,7 @@ export default function Profile() {
                 Change Password
               </button>
               <button
+                type="button"
                 style={buttonStyle}
                 onClick={handleLogout}
                 onMouseEnter={(e) => handleHover(e, true)}
@@ -289,6 +315,7 @@ export default function Profile() {
                 Logout
               </button>
               <button
+                type="button"
                 style={{ ...buttonStyle, backgroundColor: showJson ? '#10b981' : '#f97316' }}
                 onClick={() => setShowJson(!showJson)}
               >
