@@ -59,13 +59,10 @@ export default function Profile() {
       const currentUser = auth.currentUser;
       await updateProfile(currentUser, { displayName: newDisplayName });
       await setDoc(doc(db, 'users', currentUser.uid), { ...profileData, displayName: newDisplayName }, { merge: true });
-
-      // 🔥 Refetch Firestore document after update
       const updatedDocSnap = await getDoc(doc(db, 'users', currentUser.uid));
       if (updatedDocSnap.exists()) {
         setProfileData(updatedDocSnap.data());
       }
-
       setMessage('Display name updated!');
       setTimeout(() => setMessage(''), 3000);
     } catch (error) {
@@ -100,12 +97,10 @@ export default function Profile() {
       const downloadURL = await getDownloadURL(storageRef);
       await updateProfile(user, { photoURL: downloadURL });
       await setDoc(doc(db, 'users', user.uid), { ...profileData, photoURL: downloadURL }, { merge: true });
-
       const updatedDocSnap = await getDoc(doc(db, 'users', user.uid));
       if (updatedDocSnap.exists()) {
         setProfileData(updatedDocSnap.data());
       }
-
       setMessage('Profile picture uploaded & saved!');
       setTimeout(() => setMessage(''), 3000);
     } catch (error) {
@@ -151,7 +146,7 @@ export default function Profile() {
   const boxStyle = {
     border: '2px solid #f97316',
     borderRadius: '12px',
-    padding: '50px',
+    padding: '40px',
     maxWidth: '500px',
     boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
   };
@@ -162,7 +157,7 @@ export default function Profile() {
     padding: '10px',
     borderRadius: '6px',
     border: '1px solid #ccc',
-    width: '80%', // ✅ match button width
+    width: '80%',
     marginBottom: '15px',
   };
 
@@ -176,26 +171,24 @@ export default function Profile() {
     fontSize: '14px',
     fontWeight: '600',
     boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
-    marginTop: '10px',
-    marginBottom: '20px',
-    width: '200px', // ✅ explicitly set width here
-    maxWidth: '80%' // ✅ ensures it won’t overflow parent
+    width: '180px',
   };
 
   const buttonRowStyle = {
     display: 'flex',
     justifyContent: 'center',
-    gap: '10px',  // this controls the horizontal spacing between buttons
+    gap: '12px',
     flexWrap: 'wrap',
-    marginTop: '20px'
-};
+    marginTop: '20px',
+    marginBottom: '20px',
+  };
 
   const dropzoneStyle = {
     border: '2px dashed #f97316',
     borderRadius: '8px',
     padding: '20px',
     cursor: 'pointer',
-    marginBottom: '25px', // 🔥 increased bottom margin to separate from button
+    marginBottom: '20px',
   };
 
   const handleHover = (e, isEnter) => {
@@ -232,7 +225,7 @@ export default function Profile() {
               style={inputStyle}
             />
             <button
-              style={buttonStyle}
+              style={{ ...buttonStyle, marginBottom: '20px' }}
               onClick={handleSaveDisplayName}
               onMouseEnter={(e) => handleHover(e, true)}
               onMouseLeave={(e) => handleHover(e, false)}
@@ -253,48 +246,49 @@ export default function Profile() {
                 style={{ display: 'none' }}
                 accept="image/*"
               />
+            </div>
             <div style={buttonRowStyle}>
-            <button
-              style={buttonStyle}
-              onClick={handleUploadPhoto}
-              onMouseEnter={(e) => handleHover(e, true)}
-              onMouseLeave={(e) => handleHover(e, false)}
-            >
-              Upload Profile Picture
-            </button>
-            {!user.emailVerified && (
               <button
                 style={buttonStyle}
-                onClick={handleResendVerification}
+                onClick={handleUploadPhoto}
                 onMouseEnter={(e) => handleHover(e, true)}
                 onMouseLeave={(e) => handleHover(e, false)}
               >
-                Resend Verification Email
+                Upload Picture
               </button>
-            )}
-            <button
-              style={buttonStyle}
-              onClick={handleChangePassword}
-              onMouseEnter={(e) => handleHover(e, true)}
-              onMouseLeave={(e) => handleHover(e, false)}
-            >
-              Change Password
-            </button>
-            <button
-              style={buttonStyle}
-              onClick={handleLogout}
-              onMouseEnter={(e) => handleHover(e, true)}
-              onMouseLeave={(e) => handleHover(e, false)}
-            >
-              Logout
-            </button>
-            <button
-              style={{ ...buttonStyle, backgroundColor: showJson ? '#10b981' : '#f97316' }}
-              onClick={() => setShowJson(!showJson)}
-            >
-              {showJson ? 'Hide Profile JSON' : 'View Profile JSON'}
-            </button>
-      </div>
+              {!user.emailVerified && (
+                <button
+                  style={buttonStyle}
+                  onClick={handleResendVerification}
+                  onMouseEnter={(e) => handleHover(e, true)}
+                  onMouseLeave={(e) => handleHover(e, false)}
+                >
+                  Resend Verification
+                </button>
+              )}
+              <button
+                style={buttonStyle}
+                onClick={handleChangePassword}
+                onMouseEnter={(e) => handleHover(e, true)}
+                onMouseLeave={(e) => handleHover(e, false)}
+              >
+                Change Password
+              </button>
+              <button
+                style={buttonStyle}
+                onClick={handleLogout}
+                onMouseEnter={(e) => handleHover(e, true)}
+                onMouseLeave={(e) => handleHover(e, false)}
+              >
+                Logout
+              </button>
+              <button
+                style={{ ...buttonStyle, backgroundColor: showJson ? '#10b981' : '#f97316' }}
+                onClick={() => setShowJson(!showJson)}
+              >
+                {showJson ? 'Hide JSON' : 'View JSON'}
+              </button>
+            </div>
             {showJson && (
               <pre
                 style={{
