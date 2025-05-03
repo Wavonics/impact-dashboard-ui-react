@@ -228,6 +228,14 @@ export default function Profile() {
             >
               Save Display Name
             </button>
+            <button
+              style={buttonStyle}
+              onClick={() => navigate('/')}
+              onMouseEnter={(e) => handleHover(e, true)}
+              onMouseLeave={(e) => handleHover(e, false)}
+            >
+              Go to Dashboard
+            </button>
 
             <div
               style={dropzoneStyle}
