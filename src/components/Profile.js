@@ -177,7 +177,7 @@ export default function Profile() {
     fontWeight: '600',
     boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
     marginTop: '10px',
-    marginBottom: '12px',
+    marginBottom: '20px',
     width: '200px', // ✅ explicitly set width here
     maxWidth: '80%' // ✅ ensures it won’t overflow parent
   };
