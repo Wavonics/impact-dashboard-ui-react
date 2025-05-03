@@ -182,6 +182,14 @@ export default function Profile() {
     maxWidth: '80%' // ✅ ensures it won’t overflow parent
   };
 
+  const buttonRowStyle = {
+    display: 'flex',
+    justifyContent: 'center',
+    gap: '10px',  // this controls the horizontal spacing between buttons
+    flexWrap: 'wrap',
+    marginTop: '20px'
+};
+
   const dropzoneStyle = {
     border: '2px dashed #f97316',
     borderRadius: '8px',
