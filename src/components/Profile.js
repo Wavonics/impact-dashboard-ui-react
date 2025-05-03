@@ -56,12 +56,18 @@ export default function Profile() {
       return;
     }
     try {
-      const currentUser = auth.currentUser; // 🔥 fix: use current user
+      const currentUser = auth.currentUser;
       await updateProfile(currentUser, { displayName: newDisplayName });
       await setDoc(doc(db, 'users', currentUser.uid), { ...profileData, displayName: newDisplayName }, { merge: true });
-      setProfileData((prev) => ({ ...prev, displayName: newDisplayName }));
+
+      // 🔥 Refetch Firestore document after update
+      const updatedDocSnap = await getDoc(doc(db, 'users', currentUser.uid));
+      if (updatedDocSnap.exists()) {
+        setProfileData(updatedDocSnap.data());
+      }
+
       setMessage('Display name updated!');
-      setTimeout(() => setMessage(''), 3000); // optional: auto-clear
+      setTimeout(() => setMessage(''), 3000);
     } catch (error) {
       console.error(error);
       setMessage('Error updating display name.');
@@ -94,7 +100,12 @@ export default function Profile() {
       const downloadURL = await getDownloadURL(storageRef);
       await updateProfile(user, { photoURL: downloadURL });
       await setDoc(doc(db, 'users', user.uid), { ...profileData, photoURL: downloadURL }, { merge: true });
-      setProfileData((prev) => ({ ...prev, photoURL: downloadURL }));
+
+      const updatedDocSnap = await getDoc(doc(db, 'users', user.uid));
+      if (updatedDocSnap.exists()) {
+        setProfileData(updatedDocSnap.data());
+      }
+
       setMessage('Profile picture uploaded & saved!');
       setTimeout(() => setMessage(''), 3000);
     } catch (error) {
@@ -123,6 +134,7 @@ export default function Profile() {
     auth.signOut().then(() => navigate('/login'));
   };
 
+  // Styling
   const containerStyle = {
     display: 'flex',
     flexDirection: 'column',
@@ -133,7 +145,7 @@ export default function Profile() {
     color: '#fff',
     fontFamily: "'Inter', 'Segoe UI', 'Helvetica', sans-serif",
     padding: '20px',
-    textAlign: 'center'
+    textAlign: 'center',
   };
 
   const boxStyle = {
@@ -141,7 +153,7 @@ export default function Profile() {
     borderRadius: '12px',
     padding: '50px',
     maxWidth: '500px',
-    boxShadow: '0 8px 24px rgba(0,0,0,0.4)'
+    boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
   };
 
   const fieldStyle = { fontSize: '16px', marginBottom: '10px' };
@@ -151,7 +163,7 @@ export default function Profile() {
     borderRadius: '6px',
     border: '1px solid #ccc',
     width: '100%',
-    marginBottom: '12px'
+    marginBottom: '12px',
   };
 
   const buttonStyle = {
@@ -165,7 +177,7 @@ export default function Profile() {
     fontWeight: '600',
     boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
     marginTop: '10px',
-    marginBottom: '12px' // 🔥 added marginBottom!
+    marginBottom: '12px',
   };
 
   const dropzoneStyle = {
@@ -173,7 +185,7 @@ export default function Profile() {
     borderRadius: '8px',
     padding: '20px',
     cursor: 'pointer',
-    marginBottom: '12px'
+    marginBottom: '20px', // 🔥 increased bottom margin to separate from button
   };
 
   const handleHover = (e, isEnter) => {
@@ -184,12 +196,25 @@ export default function Profile() {
     <div style={containerStyle}>
       <div style={boxStyle}>
         <h1 style={{ fontSize: '28px', fontWeight: '700', marginBottom: '15px' }}>User Profile</h1>
-        {previewURL && <img src={previewURL} alt="Preview" style={{ width: '150px', borderRadius: '50%', marginBottom: '15px' }} />}
+        {previewURL && (
+          <img
+            src={previewURL}
+            alt="Preview"
+            style={{ width: '150px', borderRadius: '50%', marginBottom: '15px' }}
+          />
+        )}
         {user && (
           <>
-            <p style={fieldStyle}><strong>Email:</strong> {user.email} {user.emailVerified ? '(Verified)' : '(Not Verified)'}</p>
-            <p style={fieldStyle}><strong>Role:</strong> {profileData.role || 'N/A'}</p>
-            <label style={fieldStyle}><strong>Display Name:</strong></label>
+            <p style={fieldStyle}>
+              <strong>Email:</strong> {user.email} {user.emailVerified ? '(Verified)' : '(Not Verified)'}
+            </p>
+            <p style={fieldStyle}>
+              <strong>Role:</strong> {profileData.role || 'N/A'}
+            </p>
+            <p style={fieldStyle}>
+              <strong>Display Name:</strong> {profileData.displayName || 'N/A'}
+            </p>
+            <label style={fieldStyle}><strong>Edit Display Name:</strong></label>
             <input
               type="text"
               value={newDisplayName}
@@ -259,7 +284,22 @@ export default function Profile() {
             >
               {showJson ? 'Hide Profile JSON' : 'View Profile JSON'}
             </button>
-            {showJson && <pre style={{ textAlign: 'left', fontSize: '12px', backgroundColor: '#1f2937', padding: '10px', marginTop: '10px', borderRadius: '8px', maxHeight: '200px', overflowY: 'auto' }}>{JSON.stringify(profileData, null, 2)}</pre>}
+            {showJson && (
+              <pre
+                style={{
+                  textAlign: 'left',
+                  fontSize: '12px',
+                  backgroundColor: '#1f2937',
+                  padding: '10px',
+                  marginTop: '10px',
+                  borderRadius: '8px',
+                  maxHeight: '200px',
+                  overflowY: 'auto',
+                }}
+              >
+                {JSON.stringify(profileData, null, 2)}
+              </pre>
+            )}
             {message && <p style={{ color: '#facc15', marginTop: '12px' }}>{message}</p>}
           </>
         )}
