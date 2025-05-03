@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useContext, useState, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   FaHome, FaCubes, FaFileContract, FaProjectDiagram, FaFileInvoice,
   FaMoneyBillWave, FaWarehouse, FaClipboardList, FaPiggyBank, FaBuilding,
@@ -10,11 +10,22 @@ import { auth } from '../firebase';
 
 export default function NavBar() {
   const location = useLocation();
+  const navigate = useNavigate();
   const { theme, toggleTheme } = useContext(ThemeContext);
+  const [profilePic, setProfilePic] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+      if (currentUser && currentUser.photoURL) {
+        setProfilePic(currentUser.photoURL);
+      }
+    });
+    return unsubscribe;
+  }, []);
 
   const navStyle = {
     padding: '16px 0',
-    backgroundColor: theme === 'dark' ? '#0f172a' : '#e5e7eb', // slightly darker gray
+    backgroundColor: theme === 'dark' ? '#0f172a' : '#e5e7eb',
     color: theme === 'dark' ? '#fff' : '#111827',
     height: '100vh',
     width: '240px',
@@ -124,7 +135,24 @@ export default function NavBar() {
       <div style={logoContainerStyle}>
         <img src="/logo.png" alt="IMPACT Logo" style={logoStyle} />
       </div>
+
+      {profilePic && (
+        <img
+          src={profilePic}
+          alt="Profile"
+          style={{
+            width: '60px',
+            height: '60px',
+            borderRadius: '50%',
+            objectFit: 'cover',
+            marginBottom: '10px',
+            border: '2px solid #f97316'
+          }}
+        />
+      )}
+
       <p style={taglineStyle}>Driving Strategic Impact through IT Spend, Budget Tracking, and Contract Visibility.</p>
+
       <ul style={listStyle}>
         <li><Link to="/" style={linkStyle('/')}><FaHome style={iconStyle('/')} />Home</Link></li>
         <li><Link to="/assets" style={linkStyle('/assets')}><FaCubes style={iconStyle('/assets')} />Assets</Link></li>
@@ -144,7 +172,7 @@ export default function NavBar() {
 
       <div style={buttonRowStyle}>
         <button
-          onClick={() => { auth.signOut().then(() => window.location.href = '/login'); }}
+          onClick={() => { auth.signOut().then(() => navigate('/login')); }}
           style={smallButtonStyle}
           title="Logout"
         >
