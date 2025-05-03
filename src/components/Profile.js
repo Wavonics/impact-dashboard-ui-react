@@ -56,10 +56,12 @@ export default function Profile() {
       return;
     }
     try {
-      await updateProfile(user, { displayName: newDisplayName });
-      await setDoc(doc(db, 'users', user.uid), { ...profileData, displayName: newDisplayName }, { merge: true });
+      const currentUser = auth.currentUser; // 🔥 fix: use current user
+      await updateProfile(currentUser, { displayName: newDisplayName });
+      await setDoc(doc(db, 'users', currentUser.uid), { ...profileData, displayName: newDisplayName }, { merge: true });
       setProfileData((prev) => ({ ...prev, displayName: newDisplayName }));
       setMessage('Display name updated!');
+      setTimeout(() => setMessage(''), 3000); // optional: auto-clear
     } catch (error) {
       console.error(error);
       setMessage('Error updating display name.');
@@ -79,9 +81,7 @@ export default function Profile() {
     setPreviewURL(URL.createObjectURL(file));
   };
 
-  const handleDragOver = (e) => {
-    e.preventDefault();
-  };
+  const handleDragOver = (e) => e.preventDefault();
 
   const handleUploadPhoto = async () => {
     if (!selectedFile) {
@@ -96,6 +96,7 @@ export default function Profile() {
       await setDoc(doc(db, 'users', user.uid), { ...profileData, photoURL: downloadURL }, { merge: true });
       setProfileData((prev) => ({ ...prev, photoURL: downloadURL }));
       setMessage('Profile picture uploaded & saved!');
+      setTimeout(() => setMessage(''), 3000);
     } catch (error) {
       console.error(error);
       setMessage('Error uploading photo.');
@@ -108,6 +109,7 @@ export default function Profile() {
       try {
         await updatePassword(user, newPass);
         setMessage('Password updated!');
+        setTimeout(() => setMessage(''), 3000);
       } catch (error) {
         console.error(error);
         setMessage('Error updating password.');
@@ -127,7 +129,7 @@ export default function Profile() {
     justifyContent: 'center',
     alignItems: 'center',
     minHeight: '100vh',
-    backgroundColor: '#0f172a', // darker gray
+    backgroundColor: '#111827',
     color: '#fff',
     fontFamily: "'Inter', 'Segoe UI', 'Helvetica', sans-serif",
     padding: '20px',
@@ -137,23 +139,17 @@ export default function Profile() {
   const boxStyle = {
     border: '2px solid #f97316',
     borderRadius: '12px',
-    padding: '40px',
-    maxWidth: '90%',
-    width: '480px',
-    boxShadow: '0 8px 24px rgba(0,0,0,0.5)'
+    padding: '50px',
+    maxWidth: '500px',
+    boxShadow: '0 8px 24px rgba(0,0,0,0.4)'
   };
 
-  const fieldStyle = {
-    fontSize: '15px',
-    marginBottom: '10px'
-  };
+  const fieldStyle = { fontSize: '16px', marginBottom: '10px' };
 
   const inputStyle = {
     padding: '10px',
     borderRadius: '6px',
-    border: '1px solid #374151',
-    backgroundColor: '#1f2937',
-    color: '#fff',
+    border: '1px solid #ccc',
     width: '100%',
     marginBottom: '12px'
   };
@@ -163,13 +159,13 @@ export default function Profile() {
     color: '#fff',
     border: 'none',
     borderRadius: '8px',
-    padding: '10px 20px',
+    padding: '12px 24px',
     cursor: 'pointer',
     fontSize: '14px',
     fontWeight: '600',
     boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
     marginTop: '10px',
-    width: '100%'
+    marginBottom: '12px' // 🔥 added marginBottom!
   };
 
   const dropzoneStyle = {
@@ -180,39 +176,90 @@ export default function Profile() {
     marginBottom: '12px'
   };
 
+  const handleHover = (e, isEnter) => {
+    e.target.style.backgroundColor = isEnter ? '#ea580c' : '#f97316';
+  };
+
   return (
     <div style={containerStyle}>
       <div style={boxStyle}>
-        <h1 style={{ fontSize: '26px', fontWeight: '700', marginBottom: '12px' }}>User Profile</h1>
-        {previewURL && <img src={previewURL} alt="Preview" style={{ width: '120px', borderRadius: '50%', marginBottom: '15px' }} />}
+        <h1 style={{ fontSize: '28px', fontWeight: '700', marginBottom: '15px' }}>User Profile</h1>
+        {previewURL && <img src={previewURL} alt="Preview" style={{ width: '150px', borderRadius: '50%', marginBottom: '15px' }} />}
         {user && (
           <>
             <p style={fieldStyle}><strong>Email:</strong> {user.email} {user.emailVerified ? '(Verified)' : '(Not Verified)'}</p>
             <p style={fieldStyle}><strong>Role:</strong> {profileData.role || 'N/A'}</p>
             <label style={fieldStyle}><strong>Display Name:</strong></label>
-            <input type="text" value={newDisplayName} onChange={(e) => setNewDisplayName(e.target.value)} style={inputStyle} />
-            <button style={buttonStyle} onClick={handleSaveDisplayName}>Save Display Name</button>
-            <div style={dropzoneStyle} onDrop={handleDrop} onDragOver={handleDragOver} onClick={() => fileInputRef.current.click()}>
+            <input
+              type="text"
+              value={newDisplayName}
+              onChange={(e) => setNewDisplayName(e.target.value)}
+              style={inputStyle}
+            />
+            <button
+              style={buttonStyle}
+              onClick={handleSaveDisplayName}
+              onMouseEnter={(e) => handleHover(e, true)}
+              onMouseLeave={(e) => handleHover(e, false)}
+            >
+              Save Display Name
+            </button>
+            <div
+              style={dropzoneStyle}
+              onDrop={handleDrop}
+              onDragOver={handleDragOver}
+              onClick={() => fileInputRef.current.click()}
+            >
               Drag & Drop Image Here or Click to Select
-              <input type="file" ref={fileInputRef} onChange={handleFileSelect} style={{ display: 'none' }} accept="image/*" />
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileSelect}
+                style={{ display: 'none' }}
+                accept="image/*"
+              />
             </div>
-            <button style={buttonStyle} onClick={handleUploadPhoto}>Upload Profile Picture</button>
-            {!user.emailVerified && <button style={buttonStyle} onClick={handleResendVerification}>Resend Verification Email</button>}
-            <button style={buttonStyle} onClick={handleChangePassword}>Change Password</button>
-            <button style={buttonStyle} onClick={handleLogout}>Logout</button>
-            {profileData.role === 'Admin' && (
+            <button
+              style={buttonStyle}
+              onClick={handleUploadPhoto}
+              onMouseEnter={(e) => handleHover(e, true)}
+              onMouseLeave={(e) => handleHover(e, false)}
+            >
+              Upload Profile Picture
+            </button>
+            {!user.emailVerified && (
               <button
-                style={{ ...buttonStyle, backgroundColor: showJson ? '#10b981' : '#f97316' }}
-                onClick={() => setShowJson(!showJson)}
+                style={buttonStyle}
+                onClick={handleResendVerification}
+                onMouseEnter={(e) => handleHover(e, true)}
+                onMouseLeave={(e) => handleHover(e, false)}
               >
-                {showJson ? 'Hide Profile JSON' : 'View Profile JSON'}
+                Resend Verification Email
               </button>
             )}
-            {showJson && (
-              <pre style={{ textAlign: 'left', fontSize: '12px', backgroundColor: '#1f2937', padding: '10px', marginTop: '10px', borderRadius: '8px', maxHeight: '200px', overflowY: 'auto' }}>
-                {JSON.stringify(profileData, null, 2)}
-              </pre>
-            )}
+            <button
+              style={buttonStyle}
+              onClick={handleChangePassword}
+              onMouseEnter={(e) => handleHover(e, true)}
+              onMouseLeave={(e) => handleHover(e, false)}
+            >
+              Change Password
+            </button>
+            <button
+              style={buttonStyle}
+              onClick={handleLogout}
+              onMouseEnter={(e) => handleHover(e, true)}
+              onMouseLeave={(e) => handleHover(e, false)}
+            >
+              Logout
+            </button>
+            <button
+              style={{ ...buttonStyle, backgroundColor: showJson ? '#10b981' : '#f97316' }}
+              onClick={() => setShowJson(!showJson)}
+            >
+              {showJson ? 'Hide Profile JSON' : 'View Profile JSON'}
+            </button>
+            {showJson && <pre style={{ textAlign: 'left', fontSize: '12px', backgroundColor: '#1f2937', padding: '10px', marginTop: '10px', borderRadius: '8px', maxHeight: '200px', overflowY: 'auto' }}>{JSON.stringify(profileData, null, 2)}</pre>}
             {message && <p style={{ color: '#facc15', marginTop: '12px' }}>{message}</p>}
           </>
         )}
