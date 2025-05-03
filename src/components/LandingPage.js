@@ -44,27 +44,29 @@ export default function LandingPage() {
   };
 
   const buttonContainerStyle = {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    gap: '15px',
-    justifyContent: 'center',
-    marginTop: '20px'
-  };
+  display: 'flex',
+  flexWrap: 'wrap',
+  justifyContent: 'center',
+  gap: '20px',
+  flexDirection: window.innerWidth < 600 ? 'column' : 'row',
+  width: '100%',
+};
 
-  const buttonStyle = {
-    backgroundColor: '#f97316',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '8px',
-    padding: '12px 20px',
-    cursor: 'pointer',
-    textDecoration: 'none',
-    fontSize: '14px',
-    fontWeight: '600',
-    boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
-    transition: 'background-color 0.3s, transform 0.2s',
-    textAlign: 'center'
-  };
+const buttonStyle = {
+  backgroundColor: '#f97316',
+  color: '#fff',
+  border: 'none',
+  borderRadius: '8px',
+  padding: '12px 24px',
+  cursor: 'pointer',
+  textDecoration: 'none',
+  fontSize: '15px',
+  fontWeight: '600',
+  boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
+  transition: 'background-color 0.3s, transform 0.2s',
+  minWidth: '140px',
+  textAlign: 'center'
+};
 
   const handleHover = (e, isEnter) => {
     e.target.style.backgroundColor = isEnter ? '#ea580c' : '#f97316';
