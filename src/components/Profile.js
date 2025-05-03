@@ -294,6 +294,7 @@ export default function Profile() {
             >
               {showJson ? 'Hide Profile JSON' : 'View Profile JSON'}
             </button>
+      </div>
             {showJson && (
               <pre
                 style={{
