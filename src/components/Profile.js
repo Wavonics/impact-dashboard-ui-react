@@ -253,7 +253,7 @@ export default function Profile() {
                 style={{ display: 'none' }}
                 accept="image/*"
               />
-            </div>
+            <div style={buttonRowStyle}>
             <button
               style={buttonStyle}
               onClick={handleUploadPhoto}
