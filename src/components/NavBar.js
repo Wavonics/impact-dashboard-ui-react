@@ -1,10 +1,12 @@
 import React, { useContext } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { FaHome, FaCubes, FaFileContract, FaProjectDiagram, FaFileInvoice, FaMoneyBillWave, FaWarehouse, FaClipboardList, FaPiggyBank, FaBuilding, FaLightbulb, FaHistory, FaBell, FaMoon, FaSun } from 'react-icons/fa';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { FaHome, FaCubes, FaFileContract, FaProjectDiagram, FaFileInvoice, FaMoneyBillWave, FaWarehouse, FaClipboardList, FaPiggyBank, FaBuilding, FaLightbulb, FaHistory, FaBell, FaMoon, FaSun, FaUserCircle, FaSignOutAlt } from 'react-icons/fa';
 import { ThemeContext } from '../ThemeContext';
+import { auth } from '../firebase';
 
 export default function NavBar() {
   const location = useLocation();
+  const navigate = useNavigate();
   const { theme, toggleTheme } = useContext(ThemeContext);
 
   const navStyle = {
@@ -89,7 +91,8 @@ export default function NavBar() {
     '/departments': '#9ca3af',
     '/strategic-plans': '#facc15',
     '/audit-logs': '#8b5cf6',
-    '/alerts': '#ef4444'
+    '/alerts': '#ef4444',
+    '/profile': '#38bdf8'
   };
 
   const iconStyle = (path) => ({
@@ -105,6 +108,10 @@ export default function NavBar() {
     fontSize: '20px',
     cursor: 'pointer',
     marginTop: '20px'
+  };
+
+  const handleLogout = () => {
+    auth.signOut().then(() => navigate('/login'));
   };
 
   return (
@@ -127,9 +134,13 @@ export default function NavBar() {
         <li><Link to="/strategic-plans" style={linkStyle('/strategic-plans')}><FaLightbulb style={iconStyle('/strategic-plans')} />Strategic Plans</Link></li>
         <li><Link to="/audit-logs" style={linkStyle('/audit-logs')}><FaHistory style={iconStyle('/audit-logs')} />Audit Logs</Link></li>
         <li><Link to="/alerts" style={linkStyle('/alerts')}><FaBell style={iconStyle('/alerts')} />Alerts</Link></li>
+        <li><Link to="/profile" style={linkStyle('/profile')}><FaUserCircle style={iconStyle('/profile')} />Profile</Link></li>
       </ul>
       <button onClick={toggleTheme} style={toggleButtonStyle}>
         {theme === 'dark' ? <FaSun /> : <FaMoon />}
+      </button>
+      <button onClick={handleLogout} style={toggleButtonStyle}>
+        <FaSignOutAlt /> Logout
       </button>
     </nav>
   );
