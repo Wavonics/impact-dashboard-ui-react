@@ -162,8 +162,8 @@ export default function Profile() {
     padding: '10px',
     borderRadius: '6px',
     border: '1px solid #ccc',
-    width: '200px', // ✅ match button width
-    marginBottom: '20px',
+    width: '80%', // ✅ match button width
+    marginBottom: '24px',
   };
 
   const buttonStyle = {
