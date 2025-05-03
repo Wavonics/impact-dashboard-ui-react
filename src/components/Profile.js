@@ -163,7 +163,7 @@ export default function Profile() {
     borderRadius: '6px',
     border: '1px solid #ccc',
     width: '80%', // ✅ match button width
-    marginBottom: '24px',
+    marginBottom: '15px',
   };
 
   const buttonStyle = {
