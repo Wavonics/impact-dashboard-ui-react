@@ -156,7 +156,7 @@ export default function Profile() {
     boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
   };
 
-  const fieldStyle = { fontSize: '16px', marginBottom: '10px' };
+  const fieldStyle = { fontSize: '16px', marginBottom: '12px' };
 
   const inputStyle = {
     padding: '10px',
