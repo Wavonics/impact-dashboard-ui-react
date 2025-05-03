@@ -178,6 +178,8 @@ export default function Profile() {
     boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
     marginTop: '10px',
     marginBottom: '12px',
+    width: '200px', // ✅ explicitly set width here
+    maxWidth: '100%' // ✅ ensures it won’t overflow parent
   };
 
   const dropzoneStyle = {
