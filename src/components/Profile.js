@@ -187,7 +187,7 @@ export default function Profile() {
     borderRadius: '8px',
     padding: '20px',
     cursor: 'pointer',
-    marginBottom: '20px', // 🔥 increased bottom margin to separate from button
+    marginBottom: '25px', // 🔥 increased bottom margin to separate from button
   };
 
   const handleHover = (e, isEnter) => {
