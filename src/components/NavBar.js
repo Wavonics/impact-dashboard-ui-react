@@ -1,3 +1,4 @@
+// src/components/NavBar.js
 import React, { useContext, useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
@@ -82,7 +83,9 @@ export default function NavBar() {
     fontSize: '15px',
     padding: '10px 18px',
     borderLeft: location.pathname === path ? '4px solid #f97316' : '4px solid transparent',
-    backgroundColor: location.pathname === path ? (theme === 'dark' ? '#1f2937' : '#d1d5db') : 'transparent',
+    backgroundColor: location.pathname === path
+      ? (theme === 'dark' ? '#1f2937' : '#d1d5db')
+      : 'transparent',
     fontWeight: location.pathname === path ? '600' : '500',
     transition: 'all 0.2s ease',
     marginBottom: '3px',
@@ -151,7 +154,9 @@ export default function NavBar() {
         />
       )}
 
-      <p style={taglineStyle}>Driving Strategic Impact through IT Spend, Budget Tracking, and Contract Visibility.</p>
+      <p style={taglineStyle}>
+        Driving Strategic Impact through IT Spend, Budget Tracking, and Contract Visibility.
+      </p>
 
       <ul style={listStyle}>
         <li><Link to="/" style={linkStyle('/')}><FaHome style={iconStyle('/')} />Home</Link></li>
@@ -183,5 +188,89 @@ export default function NavBar() {
         </button>
       </div>
     </nav>
+
+// src/components/Profile.js
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { ThemeContext } from '../ThemeContext';
+
+export default function Profile() {
+  const navigate = useNavigate();
+  const { theme } = useContext(ThemeContext);
+  const [hover, setHover] = useState(false);
+
+  const buttonStyle = {
+    marginTop: '20px',
+    padding: '10px 20px',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    backgroundColor: hover ? (theme === 'dark' ? '#1f2937' : '#005b99') : (theme === 'dark' ? '#374151' : '#007acc'),
+    color: '#fff',
+    border: 'none',
+    transition: 'background-color 0.2s ease'
+  };
+
+  return (
+    <div style={{ padding: '20px' }}>
+      <h1>Your Profile</h1>
+      {/* existing profile fields and preferences go here */}
+      <button
+        style={buttonStyle}
+        onClick={() => navigate('/')}
+        onMouseEnter={() => setHover(true)}
+        onMouseLeave={() => setHover(false)}
+      >
+        Go to Dashboard
+      </button>
+    </div>
   );
 }
+
+// src/index.js
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import NavBar from './components/NavBar';
+import App from './components/App';
+import Assets from './components/Assets';
+import Contracts from './components/Contracts';
+import Projects from './components/Projects';
+import POs from './components/POs';
+import BudgetLines from './components/BudgetLines';
+import Ownership from './components/Ownership';
+import ProcurementMethods from './components/ProcurementMethods';
+import FundingSources from './components/FundingSources';
+import Departments from './components/Departments';
+import StrategicPlans from './components/StrategicPlans';
+import AuditLogs from './components/AuditLogs';
+import Alerts from './components/Alerts';
+import Profile from './components/Profile';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+
+root.render(
+  <BrowserRouter>
+    <div style={{ display: 'flex' }}>
+      <NavBar />
+      <div style={{ flex: 1, padding: '20px' }}>
+        <Routes>
+          <Route path="/" element={<App />} />
+          <Route path="/assets" element={<Assets />} />
+          <Route path="/contracts" element={<Contracts />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/po" element={<POs />} />
+          <Route path="/budget-lines" element={<BudgetLines />} />
+          <Route path="/ownership" element={<Ownership />} />
+          <Route path="/procurement-methods" element={<ProcurementMethods />} />
+          <Route path="/funding-sources" element={<FundingSources />} />
+          <Route path="/departments" element={<Departments />} />
+          <Route path="/strategic-plans" element={<StrategicPlans />} />
+          <Route path="/audit-logs" element={<AuditLogs />} />
+          <Route path="/alerts" element={<Alerts />} />
+          <Route path="/profile" element={<Profile />} />
+        </Routes>
+      </div>
+    </div>
+  </BrowserRouter>
+);
