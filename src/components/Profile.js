@@ -46,7 +46,7 @@ export default function Profile() {
     if (user && !user.emailVerified) {
       sendEmailVerification(user)
         .then(() => setMessage('Verification email sent!'))
-        .catch((err) => setMessage('Error sending verification email.'));
+        .catch(() => setMessage('Error sending verification email.'));
     }
   };
 
@@ -129,7 +129,6 @@ export default function Profile() {
     auth.signOut().then(() => navigate('/login'));
   };
 
-  // Styling
   const containerStyle = {
     display: 'flex',
     flexDirection: 'column',
@@ -148,16 +147,17 @@ export default function Profile() {
     borderRadius: '12px',
     padding: '40px',
     maxWidth: '500px',
+    width: '90%',
     boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
   };
 
-  const fieldStyle = { fontSize: '16px', marginBottom: '12px' };
+  const fieldStyle = { fontSize: '16px', marginBottom: '10px' };
 
   const inputStyle = {
     padding: '10px',
     borderRadius: '6px',
     border: '1px solid #ccc',
-    width: '80%',
+    width: '85%',
     marginBottom: '15px',
   };
 
@@ -171,16 +171,17 @@ export default function Profile() {
     fontSize: '14px',
     fontWeight: '600',
     boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
-    width: '180px',
+    margin: '5px',
+    width: '200px',
+    maxWidth: '90%',
   };
 
   const buttonRowStyle = {
     display: 'flex',
     justifyContent: 'center',
-    gap: '12px',
     flexWrap: 'wrap',
+    gap: '12px',
     marginTop: '20px',
-    marginBottom: '20px',
   };
 
   const dropzoneStyle = {
@@ -188,7 +189,8 @@ export default function Profile() {
     borderRadius: '8px',
     padding: '20px',
     cursor: 'pointer',
-    marginBottom: '20px',
+    margin: '15px auto',
+    width: '85%',
   };
 
   const handleHover = (e, isEnter) => {
@@ -208,15 +210,9 @@ export default function Profile() {
         )}
         {user && (
           <>
-            <p style={fieldStyle}>
-              <strong>Email:</strong> {user.email} {user.emailVerified ? '(Verified)' : '(Not Verified)'}
-            </p>
-            <p style={fieldStyle}>
-              <strong>Role:</strong> {profileData.role || 'N/A'}
-            </p>
-            <p style={fieldStyle}>
-              <strong>Display Name:</strong> {profileData.displayName || 'N/A'}
-            </p>
+            <p style={fieldStyle}><strong>Email:</strong> {user.email} {user.emailVerified ? '(Verified)' : '(Not Verified)'}</p>
+            <p style={fieldStyle}><strong>Role:</strong> {profileData.role || 'N/A'}</p>
+            <p style={fieldStyle}><strong>Display Name:</strong> {profileData.displayName || 'N/A'}</p>
             <label style={fieldStyle}><strong>Edit Display Name:</strong></label>
             <input
               type="text"
@@ -225,13 +221,14 @@ export default function Profile() {
               style={inputStyle}
             />
             <button
-              style={{ ...buttonStyle, marginBottom: '20px' }}
+              style={buttonStyle}
               onClick={handleSaveDisplayName}
               onMouseEnter={(e) => handleHover(e, true)}
               onMouseLeave={(e) => handleHover(e, false)}
             >
               Save Display Name
             </button>
+
             <div
               style={dropzoneStyle}
               onDrop={handleDrop}
@@ -247,6 +244,7 @@ export default function Profile() {
                 accept="image/*"
               />
             </div>
+
             <div style={buttonRowStyle}>
               <button
                 style={buttonStyle}
@@ -254,7 +252,7 @@ export default function Profile() {
                 onMouseEnter={(e) => handleHover(e, true)}
                 onMouseLeave={(e) => handleHover(e, false)}
               >
-                Upload Picture
+                Upload Profile Picture
               </button>
               {!user.emailVerified && (
                 <button
@@ -263,7 +261,7 @@ export default function Profile() {
                   onMouseEnter={(e) => handleHover(e, true)}
                   onMouseLeave={(e) => handleHover(e, false)}
                 >
-                  Resend Verification
+                  Resend Verification Email
                 </button>
               )}
               <button
@@ -286,9 +284,10 @@ export default function Profile() {
                 style={{ ...buttonStyle, backgroundColor: showJson ? '#10b981' : '#f97316' }}
                 onClick={() => setShowJson(!showJson)}
               >
-                {showJson ? 'Hide JSON' : 'View JSON'}
+                {showJson ? 'Hide Profile JSON' : 'View Profile JSON'}
               </button>
             </div>
+
             {showJson && (
               <pre
                 style={{
@@ -305,6 +304,7 @@ export default function Profile() {
                 {JSON.stringify(profileData, null, 2)}
               </pre>
             )}
+
             {message && <p style={{ color: '#facc15', marginTop: '12px' }}>{message}</p>}
           </>
         )}
