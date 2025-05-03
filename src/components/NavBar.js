@@ -1,6 +1,10 @@
 import React, { useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FaHome, FaCubes, FaFileContract, FaProjectDiagram, FaFileInvoice, FaMoneyBillWave, FaWarehouse, FaClipboardList, FaPiggyBank, FaBuilding, FaLightbulb, FaHistory, FaBell, FaMoon, FaSun, FaUserCircle, FaSignOutAlt } from 'react-icons/fa';
+import {
+  FaHome, FaCubes, FaFileContract, FaProjectDiagram, FaFileInvoice,
+  FaMoneyBillWave, FaWarehouse, FaClipboardList, FaPiggyBank, FaBuilding,
+  FaLightbulb, FaHistory, FaBell, FaMoon, FaSun, FaUserCircle, FaSignOutAlt
+} from 'react-icons/fa';
 import { ThemeContext } from '../ThemeContext';
 import { auth } from '../firebase';
 
@@ -9,8 +13,8 @@ export default function NavBar() {
   const { theme, toggleTheme } = useContext(ThemeContext);
 
   const navStyle = {
-    padding: '20px 0',
-    backgroundColor: theme === 'dark' ? '#111827' : '#f3f4f6',
+    padding: '16px 0',
+    backgroundColor: theme === 'dark' ? '#0f172a' : '#e5e7eb', // slightly darker gray
     color: theme === 'dark' ? '#fff' : '#111827',
     height: '100vh',
     width: '240px',
@@ -26,8 +30,8 @@ export default function NavBar() {
     border: '2px solid #f97316',
     borderRadius: '8px',
     padding: '8px',
-    marginTop: '20px',
-    marginBottom: '10px',
+    marginTop: '18px',
+    marginBottom: '8px',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -41,13 +45,13 @@ export default function NavBar() {
   };
 
   const taglineStyle = {
-    fontSize: '15px',
+    fontSize: '14px',
     color: theme === 'dark' ? '#9ca3af' : '#4b5563',
     textAlign: 'center',
     maxWidth: '200px',
-    marginBottom: '30px',
+    marginBottom: '22px',
     fontWeight: '700',
-    letterSpacing: '0.5px',
+    letterSpacing: '0.4px',
     lineHeight: '1.4'
   };
 
@@ -64,14 +68,13 @@ export default function NavBar() {
     alignItems: 'center',
     textDecoration: 'none',
     color: theme === 'dark' ? '#fff' : '#111827',
-    fontFamily: "'Inter', 'Segoe UI', 'Helvetica', sans-serif",
-    fontSize: '16px',
-    padding: '12px 20px',
+    fontSize: '15px',
+    padding: '10px 18px',
     borderLeft: location.pathname === path ? '4px solid #f97316' : '4px solid transparent',
-    backgroundColor: location.pathname === path ? (theme === 'dark' ? '#1f2937' : '#e5e7eb') : 'transparent',
+    backgroundColor: location.pathname === path ? (theme === 'dark' ? '#1f2937' : '#d1d5db') : 'transparent',
     fontWeight: location.pathname === path ? '600' : '500',
     transition: 'all 0.2s ease',
-    marginBottom: '4px',
+    marginBottom: '3px',
     width: '100%',
     boxSizing: 'border-box',
     cursor: 'pointer'
@@ -95,18 +98,25 @@ export default function NavBar() {
   };
 
   const iconStyle = (path) => ({
-    marginRight: '10px',
-    fontSize: '22px',
+    marginRight: '8px',
+    fontSize: '20px',
     color: iconColors[path]
   });
 
-  const toggleButtonStyle = {
+  const buttonRowStyle = {
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: '80%',
+    marginTop: '18px',
+    gap: '10px'
+  };
+
+  const smallButtonStyle = {
     backgroundColor: 'transparent',
     border: 'none',
     color: theme === 'dark' ? '#f97316' : '#ea580c',
     fontSize: '20px',
-    cursor: 'pointer',
-    marginTop: '20px'
+    cursor: 'pointer'
   };
 
   return (
@@ -131,15 +141,19 @@ export default function NavBar() {
         <li><Link to="/alerts" style={linkStyle('/alerts')}><FaBell style={iconStyle('/alerts')} />Alerts</Link></li>
         <li><Link to="/profile" style={linkStyle('/profile')}><FaUserCircle style={iconStyle('/profile')} />Profile</Link></li>
       </ul>
-      <button
-        onClick={() => { auth.signOut().then(() => window.location.href = '/login'); }}
-        style={toggleButtonStyle}
-      >
-        <FaSignOutAlt style={{ marginRight: '8px' }} /> Logout
-      </button>
-      <button onClick={toggleTheme} style={toggleButtonStyle}>
-        {theme === 'dark' ? <FaSun /> : <FaMoon />}
-      </button>
+
+      <div style={buttonRowStyle}>
+        <button
+          onClick={() => { auth.signOut().then(() => window.location.href = '/login'); }}
+          style={smallButtonStyle}
+          title="Logout"
+        >
+          <FaSignOutAlt />
+        </button>
+        <button onClick={toggleTheme} style={smallButtonStyle} title="Toggle Theme">
+          {theme === 'dark' ? <FaSun /> : <FaMoon />}
+        </button>
+      </div>
     </nav>
   );
 }
