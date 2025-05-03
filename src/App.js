@@ -13,6 +13,7 @@ import Departments from './components/Departments';
 import StrategicPlans from './components/StrategicPlans';
 import AuditLogs from './components/AuditLogs';
 import Alerts from './components/Alerts';
+import DashboardHome from './components/DashboardHome'; // ✅ a simple placeholder dashboard home page
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
       <NavBar />
       <div style={{ flex: 1, padding: '20px' }}>
         <Routes>
+          <Route index element={<DashboardHome />} />  {/* ✅ <-- THIS handles /dashboard */}
           <Route path="assets" element={<Assets />} />
           <Route path="contracts" element={<Contracts />} />
           <Route path="projects" element={<Projects />} />
