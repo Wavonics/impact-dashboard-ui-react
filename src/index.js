@@ -1,7 +1,9 @@
+// src/index.js
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './ThemeContext';
+
 import LandingPage from './components/LandingPage';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
@@ -10,8 +12,8 @@ import ResetPassword from './components/ResetPassword';
 import ResetConfirmation from './components/ResetConfirmation';
 import Profile from './components/Profile';
 import AuditLogs from './components/AuditLogs';
-import ImpactAssistant from "./components/ImpactAssistant";
 import App from './App';
+import ImpactAssistant from './components/ImpactAssistant';  // ✅ import new component
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -28,9 +30,8 @@ root.render(
         <Route path="/profile" element={<Profile />} />
         <Route path="/audit-logs" element={<AuditLogs />} />
         <Route path="/dashboard/*" element={<App />} />
-        <Route path="/quick-search" element={<AIChatBox style={{ width: 400 }} />} />
-        <Route path="/assistant" element={<ImpactAssistant />} />
-        <Route path="*" element={<LandingPage />} /> {/* fallback route */}
+        <Route path="/impact-assistant" element={<ImpactAssistant />} /> {/* ✅ new route */}
+        <Route path="*" element={<LandingPage />} />  {/* fallback */}
       </Routes>
     </ThemeProvider>
   </BrowserRouter>
