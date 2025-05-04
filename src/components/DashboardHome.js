@@ -209,27 +209,32 @@ export default function DashboardHome() {
         </ul>
       </div>
 
-      {/* ✅ UPDATED SIDEBAR CONTAINER */}
+      {/* ✅ UPDATED SIDEBAR → each widget inside its own card */}
       <div
         style={{
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'flex-start', // 🟢 key addition
           gap: '20px',
-          padding: '20px',
-          backgroundColor: '#1f2937',
-          borderRadius: '12px',
+          justifyContent: 'flex-start',
         }}
       >
-        <h2 style={sectionTitle}>Alerts Summary</h2>
-        <AlertsSummary alerts={alerts} />
+        <div style={{ backgroundColor: '#1f2937', padding: '16px', borderRadius: '12px' }}>
+          <h2 style={sectionTitle}>Alerts Summary</h2>
+          <AlertsSummary alerts={alerts} />
+        </div>
 
-        <h2 style={sectionTitle}>Upcoming Contract Renewals</h2>
-        <ContractRenewals renewals={renewals} />
+        <div style={{ backgroundColor: '#1f2937', padding: '16px', borderRadius: '12px' }}>
+          <h2 style={sectionTitle}>Upcoming Contract Renewals</h2>
+          <ContractRenewals renewals={renewals} />
+        </div>
 
-        <ImpactAssistant />
+        <div style={{ backgroundColor: '#1f2937', padding: '16px', borderRadius: '12px' }}>
+          <ImpactAssistant />
+        </div>
 
-        <AIChatBox style={{ marginTop: '20px' }} buttonLabel="Ask IMPACT" />
+        <div style={{ backgroundColor: '#1f2937', padding: '16px', borderRadius: '12px' }}>
+          <AIChatBox buttonLabel="Ask IMPACT" />
+        </div>
       </div>
     </div>
   );
