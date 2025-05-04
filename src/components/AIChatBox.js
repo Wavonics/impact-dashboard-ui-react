@@ -41,10 +41,14 @@ export default function AIChatBox({
     handleSubmit(null, s);
   };
 
-  const outerContainerStyle = {
-    display: 'block',
-    textAlign: 'center',
-    marginTop: '20px',
+  const sharedContainerStyle = {
+    backgroundColor: '#1f2937',
+    borderRadius: '12px',
+    padding: '20px',
+    color: '#fff',
+    width: '100%',
+    maxWidth: '400px',
+    margin: '0 auto', // same centering as ImpactAssistant
     ...style
   };
 
@@ -55,13 +59,16 @@ export default function AIChatBox({
     padding: '6px 12px',
     borderRadius: '6px',
     cursor: 'pointer',
-    marginBottom: '10px'
+    marginBottom: '10px',
+    display: 'block',
+    marginLeft: 'auto',
+    marginRight: 'auto'
   };
 
   const suggestionContainerStyle = {
     display: 'flex',
-    justifyContent: 'center',
-    flexWrap: 'wrap',
+    flexDirection: 'column',
+    alignItems: 'center',
     gap: '6px',
     marginBottom: '10px'
   };
@@ -75,7 +82,9 @@ export default function AIChatBox({
     fontSize: '12px',
     cursor: 'pointer',
     transition: 'all 0.2s ease',
-    transform: isHovered ? 'scale(1.05)' : 'scale(1)'
+    transform: isHovered ? 'scale(1.05)' : 'scale(1)',
+    width: '80%',
+    display: 'block'
   });
 
   const collapsibleContentStyle = {
@@ -86,77 +95,80 @@ export default function AIChatBox({
   };
 
   return (
-    <div style={outerContainerStyle}>
-      <button onClick={() => setCollapsed(!collapsed)} style={toggleButtonStyle}>
-        {collapsed ? 'Show Quick Query' : 'Hide Quick Query'}
-      </button>
-
-      <form onSubmit={handleSubmit} style={{ backgroundColor: '#1f2937', borderRadius: '12px', padding: '20px', color: '#fff', maxWidth: '500px', margin: '0 auto' }}>
-        <h3 style={{ marginBottom: '8px' }}>IMPACT Quick Query</h3>
-        <input
-          id="ai-query"
-          type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search contracts, budgets, POs..."
-          disabled={loading}
-          style={{
-            padding: '10px',
-            width: '80%',
-            display: 'block',
-            margin: '0 auto 10px auto',
-            borderRadius: '6px',
-            border: '1px solid #374151',
-            backgroundColor: loading ? '#374151' : '#fff',
-            color: loading ? '#9ca3af' : '#000'
-          }}
-        />
-
-        <button
-          type="submit"
-          disabled={loading}
-          style={{
-            backgroundColor: '#f97316',
-            color: '#fff',
-            border: 'none',
-            padding: '10px 20px',
-            borderRadius: '6px',
-            cursor: loading ? 'not-allowed' : 'pointer',
-            marginBottom: '10px'
-          }}
-        >
-          {loading ? 'Searching…' : buttonLabel}
+    <div className="ai-chatbox-container" style={{ flex: 1, padding: '20px' }}>
+      <div style={sharedContainerStyle}>
+        <button onClick={() => setCollapsed(!collapsed)} style={toggleButtonStyle}>
+          {collapsed ? 'Show Quick Query' : 'Hide Quick Query'}
         </button>
 
-        <div style={collapsibleContentStyle} ref={contentRef}>
-          <div style={suggestionContainerStyle}>
-            {suggestions.map((s, i) => (
-              <button
-                key={i}
-                type="button"
-                style={getSuggestionButtonStyle(hoverIndex === i)}
-                onClick={() => handleSuggestionClick(s)}
-                onMouseEnter={() => setHoverIndex(i)}
-                onMouseLeave={() => setHoverIndex(-1)}
-              >
-                {s}
-              </button>
-            ))}
-          </div>
-
-          {response && (
-            <div style={{
-              backgroundColor: '#111827',
+        <form onSubmit={handleSubmit} style={{ textAlign: 'center' }}>
+          <h3 style={{ marginBottom: '8px' }}>IMPACT Quick Query</h3>
+          <input
+            id="ai-query"
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search contracts, budgets, POs..."
+            disabled={loading}
+            style={{
               padding: '10px',
-              borderRadius: '8px',
-              minHeight: '50px',
-              marginTop: '10px'
-            }}>
-              {response}
+              width: '80%',
+              display: 'block',
+              margin: '0 auto 10px auto',
+              borderRadius: '6px',
+              border: '1px solid #374151',
+              backgroundColor: loading ? '#374151' : '#fff',
+              color: loading ? '#9ca3af' : '#000'
+            }}
+          />
+
+          <button
+            type="submit"
+            disabled={loading}
+            style={{
+              backgroundColor: '#f97316',
+              color: '#fff',
+              border: 'none',
+              padding: '10px 20px',
+              borderRadius: '6px',
+              cursor: loading ? 'not-allowed' : 'pointer',
+              display: 'block',
+              margin: '0 auto 10px auto'
+            }}
+          >
+            {loading ? 'Searching…' : buttonLabel}
+          </button>
+
+          <div style={collapsibleContentStyle} ref={contentRef}>
+            <div style={suggestionContainerStyle}>
+              {suggestions.map((s, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  style={getSuggestionButtonStyle(hoverIndex === i)}
+                  onClick={() => handleSuggestionClick(s)}
+                  onMouseEnter={() => setHoverIndex(i)}
+                  onMouseLeave={() => setHoverIndex(-1)}
+                >
+                  {s}
+                </button>
+              ))}
             </div>
-          )}
-        </div>
-      </form>
+
+            {response && (
+              <div style={{
+                backgroundColor: '#111827',
+                padding: '10px',
+                borderRadius: '8px',
+                minHeight: '50px',
+                marginTop: '10px'
+              }}>
+                {response}
+              </div>
+            )}
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
