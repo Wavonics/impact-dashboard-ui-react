@@ -1,7 +1,8 @@
+// components/ImpactAssistant.jsx
 import React, { useState, useEffect, useRef } from 'react';
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent } from './ui/card';
+import { Input } from './ui/input';
+import { Button } from './ui/button';
 import { FaComments } from 'react-icons/fa';
 
 export default function ImpactAssistant() {
@@ -52,20 +53,20 @@ export default function ImpactAssistant() {
     <div className="flex flex-col h-full">
       <Card className="flex-1 overflow-auto">
         <CardContent className="space-y-4">
-          <AnimatePresence initial={false}>
-            {messages.map((msg, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                className={`flex ${msg.sender === 'assistant' ? 'justify-start' : 'justify-end'}`}>
-                <div className={`p-3 rounded-2xl max-w-xs whitespace-pre-wrap ${msg.sender === 'assistant' ? 'bg-gray-100' : 'bg-blue-500 text-white'}`}>
-                  {msg.text}
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
+          {messages.map((msg, idx) => (
+            <div
+              key={idx}
+              className={`flex ${msg.sender === 'assistant' ? 'justify-start' : 'justify-end'}`}
+            >
+              <div
+                className={`p-3 rounded-2xl max-w-xs whitespace-pre-wrap ${
+                  msg.sender === 'assistant' ? 'bg-gray-100' : 'bg-blue-500 text-white'
+                }`}
+              >
+                {msg.text}
+              </div>
+            </div>
+          ))}
           <div ref={bottomRef} />
         </CardContent>
       </Card>
