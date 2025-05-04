@@ -10,6 +10,7 @@ import ResetPassword from './components/ResetPassword';
 import ResetConfirmation from './components/ResetConfirmation';
 import Profile from './components/Profile';
 import AuditLogs from './components/AuditLogs';
+import ImpactAssistant from "./components/ImpactAssistant";
 import App from './App';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -27,6 +28,7 @@ root.render(
         <Route path="/profile" element={<Profile />} />
         <Route path="/audit-logs" element={<AuditLogs />} />
         <Route path="/dashboard/*" element={<App />} />
+        <Route path="/assistant" element={<ImpactAssistant />} />
         <Route path="*" element={<LandingPage />} /> {/* fallback route */}
       </Routes>
     </ThemeProvider>
