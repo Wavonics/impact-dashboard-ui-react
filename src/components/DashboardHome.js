@@ -6,8 +6,8 @@ import DashboardChart from './DashboardChart';
 import ProjectPlanningTable from './ProjectPlanningTable';
 import AlertsSummary from './AlertsSummary';
 import ContractRenewals from './ContractRenewals';
-import AIChatBox from './AIChatBox';
 import ImpactAssistant from './ImpactAssistant';
+import AIChatBox from './AIChatBox';
 import dummyData from '../data/dummyData';
 
 export default function DashboardHome() {
@@ -40,8 +40,7 @@ export default function DashboardHome() {
     padding: '20px',
     backgroundColor: '#111827',
     color: '#fff',
-    minHeight: '100vh',
-    position: 'relative',
+    minHeight: '100vh'
   };
 
   const mainStyle = { display: 'flex', flexDirection: 'column', gap: '20px' };
@@ -49,34 +48,26 @@ export default function DashboardHome() {
   const metricsGrid = {
     display: 'grid',
     gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-    gap: '16px',
+    gap: '16px'
   };
 
   const sectionTitle = {
     color: '#f97316',
     fontSize: '18px',
     fontWeight: '600',
-    margin: '10px 0',
+    margin: '10px 0'
   };
 
   const lastUpdatedStyle = {
     fontSize: '12px',
     color: '#9ca3af',
     marginTop: '-10px',
-    marginBottom: '10px',
+    marginBottom: '10px'
   };
 
-  const greetingRow = {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '12px',
-  };
+  const greetingRow = { display: 'flex', alignItems: 'center', gap: '12px' };
 
-  const greetingStyle = {
-    fontSize: '22px',
-    fontWeight: '700',
-    marginBottom: '4px',
-  };
+  const greetingStyle = { fontSize: '22px', fontWeight: '700', marginBottom: '4px' };
 
   const badgeStyle = {
     backgroundColor: profileData?.profileComplete ? '#10b981' : '#ef4444',
@@ -84,20 +75,16 @@ export default function DashboardHome() {
     borderRadius: '12px',
     fontSize: '10px',
     padding: '2px 6px',
-    fontWeight: '600',
+    fontWeight: '600'
   };
 
-  const subtitleStyle = {
-    fontSize: '14px',
-    color: '#9ca3af',
-    marginBottom: '12px',
-  };
+  const subtitleStyle = { fontSize: '14px', color: '#9ca3af', marginBottom: '12px' };
 
   const quickActionsStyle = {
     display: 'flex',
     gap: '10px',
     flexWrap: 'wrap',
-    marginBottom: '12px',
+    marginBottom: '12px'
   };
 
   const quickButton = {
@@ -108,21 +95,7 @@ export default function DashboardHome() {
     padding: '6px 12px',
     fontSize: '12px',
     cursor: 'pointer',
-    textDecoration: 'none',
-  };
-
-  const cardStyle = {
-    backgroundColor: '#1e293b',
-    padding: '20px',
-    borderRadius: '14px',
-    boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
-    transition: 'transform 0.2s, box-shadow 0.2s',
-  };
-
-  const cardHoverStyle = {
-    ...cardStyle,
-    transform: 'translateY(-2px)',
-    boxShadow: '0 8px 20px rgba(0,0,0,0.3)',
+    textDecoration: 'none'
   };
 
   if (loading) {
@@ -158,15 +131,9 @@ export default function DashboardHome() {
         <p style={lastUpdatedStyle}>Last updated: {lastUpdated}</p>
 
         <div style={quickActionsStyle}>
-          <Link to="/contracts/new" style={quickButton}>
-            Add Contract
-          </Link>
-          <Link to="/po/new" style={quickButton}>
-            Create PO
-          </Link>
-          <Link to="/projects/new" style={quickButton}>
-            Add Project
-          </Link>
+          <Link to="/contracts/new" style={quickButton}>Add Contract</Link>
+          <Link to="/po/new" style={quickButton}>Create PO</Link>
+          <Link to="/projects/new" style={quickButton}>Add Project</Link>
         </div>
 
         <h2 style={sectionTitle}>Key Metrics</h2>
@@ -191,28 +158,21 @@ export default function DashboardHome() {
         <ProjectPlanningTable projects={projects} />
 
         <h2 style={sectionTitle}>Recent Activity</h2>
-        <ul
-          style={{
-            fontSize: '14px',
-            backgroundColor: '#1f2937',
-            padding: '10px',
-            borderRadius: '8px',
-          }}
-        >
-          {activities?.length > 0 ? (
-            activities.map((a, idx) => (
-              <li
-                key={idx}
-                style={{
-                  marginBottom: '6px',
-                  borderBottom: '1px solid #374151',
-                  paddingBottom: '4px',
-                }}
-              >
-                {a}
-              </li>
-            ))
-          ) : (
+        <ul style={{
+          fontSize: '14px',
+          backgroundColor: '#1f2937',
+          padding: '10px',
+          borderRadius: '8px'
+        }}>
+          {activities.length > 0 ? activities.map((a, idx) => (
+            <li key={idx} style={{
+              marginBottom: '6px',
+              borderBottom: '1px solid #374151',
+              paddingBottom: '4px'
+            }}>
+              {a}
+            </li>
+          )) : (
             <li style={{ color: '#9ca3af' }}>No recent activity</li>
           )}
           <li>
@@ -223,47 +183,12 @@ export default function DashboardHome() {
         </ul>
       </div>
 
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '20px',
-          justifyContent: 'flex-start',
-        }}
-      >
-        <div
-          style={cardStyle}
-          onMouseEnter={(e) => (e.currentTarget.style = cardHoverStyle)}
-          onMouseLeave={(e) => (e.currentTarget.style = cardStyle)}
-        >
-          <h2 style={sectionTitle}>Alerts Summary</h2>
-          <AlertsSummary alerts={alerts} />
-        </div>
-
-        <div
-          style={cardStyle}
-          onMouseEnter={(e) => (e.currentTarget.style = cardHoverStyle)}
-          onMouseLeave={(e) => (e.currentTarget.style = cardStyle)}
-        >
-          <h2 style={sectionTitle}>Upcoming Contract Renewals</h2>
-          <ContractRenewals renewals={renewals} />
-        </div>
-
-        <div
-          style={cardStyle}
-          onMouseEnter={(e) => (e.currentTarget.style = cardHoverStyle)}
-          onMouseLeave={(e) => (e.currentTarget.style = cardStyle)}
-        >
-          <ImpactAssistant />
-        </div>
-
-        <div
-          style={cardStyle}
-          onMouseEnter={(e) => (e.currentTarget.style = cardHoverStyle)}
-          onMouseLeave={(e) => (e.currentTarget.style = cardStyle)}
-        >
-          <AIChatBox buttonLabel="Ask IMPACT" />
-        </div>
+      {/* Right side widgets aligned using updated components */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <AlertsSummary alerts={alerts} />
+        <ContractRenewals renewals={renewals} />
+        <ImpactAssistant />
+        <AIChatBox />
       </div>
     </div>
   );
