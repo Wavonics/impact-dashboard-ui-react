@@ -28,6 +28,13 @@ const dummyData = {
     'Added new Asset IT-Server',
     'User John updated profile',
   ],
+  // 🟢 FIX: add user object
+  user: {
+    displayName: 'Nicholas',
+    profileComplete: true,
+    unreadAlerts: 2,
+    profilePicture: '/avatar-placeholder.png'  // path to profile picture if you have one
+  }
 };
 
 export default dummyData;
