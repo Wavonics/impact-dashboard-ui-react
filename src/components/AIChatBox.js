@@ -82,7 +82,7 @@ export default function AIChatBox({
   return (
     <div style={outerContainerStyle}>
       <div style={containerStyle}>
-        <h3 style={{ marginBottom: '8px' }}>IMPACT Assistant</h3>
+        <h3 style={{ marginBottom: '8px' }}>IMPACT Quick Query</h3>
         <form onSubmit={handleSubmit}>
           <label htmlFor="ai-query" style={{ display: 'none' }}>Query</label>
           <input
