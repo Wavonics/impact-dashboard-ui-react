@@ -15,13 +15,11 @@ export default function ImpactAssistant({ style = {}, buttonLabel = 'Ask Agentic
     "contracts pending legal review"
   ];
 
-  // Load saved chat history from localStorage
   useEffect(() => {
     const saved = localStorage.getItem('impactAssistantHistory');
     if (saved) setResponses(JSON.parse(saved));
   }, []);
 
-  // Save chat history to localStorage
   useEffect(() => {
     localStorage.setItem('impactAssistantHistory', JSON.stringify(responses));
   }, [responses]);
@@ -66,7 +64,7 @@ export default function ImpactAssistant({ style = {}, buttonLabel = 'Ask Agentic
     borderRadius: '20px',
     padding: '6px 12px',
     fontSize: '12px',
-    margin: '4px 4px 0 0',
+    margin: '4px',
     cursor: 'pointer'
   };
 
@@ -93,8 +91,8 @@ export default function ImpactAssistant({ style = {}, buttonLabel = 'Ask Agentic
   return (
     <div style={{ flex: 1, padding: '20px' }}>
       <div style={containerStyle}>
-        <h3>IMPACT Agentic Assistant</h3>
-        <button onClick={() => setViewHistory(!viewHistory)} style={toggleButton}>
+        <h3 style={{ textAlign: 'center' }}>IMPACT Agentic Assistant</h3>
+        <button onClick={() => setViewHistory(!viewHistory)} style={{ ...toggleButton, display: 'block', margin: '0 auto 10px auto' }}>
           {viewHistory ? 'Switch to Input' : 'View Chat History'}
         </button>
 
@@ -110,7 +108,7 @@ export default function ImpactAssistant({ style = {}, buttonLabel = 'Ask Agentic
             ))}
           </div>
         ) : (
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} style={{ textAlign: 'center' }}>
             <label htmlFor="ai-query" style={{ display: 'none' }}>Query</label>
             <input
               id="ai-query"
@@ -121,15 +119,18 @@ export default function ImpactAssistant({ style = {}, buttonLabel = 'Ask Agentic
               disabled={loading}
               style={{
                 padding: '10px',
-                width: '100%',
+                width: '80%',
                 borderRadius: '6px',
                 border: '1px solid #374151',
                 marginBottom: '10px',
                 backgroundColor: loading ? '#374151' : '#fff',
-                color: loading ? '#9ca3af' : '#000'
+                color: loading ? '#9ca3af' : '#000',
+                display: 'block',
+                marginLeft: 'auto',
+                marginRight: 'auto'
               }}
             />
-            <div style={{ marginBottom: '10px' }}>
+            <div style={{ marginBottom: '10px', display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
               {suggestions.map((s, i) => (
                 <button
                   key={i}
@@ -150,7 +151,9 @@ export default function ImpactAssistant({ style = {}, buttonLabel = 'Ask Agentic
                 border: 'none',
                 padding: '10px 20px',
                 borderRadius: '6px',
-                cursor: loading ? 'not-allowed' : 'pointer'
+                cursor: loading ? 'not-allowed' : 'pointer',
+                display: 'block',
+                margin: '0 auto'
               }}
             >
               {loading ? 'Searching…' : buttonLabel}
@@ -159,7 +162,7 @@ export default function ImpactAssistant({ style = {}, buttonLabel = 'Ask Agentic
         )}
 
         {loading && (
-          <div style={{ marginTop: '10px', fontSize: '12px', color: '#9ca3af' }}>
+          <div style={{ marginTop: '10px', fontSize: '12px', color: '#9ca3af', textAlign: 'center' }}>
             Loading response...
           </div>
         )}
