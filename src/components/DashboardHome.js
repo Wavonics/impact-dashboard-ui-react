@@ -233,6 +233,7 @@ export default function DashboardHome() {
         <ImpactAssistant />
       </div>
 
+      {/* Floating quick AIChatBox */}
       <AIChatBox
         style={{
           position: 'fixed',
