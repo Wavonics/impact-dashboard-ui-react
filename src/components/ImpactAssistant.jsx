@@ -54,6 +54,7 @@ export default function ImpactAssistant({ style = {}, buttonLabel = 'Ask Agentic
     color: '#fff',
     width: '100%',
     maxWidth: '400px',
+    margin: '0 auto', // ✅ center horizontally like AIChatBox
     ...style
   };
 
@@ -64,8 +65,10 @@ export default function ImpactAssistant({ style = {}, buttonLabel = 'Ask Agentic
     borderRadius: '20px',
     padding: '6px 12px',
     fontSize: '12px',
-    margin: '4px',
-    cursor: 'pointer'
+    margin: '4px auto', // ✅ center horizontally
+    cursor: 'pointer',
+    display: 'block',
+    width: '80%' // ✅ max 80% width
   };
 
   const messageStyle = {
@@ -85,14 +88,17 @@ export default function ImpactAssistant({ style = {}, buttonLabel = 'Ask Agentic
     padding: '6px 12px',
     fontSize: '12px',
     cursor: 'pointer',
-    marginBottom: '10px'
+    marginBottom: '10px',
+    display: 'block',
+    marginLeft: 'auto',
+    marginRight: 'auto'
   };
 
   return (
     <div style={{ flex: 1, padding: '20px' }}>
       <div style={containerStyle}>
         <h3 style={{ textAlign: 'center' }}>IMPACT Agentic Assistant</h3>
-        <button onClick={() => setViewHistory(!viewHistory)} style={{ ...toggleButton, display: 'block', margin: '0 auto 10px auto' }}>
+        <button onClick={() => setViewHistory(!viewHistory)} style={toggleButton}>
           {viewHistory ? 'Switch to Input' : 'View Chat History'}
         </button>
 
@@ -119,7 +125,7 @@ export default function ImpactAssistant({ style = {}, buttonLabel = 'Ask Agentic
               disabled={loading}
               style={{
                 padding: '10px',
-                width: '80%',
+                width: '80%', // ✅ input 80% width
                 borderRadius: '6px',
                 border: '1px solid #374151',
                 marginBottom: '10px',
@@ -130,7 +136,7 @@ export default function ImpactAssistant({ style = {}, buttonLabel = 'Ask Agentic
                 marginRight: 'auto'
               }}
             />
-            <div style={{ marginBottom: '10px', display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+            <div style={{ marginBottom: '10px' }}>
               {suggestions.map((s, i) => (
                 <button
                   key={i}
