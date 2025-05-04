@@ -7,6 +7,7 @@ import ProjectPlanningTable from './ProjectPlanningTable';
 import AlertsSummary from './AlertsSummary';
 import ContractRenewals from './ContractRenewals';
 import AIChatBox from './AIChatBox';
+import ImpactAssistant from './ImpactAssistant';
 import dummyData from '../data/dummyData';
 
 export default function DashboardHome() {
@@ -136,6 +137,7 @@ export default function DashboardHome() {
 
   return (
     <div style={containerStyle}>
+      {/* Main column */}
       <div style={mainStyle}>
         <div style={greetingRow}>
           {profileData.photoURL && (
