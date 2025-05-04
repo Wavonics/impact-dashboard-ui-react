@@ -1,6 +1,6 @@
 // src/components/ImpactAssistant.jsx
 import React, { useState } from 'react';
-import { fakeAIQuery } from '../utils/aiUtils';
+import { fakeAIQuery } from '../utils/aiUtils'; // keep or replace with your own
 
 export default function ImpactAssistant() {
   const [messages, setMessages] = useState([]);
@@ -25,26 +25,31 @@ export default function ImpactAssistant() {
     position: 'fixed',
     bottom: '20px',
     right: '20px',
-    width: '320px',
+    width: isOpen ? '320px' : '160px',
     backgroundColor: '#1f2937',
     color: '#fff',
     borderRadius: '12px',
     boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
     overflow: 'hidden',
-    zIndex: 1000
+    zIndex: 1001,
+    transition: 'width 0.3s ease',
   };
 
   const headerStyle = {
     backgroundColor: '#f97316',
     padding: '10px',
     cursor: 'pointer',
-    fontWeight: '600'
+    fontWeight: '600',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   };
 
   const chatBoxStyle = {
     maxHeight: '300px',
     overflowY: 'auto',
-    padding: '10px'
+    padding: '10px',
+    backgroundColor: '#111827',
   };
 
   const messageStyle = (sender) => ({
@@ -53,13 +58,16 @@ export default function ImpactAssistant() {
     borderRadius: '12px',
     margin: '4px 0',
     alignSelf: sender === 'user' ? 'flex-end' : 'flex-start',
-    maxWidth: '80%'
+    maxWidth: '80%',
+    fontSize: '13px',
+    lineHeight: '1.3',
   });
 
   return (
     <div style={containerStyle}>
       <div style={headerStyle} onClick={() => setIsOpen(!isOpen)}>
-        {isOpen ? 'Impact Assistant' : 'Open Assistant'}
+        <span>{isOpen ? 'IMPACT Assistant' : 'Open Assistant'}</span>
+        <span>{isOpen ? '▼' : '▲'}</span>
       </div>
       {isOpen && (
         <>
@@ -69,6 +77,11 @@ export default function ImpactAssistant() {
                 {msg.text}
               </div>
             ))}
+            {loading && (
+              <div style={messageStyle('ai')}>
+                <em>Thinking...</em>
+              </div>
+            )}
           </div>
           <form onSubmit={handleSubmit} style={{ display: 'flex', padding: '10px' }}>
             <input
@@ -76,12 +89,15 @@ export default function ImpactAssistant() {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Ask IMPACT..."
+              disabled={loading}
               style={{
                 flex: 1,
                 padding: '8px',
                 borderRadius: '6px',
                 border: '1px solid #374151',
-                marginRight: '6px'
+                marginRight: '6px',
+                backgroundColor: loading ? '#374151' : '#fff',
+                color: loading ? '#9ca3af' : '#000',
               }}
             />
             <button
@@ -93,7 +109,7 @@ export default function ImpactAssistant() {
                 border: 'none',
                 padding: '8px 12px',
                 borderRadius: '6px',
-                cursor: loading ? 'not-allowed' : 'pointer'
+                cursor: loading ? 'not-allowed' : 'pointer',
               }}
             >
               {loading ? '...' : 'Send'}
