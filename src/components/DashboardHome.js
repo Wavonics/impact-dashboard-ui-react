@@ -9,6 +9,7 @@ import ContractRenewals from './ContractRenewals';
 import ImpactAssistant from './ImpactAssistant';
 import AIChatBox from './AIChatBox';
 import dummyData from '../data/dummyData';
+import './DashboardWidgets.css'; // ✅ import shared CSS
 
 export default function DashboardHome() {
   const [metrics, setMetrics] = useState([]);
@@ -183,12 +184,20 @@ export default function DashboardHome() {
         </ul>
       </div>
 
-      {/* Right side widgets aligned using updated components */}
+      {/* Right column widgets all share className="widget-container" */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-        <AlertsSummary alerts={alerts} />
-        <ContractRenewals renewals={renewals} />
-        <ImpactAssistant />
-        <AIChatBox />
+        <div className="widget-container">
+          <AlertsSummary alerts={alerts} />
+        </div>
+        <div className="widget-container">
+          <ContractRenewals renewals={renewals} />
+        </div>
+        <div className="widget-container">
+          <ImpactAssistant />
+        </div>
+        <div className="widget-container">
+          <AIChatBox />
+        </div>
       </div>
     </div>
   );
