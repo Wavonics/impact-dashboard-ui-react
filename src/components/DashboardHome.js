@@ -111,6 +111,20 @@ export default function DashboardHome() {
     textDecoration: 'none',
   };
 
+  const cardStyle = {
+    backgroundColor: '#1e293b',
+    padding: '20px',
+    borderRadius: '14px',
+    boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+    transition: 'transform 0.2s, box-shadow 0.2s',
+  };
+
+  const cardHoverStyle = {
+    ...cardStyle,
+    transform: 'translateY(-2px)',
+    boxShadow: '0 8px 20px rgba(0,0,0,0.3)',
+  };
+
   if (loading) {
     return (
       <div style={{ ...containerStyle, justifyContent: 'center', alignItems: 'center' }}>
@@ -209,7 +223,6 @@ export default function DashboardHome() {
         </ul>
       </div>
 
-      {/* ✅ UPDATED SIDEBAR → each widget inside its own card */}
       <div
         style={{
           display: 'flex',
@@ -218,21 +231,37 @@ export default function DashboardHome() {
           justifyContent: 'flex-start',
         }}
       >
-        <div style={{ backgroundColor: '#1f2937', padding: '16px', borderRadius: '12px' }}>
+        <div
+          style={cardStyle}
+          onMouseEnter={(e) => (e.currentTarget.style = cardHoverStyle)}
+          onMouseLeave={(e) => (e.currentTarget.style = cardStyle)}
+        >
           <h2 style={sectionTitle}>Alerts Summary</h2>
           <AlertsSummary alerts={alerts} />
         </div>
 
-        <div style={{ backgroundColor: '#1f2937', padding: '16px', borderRadius: '12px' }}>
+        <div
+          style={cardStyle}
+          onMouseEnter={(e) => (e.currentTarget.style = cardHoverStyle)}
+          onMouseLeave={(e) => (e.currentTarget.style = cardStyle)}
+        >
           <h2 style={sectionTitle}>Upcoming Contract Renewals</h2>
           <ContractRenewals renewals={renewals} />
         </div>
 
-        <div style={{ backgroundColor: '#1f2937', padding: '16px', borderRadius: '12px' }}>
+        <div
+          style={cardStyle}
+          onMouseEnter={(e) => (e.currentTarget.style = cardHoverStyle)}
+          onMouseLeave={(e) => (e.currentTarget.style = cardStyle)}
+        >
           <ImpactAssistant />
         </div>
 
-        <div style={{ backgroundColor: '#1f2937', padding: '16px', borderRadius: '12px' }}>
+        <div
+          style={cardStyle}
+          onMouseEnter={(e) => (e.currentTarget.style = cardHoverStyle)}
+          onMouseLeave={(e) => (e.currentTarget.style = cardStyle)}
+        >
           <AIChatBox buttonLabel="Ask IMPACT" />
         </div>
       </div>
