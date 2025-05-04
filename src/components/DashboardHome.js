@@ -39,7 +39,7 @@ export default function DashboardHome() {
 
   const containerStyle = {
     display: 'grid',
-    gridTemplateColumns: '3fr 1fr 2fr', // Main / sidebar / assistant
+    gridTemplateColumns: '3fr 1fr',
     gap: '20px',
     padding: '20px',
     backgroundColor: '#111827',
@@ -140,9 +140,11 @@ export default function DashboardHome() {
       {/* Main column */}
       <div style={mainStyle}>
         <div style={greetingRow}>
-          {profileData.photoURL && (
-            <img src={profileData.photoURL} alt="Profile" style={avatarStyle} />
-          )}
+          <img
+            src={profileData.photoURL || '/avatar.png'}
+            alt="Profile"
+            style={avatarStyle}
+          />
           <div>
             <h1 style={greetingStyle}>Welcome back, {profileData.displayName}!</h1>
             <span style={badgeStyle}>
@@ -157,15 +159,9 @@ export default function DashboardHome() {
         <p style={lastUpdatedStyle}>Last updated: {lastUpdated}</p>
 
         <div style={quickActionsStyle}>
-          <Link to="/contracts/new" style={quickButton}>
-            Add Contract
-          </Link>
-          <Link to="/po/new" style={quickButton}>
-            Create PO
-          </Link>
-          <Link to="/projects/new" style={quickButton}>
-            Add Project
-          </Link>
+          <Link to="/contracts/new" style={quickButton}>Add Contract</Link>
+          <Link to="/po/new" style={quickButton}>Create PO</Link>
+          <Link to="/projects/new" style={quickButton}>Add Project</Link>
         </div>
 
         <h2 style={sectionTitle}>Key Metrics</h2>
@@ -190,23 +186,9 @@ export default function DashboardHome() {
         <ProjectPlanningTable projects={projects} />
 
         <h2 style={sectionTitle}>Recent Activity</h2>
-        <ul
-          style={{
-            fontSize: '14px',
-            backgroundColor: '#1f2937',
-            padding: '10px',
-            borderRadius: '8px',
-          }}
-        >
+        <ul style={{ fontSize: '14px', backgroundColor: '#1f2937', padding: '10px', borderRadius: '8px' }}>
           {activities.map((a, idx) => (
-            <li
-              key={idx}
-              style={{
-                marginBottom: '6px',
-                borderBottom: '1px solid #374151',
-                paddingBottom: '4px',
-              }}
-            >
+            <li key={idx} style={{ marginBottom: '6px', borderBottom: '1px solid #374151', paddingBottom: '4px' }}>
               {a}
             </li>
           ))}
@@ -225,15 +207,12 @@ export default function DashboardHome() {
 
         <h2 style={sectionTitle}>Upcoming Contract Renewals</h2>
         <ContractRenewals renewals={renewals} />
-      </div>
 
-      {/* Assistant column */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
         <h2 style={sectionTitle}>IMPACT Assistant</h2>
         <ImpactAssistant />
       </div>
 
-      {/* Floating quick AIChatBox */}
+      {/* Floating AI ChatBox */}
       <AIChatBox
         style={{
           position: 'fixed',
