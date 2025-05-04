@@ -9,7 +9,7 @@ import ContractRenewals from './ContractRenewals';
 import ImpactAssistant from './ImpactAssistant';
 import AIChatBox from './AIChatBox';
 import dummyData from '../data/dummyData';
-import './DashboardWidgets.css'; // ✅ import shared CSS
+import '../DashboardWidgets.css'; // ✅ import shared CSS
 
 export default function DashboardHome() {
   const [metrics, setMetrics] = useState([]);
