@@ -1,5 +1,6 @@
 // src/components/ImpactAssistant.jsx
 import React, { useState, useEffect } from 'react';
+import './DashboardWidgets.css'; // 👈 import CSS file
 
 export default function ImpactAssistant({ style = {}, buttonLabel = 'Ask Agentic Assistant' }) {
   const [query, setQuery] = useState('');
