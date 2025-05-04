@@ -1,9 +1,25 @@
+// components/NavBar.js
 import React, { useContext, useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
-  FaHome, FaCubes, FaFileContract, FaProjectDiagram, FaFileInvoice,
-  FaMoneyBillWave, FaWarehouse, FaClipboardList, FaPiggyBank, FaBuilding,
-  FaLightbulb, FaHistory, FaBell, FaMoon, FaSun, FaUserCircle, FaSignOutAlt
+  FaHome,
+  FaCubes,
+  FaFileContract,
+  FaProjectDiagram,
+  FaFileInvoice,
+  FaMoneyBillWave,
+  FaWarehouse,
+  FaClipboardList,
+  FaPiggyBank,
+  FaBuilding,
+  FaLightbulb,
+  FaHistory,
+  FaBell,
+  FaComments,
+  FaMoon,
+  FaSun,
+  FaUserCircle,
+  FaSignOutAlt
 } from 'react-icons/fa';
 import { ThemeContext } from '../ThemeContext';
 import { auth } from '../firebase';
@@ -34,7 +50,7 @@ export default function NavBar() {
     alignItems: 'center',
     borderRight: '1px solid #1f2937',
     boxSizing: 'border-box',
-    fontFamily: "'Inter', 'Segoe UI', 'Helvetica', sans-serif"
+    fontFamily: "'Inter', 'Segoe UI', 'Helvetica', sans-serif'"
   };
 
   const logoContainerStyle = {
@@ -82,7 +98,9 @@ export default function NavBar() {
     fontSize: '15px',
     padding: '10px 18px',
     borderLeft: location.pathname === path ? '4px solid #f97316' : '4px solid transparent',
-    backgroundColor: location.pathname === path ? (theme === 'dark' ? '#1f2937' : '#d1d5db') : 'transparent',
+    backgroundColor: location.pathname === path
+      ? (theme === 'dark' ? '#1f2937' : '#d1d5db')
+      : 'transparent',
     fontWeight: location.pathname === path ? '600' : '500',
     transition: 'all 0.2s ease',
     marginBottom: '3px',
@@ -105,6 +123,7 @@ export default function NavBar() {
     '/strategic-plans': '#facc15',
     '/audit-logs': '#8b5cf6',
     '/alerts': '#ef4444',
+    '/assistant': '#3b82f6',
     '/profile': '#fb923c'
   };
 
@@ -151,37 +170,103 @@ export default function NavBar() {
         />
       )}
 
-      <p style={taglineStyle}>Driving Strategic Impact through IT Spend, Budget Tracking, and Contract Visibility.</p>
+      <p style={taglineStyle}>
+        Driving Strategic Impact through IT Spend, Budget Tracking, and Contract Visibility.
+      </p>
 
       <ul style={listStyle}>
-        <li><Link to="/" style={linkStyle('/')}><FaHome style={iconStyle('/')} />Home</Link></li>
-        <li><Link to="/assets" style={linkStyle('/assets')}><FaCubes style={iconStyle('/assets')} />Assets</Link></li>
-        <li><Link to="/contracts" style={linkStyle('/contracts')}><FaFileContract style={iconStyle('/contracts')} />Contracts</Link></li>
-        <li><Link to="/projects" style={linkStyle('/projects')}><FaProjectDiagram style={iconStyle('/projects')} />Projects</Link></li>
-        <li><Link to="/po" style={linkStyle('/po')}><FaFileInvoice style={iconStyle('/po')} />Purchase Orders</Link></li>
-        <li><Link to="/budget-lines" style={linkStyle('/budget-lines')}><FaMoneyBillWave style={iconStyle('/budget-lines')} />Budget Lines</Link></li>
-        <li><Link to="/ownership" style={linkStyle('/ownership')}><FaWarehouse style={iconStyle('/ownership')} />Ownership</Link></li>
-        <li><Link to="/procurement-methods" style={linkStyle('/procurement-methods')}><FaClipboardList style={iconStyle('/procurement-methods')} />Procurement Methods</Link></li>
-        <li><Link to="/funding-sources" style={linkStyle('/funding-sources')}><FaPiggyBank style={iconStyle('/funding-sources')} />Funding Sources</Link></li>
-        <li><Link to="/departments" style={linkStyle('/departments')}><FaBuilding style={iconStyle('/departments')} />Departments</Link></li>
-        <li><Link to="/strategic-plans" style={linkStyle('/strategic-plans')}><FaLightbulb style={iconStyle('/strategic-plans')} />Strategic Plans</Link></li>
-        <li><Link to="/audit-logs" style={linkStyle('/audit-logs')}><FaHistory style={iconStyle('/audit-logs')} />Audit Logs</Link></li>
-        <li><Link to="/alerts" style={linkStyle('/alerts')}><FaBell style={iconStyle('/alerts')} />Alerts</Link></li>
-        <li><Link to="/profile" style={linkStyle('/profile')}><FaUserCircle style={iconStyle('/profile')} />Profile</Link></li>
+        <li>
+          <Link to="/" style={linkStyle('/')}>
+            <FaHome style={iconStyle('/')} /> Home
+          </Link>
+        </li>
+        <li>
+          <Link to="/assets" style={linkStyle('/assets')}>
+            <FaCubes style={iconStyle('/assets')} /> Assets
+          </Link>
+        </li>
+        <li>
+          <Link to="/contracts" style={linkStyle('/contracts')}>
+            <FaFileContract style={iconStyle('/contracts')} /> Contracts
+          </Link>
+        </li>
+        <li>
+          <Link to="/projects" style={linkStyle('/projects')}>
+            <FaProjectDiagram style={iconStyle('/projects')} /> Projects
+          </Link>
+        </li>
+        <li>
+          <Link to="/po" style={linkStyle('/po')}>
+            <FaFileInvoice style={iconStyle('/po')} /> Purchase Orders
+          </Link>
+        </li>
+        <li>
+          <Link to="/budget-lines" style={linkStyle('/budget-lines')}>
+            <FaMoneyBillWave style={iconStyle('/budget-lines')} /> Budget Lines
+          </Link>
+        </li>
+        <li>
+          <Link to="/ownership" style={linkStyle('/ownership')}>
+            <FaWarehouse style={iconStyle('/ownership')} /> Ownership
+          </Link>
+        </li>
+        <li>
+          <Link to="/procurement-methods" style={linkStyle('/procurement-methods')}>
+            <FaClipboardList style={iconStyle('/procurement-methods')} /> Procurement Methods
+          </Link>
+        </li>
+        <li>
+          <Link to="/funding-sources" style={linkStyle('/funding-sources')}>
+            <FaPiggyBank style={iconStyle('/funding-sources')} /> Funding Sources
+          </Link>
+        </li>
+        <li>
+          <Link to="/departments" style={linkStyle('/departments')}>
+            <FaBuilding style={iconStyle('/departments')} /> Departments
+          </Link>
+        </li>
+        <li>
+          <Link to="/strategic-plans" style={linkStyle('/strategic-plans')}>
+            <FaLightbulb style={iconStyle('/strategic-plans')} /> Strategic Plans
+          </Link>
+        </li>
+        <li>
+          <Link to="/audit-logs" style={linkStyle('/audit-logs')}>
+            <FaHistory style={iconStyle('/audit-logs')} /> Audit Logs
+          </Link>
+        </li>
+        <li>
+          <Link to="/alerts" style={linkStyle('/alerts')}>
+            <FaBell style={iconStyle('/alerts')} /> Alerts
+          </Link>
+        </li>
+        <li>
+          <Link to="/assistant" style={linkStyle('/assistant')}>
+            <FaComments style={iconStyle('/assistant')} /> Assistant
+          </Link>
+        </li>
+        <li>
+          <Link to="/profile" style={linkStyle('/profile')}>
+            <FaUserCircle style={iconStyle('/profile')} /> Profile
+          </Link>
+        </li>
       </ul>
 
       <div style={buttonRowStyle}>
         <button
-          onClick={() => { auth.signOut().then(() => navigate('/login')); }}
+          onClick={() => {
+            auth.signOut().then(() => navigate('/login'));
+          }}
           style={smallButtonStyle}
           title="Logout"
         >
           <FaSignOutAlt />
         </button>
+
         <button onClick={toggleTheme} style={smallButtonStyle} title="Toggle Theme">
           {theme === 'dark' ? <FaSun /> : <FaMoon />}
         </button>
       </div>
     </nav>
-  );
+);
 }
