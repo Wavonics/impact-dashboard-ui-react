@@ -9,7 +9,7 @@ export default function AIChatBox({
     "current procurement methods",
     "budget utilization by department",
     "pending purchase orders",
-    "contracts in pipeline pending legal review and approval"
+    "contracts pending legal review"
   ],
   onQuerySubmit
 }) {
