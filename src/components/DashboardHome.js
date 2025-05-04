@@ -214,6 +214,7 @@ export default function DashboardHome() {
         style={{
           display: 'flex',
           flexDirection: 'column',
+          justifyContent: 'flex-start', // 🟢 key addition
           gap: '20px',
           padding: '20px',
           backgroundColor: '#1f2937',
