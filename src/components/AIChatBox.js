@@ -42,6 +42,7 @@ export default function AIChatBox({
   };
 
   const outerContainerStyle = {
+    display: 'block', // ✅ key fix
     textAlign: 'center',
     marginTop: '30px'
   };
