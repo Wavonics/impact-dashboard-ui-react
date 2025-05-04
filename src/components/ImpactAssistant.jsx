@@ -1,121 +1,166 @@
 // src/components/ImpactAssistant.jsx
-import React, { useState } from 'react';
-import { fakeAIQuery } from '../utils/aiUtils'; // keep or replace with your own
+import React, { useState, useEffect } from 'react';
 
-export default function ImpactAssistant() {
-  const [messages, setMessages] = useState([]);
+export default function ImpactAssistant({ style = {}, buttonLabel = 'Ask IMPACT' }) {
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(false);
-  const [isOpen, setIsOpen] = useState(true);
+  const [responses, setResponses] = useState([]);
+  const [viewHistory, setViewHistory] = useState(false);
+
+  const suggestions = [
+    "expiring contracts in 30 days",
+    "current procurement methods",
+    "budget utilization by department",
+    "pending purchase orders",
+    "contracts pending legal review"
+  ];
+
+  // Load saved chat history from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem('impactAssistantHistory');
+    if (saved) setResponses(JSON.parse(saved));
+  }, []);
+
+  // Save chat history to localStorage
+  useEffect(() => {
+    localStorage.setItem('impactAssistantHistory', JSON.stringify(responses));
+  }, [responses]);
+
+  const fakeAIQuery = async (input) => {
+    return new Promise((resolve) => {
+      setTimeout(() => resolve(`Insight: Found 3 results for "${input}"`), 1500);
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!query.trim()) return;
-    const userMsg = { sender: 'user', text: query };
-    setMessages((prev) => [...prev, userMsg]);
     setLoading(true);
-    const result = await fakeAIQuery(query);
-    const aiMsg = { sender: 'ai', text: result };
-    setMessages((prev) => [...prev, aiMsg]);
-    setLoading(false);
+    const aiResponse = await fakeAIQuery(query);
+    const timestamp = new Date().toLocaleTimeString();
+    setResponses(prev => [...prev, { query, answer: aiResponse, timestamp }]);
     setQuery('');
+    setLoading(false);
+    setViewHistory(true);
+  };
+
+  const handleSuggestionClick = (s) => {
+    setQuery(s);
+    setViewHistory(false);
   };
 
   const containerStyle = {
-    position: 'fixed',
-    bottom: '20px',
-    right: '20px',
-    width: isOpen ? '320px' : '160px',
     backgroundColor: '#1f2937',
+    borderRadius: '12px',
+    padding: '20px',
     color: '#fff',
-    borderRadius: '12px',
-    boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
-    overflow: 'hidden',
-    zIndex: 1001,
-    transition: 'width 0.3s ease',
+    width: '100%',
+    maxWidth: '400px',
+    ...style
   };
 
-  const headerStyle = {
-    backgroundColor: '#f97316',
-    padding: '10px',
-    cursor: 'pointer',
-    fontWeight: '600',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+  const suggestionButtonStyle = {
+    backgroundColor: '#374151',
+    color: '#fff',
+    border: 'none',
+    borderRadius: '20px',
+    padding: '6px 12px',
+    fontSize: '12px',
+    margin: '4px 4px 0 0',
+    cursor: 'pointer'
   };
 
-  const chatBoxStyle = {
-    maxHeight: '300px',
-    overflowY: 'auto',
-    padding: '10px',
+  const messageStyle = {
     backgroundColor: '#111827',
+    borderRadius: '8px',
+    padding: '8px',
+    marginBottom: '8px',
+    fontSize: '13px',
+    border: '1px solid #374151'
   };
 
-  const messageStyle = (sender) => ({
-    backgroundColor: sender === 'user' ? '#3b82f6' : '#374151',
-    padding: '8px 12px',
-    borderRadius: '12px',
-    margin: '4px 0',
-    alignSelf: sender === 'user' ? 'flex-end' : 'flex-start',
-    maxWidth: '80%',
-    fontSize: '13px',
-    lineHeight: '1.3',
-  });
+  const toggleButton = {
+    backgroundColor: '#f97316',
+    color: '#fff',
+    border: 'none',
+    borderRadius: '6px',
+    padding: '6px 12px',
+    fontSize: '12px',
+    cursor: 'pointer',
+    marginBottom: '10px'
+  };
 
   return (
     <div style={containerStyle}>
-      <div style={headerStyle} onClick={() => setIsOpen(!isOpen)}>
-        <span>{isOpen ? 'IMPACT Assistant' : 'Open Assistant'}</span>
-        <span>{isOpen ? '▼' : '▲'}</span>
-      </div>
-      {isOpen && (
-        <>
-          <div style={chatBoxStyle}>
-            {messages.map((msg, idx) => (
-              <div key={idx} style={messageStyle(msg.sender)}>
-                {msg.text}
-              </div>
+      <h3>IMPACT Assistant</h3>
+      <button onClick={() => setViewHistory(!viewHistory)} style={toggleButton}>
+        {viewHistory ? 'Switch to Input' : 'View Chat History'}
+      </button>
+
+      {viewHistory ? (
+        <div style={{ maxHeight: '200px', overflowY: 'auto' }}>
+          {responses.length === 0 && <p style={{ fontSize: '12px', color: '#9ca3af' }}>No history yet.</p>}
+          {responses.map((r, i) => (
+            <div key={i} style={messageStyle}>
+              <div><strong>Q:</strong> {r.query}</div>
+              <div><strong>A:</strong> {r.answer}</div>
+              <div style={{ fontSize: '10px', color: '#9ca3af' }}>{r.timestamp}</div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit}>
+          <label htmlFor="ai-query" style={{ display: 'none' }}>Query</label>
+          <input
+            id="ai-query"
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search contracts, budgets, POs..."
+            disabled={loading}
+            style={{
+              padding: '10px',
+              width: '100%',
+              borderRadius: '6px',
+              border: '1px solid #374151',
+              marginBottom: '10px',
+              backgroundColor: loading ? '#374151' : '#fff',
+              color: loading ? '#9ca3af' : '#000'
+            }}
+          />
+          <div style={{ marginBottom: '10px' }}>
+            {suggestions.map((s, i) => (
+              <button
+                key={i}
+                type="button"
+                style={suggestionButtonStyle}
+                onClick={() => handleSuggestionClick(s)}
+              >
+                {s}
+              </button>
             ))}
-            {loading && (
-              <div style={messageStyle('ai')}>
-                <em>Thinking...</em>
-              </div>
-            )}
           </div>
-          <form onSubmit={handleSubmit} style={{ display: 'flex', padding: '10px' }}>
-            <input
-              type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Ask IMPACT..."
-              disabled={loading}
-              style={{
-                flex: 1,
-                padding: '8px',
-                borderRadius: '6px',
-                border: '1px solid #374151',
-                marginRight: '6px',
-                backgroundColor: loading ? '#374151' : '#fff',
-                color: loading ? '#9ca3af' : '#000',
-              }}
-            />
-            <button
-              type="submit"
-              disabled={loading}
-              style={{
-                backgroundColor: '#f97316',
-                color: '#fff',
-                border: 'none',
-                padding: '8px 12px',
-                borderRadius: '6px',
-                cursor: loading ? 'not-allowed' : 'pointer',
-              }}
-            >
-              {loading ? '...' : 'Send'}
-            </button>
-          </form>
-        </>
+          <button
+            type="submit"
+            disabled={loading}
+            style={{
+              backgroundColor: '#f97316',
+              color: '#fff',
+              border: 'none',
+              padding: '10px 20px',
+              borderRadius: '6px',
+              cursor: loading ? 'not-allowed' : 'pointer'
+            }}
+          >
+            {loading ? 'Searching…' : buttonLabel}
+          </button>
+        </form>
+      )}
+
+      {loading && (
+        <div style={{ marginTop: '10px', fontSize: '12px', color: '#9ca3af' }}>
+          Loading response...
+        </div>
       )}
     </div>
   );
