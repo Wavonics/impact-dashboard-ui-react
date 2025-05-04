@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ChatIcon } from "lucide-react";
+import { FaComments } from 'react-icons/fa';
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function ImpactAssistant() {
@@ -60,8 +60,7 @@ export default function ImpactAssistant() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className={`flex ${msg.sender === 'assistant' ? 'justify-start' : 'justify-end'}`}
-              >
+                className={`flex ${msg.sender === 'assistant' ? 'justify-start' : 'justify-end'}`}>
                 <div className={`p-3 rounded-2xl max-w-xs whitespace-pre-wrap ${msg.sender === 'assistant' ? 'bg-gray-100' : 'bg-blue-500 text-white'}`}>
                   {msg.text}
                 </div>
@@ -86,7 +85,7 @@ export default function ImpactAssistant() {
           disabled={loading || !input.trim()}
           className="ml-2 flex items-center"
         >
-          <ChatIcon className="mr-2 h-5 w-5" /> Send
+          <FaComments className="mr-2 h-5 w-5" /> Send
         </Button>
       </div>
     </div>
