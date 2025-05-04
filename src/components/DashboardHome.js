@@ -7,7 +7,7 @@ import ProjectPlanningTable from './ProjectPlanningTable';
 import AlertsSummary from './AlertsSummary';
 import ContractRenewals from './ContractRenewals';
 import AIChatBox from './AIChatBox';
-import ImpactAssistant from './ImpactAssistant'; // ✅ new
+import ImpactAssistant from './ImpactAssistant';
 import dummyData from '../data/dummyData';
 
 export default function DashboardHome() {
@@ -209,7 +209,17 @@ export default function DashboardHome() {
         </ul>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      {/* ✅ UPDATED SIDEBAR CONTAINER */}
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '20px',
+          padding: '20px',
+          backgroundColor: '#1f2937',
+          borderRadius: '12px',
+        }}
+      >
         <h2 style={sectionTitle}>Alerts Summary</h2>
         <AlertsSummary alerts={alerts} />
 
@@ -218,7 +228,6 @@ export default function DashboardHome() {
 
         <ImpactAssistant />
 
-        {/* ✅ AIChatBox now inline instead of fixed */}
         <AIChatBox style={{ marginTop: '20px' }} buttonLabel="Ask IMPACT" />
       </div>
     </div>
