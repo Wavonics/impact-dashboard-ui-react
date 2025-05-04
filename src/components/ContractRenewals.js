@@ -1,17 +1,7 @@
 import React from 'react';
-import './DashboardWidgets.css'; // 👈 import CSS file
+import './DashboardWidgets.css'; // ✅ keep this import
 
 export default function ContractRenewals({ renewals }) {
-  const sharedContainerStyle = {
-    backgroundColor: '#1f2937',
-    color: '#fff',
-    padding: '20px',
-    borderRadius: '12px',
-    width: '100%',
-    maxWidth: '400px',
-    margin: '0 auto'
-  };
-
   const listStyle = {
     listStyle: 'none',
     paddingLeft: 0,
@@ -26,7 +16,7 @@ export default function ContractRenewals({ renewals }) {
   };
 
   return (
-    <div className="contract-renewals-container" style={sharedContainerStyle}>
+    <div className="widget-container contract-renewals-container">
       <h3 style={{ textAlign: 'center', marginBottom: '10px' }}>Upcoming Contract Renewals</h3>
       <ul style={listStyle}>
         {renewals.length > 0 ? renewals.map((r, idx) => (
