@@ -1,4 +1,5 @@
 import React from 'react';
+import './DashboardWidgets.css'; // 👈 import CSS file
 
 export default function ContractRenewals({ renewals }) {
   const sharedContainerStyle = {
