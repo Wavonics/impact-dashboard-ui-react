@@ -90,7 +90,7 @@ export default function DashboardHome() {
         <div style={metricsGrid}>
           {metrics.map((m) => (
             <Link key={m.label} to={m.link || '#'} style={{ textDecoration: 'none' }}>
-              <DashboardMetricCard label={m.label} value={m.value} icon={m.icon} color={m.color} />
+              <DashboardMetricCard label={m.label} value={m.value} iconKey={m.iconKey} color={m.color} />
             </Link>
           ))}
         </div>
