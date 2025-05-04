@@ -1,4 +1,3 @@
-// src/data/dummyData.js
 const dummyData = {
   metrics: [
     { label: 'Total Assets', value: 120, color: '#00ff00' },
@@ -28,12 +27,9 @@ const dummyData = {
     'Added new Asset IT-Server',
     'User John updated profile',
   ],
-  // 🟢 FIX: add user object
-  user: {
-    displayName: 'Nicholas',
-    profileComplete: true,
-    unreadAlerts: 2,
-    profilePicture: '/avatar-placeholder.png'  // path to profile picture if you have one
+  userProfile: {  // 🟢 added this object!
+    displayName: 'Nicholas Obodo',
+    profileComplete: true
   }
 };
 
