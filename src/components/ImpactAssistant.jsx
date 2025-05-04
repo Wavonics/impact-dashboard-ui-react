@@ -1,7 +1,7 @@
 // src/components/ImpactAssistant.jsx
 import React, { useState, useEffect } from 'react';
 
-export default function ImpactAssistant({ style = {}, buttonLabel = 'Ask IMPACT' }) {
+export default function ImpactAssistant({ style = {}, buttonLabel = 'Ask Agentic Assistant' }) {
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(false);
   const [responses, setResponses] = useState([]);
@@ -91,9 +91,9 @@ export default function ImpactAssistant({ style = {}, buttonLabel = 'Ask IMPACT'
   };
 
   return (
-    <div style={{ flex: 1, padding: '20px' }}> {/* ✅ inherits flex from App.js layout */}
+    <div style={{ flex: 1, padding: '20px' }}>
       <div style={containerStyle}>
-        <h3>IMPACT Assistant</h3>
+        <h3>IMPACT Agentic Assistant</h3>
         <button onClick={() => setViewHistory(!viewHistory)} style={toggleButton}>
           {viewHistory ? 'Switch to Input' : 'View Chat History'}
         </button>
