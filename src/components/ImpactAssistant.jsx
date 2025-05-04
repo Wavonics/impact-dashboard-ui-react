@@ -1,6 +1,5 @@
 // src/components/ImpactAssistant.jsx
 import React, { useState, useEffect } from 'react';
-import NavBar from './NavBar'; // ✅ added NavBar import
 
 export default function ImpactAssistant({ style = {}, buttonLabel = 'Ask IMPACT' }) {
   const [query, setQuery] = useState('');
@@ -92,81 +91,78 @@ export default function ImpactAssistant({ style = {}, buttonLabel = 'Ask IMPACT'
   };
 
   return (
-    <div style={{ display: 'flex' }}>
-      <NavBar /> {/* ✅ added NavBar rendering */}
-      <div style={{ flex: 1, padding: '20px' }}>
-        <div style={containerStyle}>
-          <h3>IMPACT Assistant</h3>
-          <button onClick={() => setViewHistory(!viewHistory)} style={toggleButton}>
-            {viewHistory ? 'Switch to Input' : 'View Chat History'}
-          </button>
+    <div style={{ flex: 1, padding: '20px' }}> {/* ✅ inherits flex from App.js layout */}
+      <div style={containerStyle}>
+        <h3>IMPACT Assistant</h3>
+        <button onClick={() => setViewHistory(!viewHistory)} style={toggleButton}>
+          {viewHistory ? 'Switch to Input' : 'View Chat History'}
+        </button>
 
-          {viewHistory ? (
-            <div style={{ maxHeight: '200px', overflowY: 'auto' }}>
-              {responses.length === 0 && <p style={{ fontSize: '12px', color: '#9ca3af' }}>No history yet.</p>}
-              {responses.map((r, i) => (
-                <div key={i} style={messageStyle}>
-                  <div><strong>Q:</strong> {r.query}</div>
-                  <div><strong>A:</strong> {r.answer}</div>
-                  <div style={{ fontSize: '10px', color: '#9ca3af' }}>{r.timestamp}</div>
-                </div>
+        {viewHistory ? (
+          <div style={{ maxHeight: '200px', overflowY: 'auto' }}>
+            {responses.length === 0 && <p style={{ fontSize: '12px', color: '#9ca3af' }}>No history yet.</p>}
+            {responses.map((r, i) => (
+              <div key={i} style={messageStyle}>
+                <div><strong>Q:</strong> {r.query}</div>
+                <div><strong>A:</strong> {r.answer}</div>
+                <div style={{ fontSize: '10px', color: '#9ca3af' }}>{r.timestamp}</div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit}>
+            <label htmlFor="ai-query" style={{ display: 'none' }}>Query</label>
+            <input
+              id="ai-query"
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search contracts, budgets, POs..."
+              disabled={loading}
+              style={{
+                padding: '10px',
+                width: '100%',
+                borderRadius: '6px',
+                border: '1px solid #374151',
+                marginBottom: '10px',
+                backgroundColor: loading ? '#374151' : '#fff',
+                color: loading ? '#9ca3af' : '#000'
+              }}
+            />
+            <div style={{ marginBottom: '10px' }}>
+              {suggestions.map((s, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  style={suggestionButtonStyle}
+                  onClick={() => handleSuggestionClick(s)}
+                >
+                  {s}
+                </button>
               ))}
             </div>
-          ) : (
-            <form onSubmit={handleSubmit}>
-              <label htmlFor="ai-query" style={{ display: 'none' }}>Query</label>
-              <input
-                id="ai-query"
-                type="text"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search contracts, budgets, POs..."
-                disabled={loading}
-                style={{
-                  padding: '10px',
-                  width: '100%',
-                  borderRadius: '6px',
-                  border: '1px solid #374151',
-                  marginBottom: '10px',
-                  backgroundColor: loading ? '#374151' : '#fff',
-                  color: loading ? '#9ca3af' : '#000'
-                }}
-              />
-              <div style={{ marginBottom: '10px' }}>
-                {suggestions.map((s, i) => (
-                  <button
-                    key={i}
-                    type="button"
-                    style={suggestionButtonStyle}
-                    onClick={() => handleSuggestionClick(s)}
-                  >
-                    {s}
-                  </button>
-                ))}
-              </div>
-              <button
-                type="submit"
-                disabled={loading}
-                style={{
-                  backgroundColor: '#f97316',
-                  color: '#fff',
-                  border: 'none',
-                  padding: '10px 20px',
-                  borderRadius: '6px',
-                  cursor: loading ? 'not-allowed' : 'pointer'
-                }}
-              >
-                {loading ? 'Searching…' : buttonLabel}
-              </button>
-            </form>
-          )}
+            <button
+              type="submit"
+              disabled={loading}
+              style={{
+                backgroundColor: '#f97316',
+                color: '#fff',
+                border: 'none',
+                padding: '10px 20px',
+                borderRadius: '6px',
+                cursor: loading ? 'not-allowed' : 'pointer'
+              }}
+            >
+              {loading ? 'Searching…' : buttonLabel}
+            </button>
+          </form>
+        )}
 
-          {loading && (
-            <div style={{ marginTop: '10px', fontSize: '12px', color: '#9ca3af' }}>
-              Loading response...
-            </div>
-          )}
-        </div>
+        {loading && (
+          <div style={{ marginTop: '10px', fontSize: '12px', color: '#9ca3af' }}>
+            Loading response...
+          </div>
+        )}
       </div>
     </div>
   );
