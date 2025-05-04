@@ -7,7 +7,7 @@ import ProjectPlanningTable from './ProjectPlanningTable';
 import AlertsSummary from './AlertsSummary';
 import ContractRenewals from './ContractRenewals';
 import AIChatBox from './AIChatBox';
-import ImpactAssistant from './ImpactAssistant';
+import ImpactAssistant from './ImpactAssistant'; // ✅ new
 import dummyData from '../data/dummyData';
 
 export default function DashboardHome() {
@@ -16,11 +16,7 @@ export default function DashboardHome() {
   const [renewals, setRenewals] = useState([]);
   const [projects, setProjects] = useState([]);
   const [activities, setActivities] = useState([]);
-  const [profileData, setProfileData] = useState({
-    displayName: '',
-    photoURL: '',
-    profileComplete: false,
-  });
+  const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [lastUpdated, setLastUpdated] = useState(null);
 
@@ -30,8 +26,8 @@ export default function DashboardHome() {
       setAlerts(dummyData.alerts);
       setRenewals(dummyData.contractRenewals);
       setProjects(dummyData.projects);
-      setActivities(dummyData.activities);
-      setProfileData(dummyData.userProfile);
+      setActivities(dummyData.activities || []);
+      setProfileData(dummyData.userProfile || { displayName: 'User', profileComplete: false });
       setLastUpdated(new Date().toLocaleString());
       setLoading(false);
     }, 1000);
@@ -48,11 +44,7 @@ export default function DashboardHome() {
     position: 'relative',
   };
 
-  const mainStyle = {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '20px',
-  };
+  const mainStyle = { display: 'flex', flexDirection: 'column', gap: '20px' };
 
   const metricsGrid = {
     display: 'grid',
@@ -80,14 +72,6 @@ export default function DashboardHome() {
     gap: '12px',
   };
 
-  const avatarStyle = {
-    width: '40px',
-    height: '40px',
-    borderRadius: '50%',
-    objectFit: 'cover',
-    border: '2px solid #f97316',
-  };
-
   const greetingStyle = {
     fontSize: '22px',
     fontWeight: '700',
@@ -95,7 +79,7 @@ export default function DashboardHome() {
   };
 
   const badgeStyle = {
-    backgroundColor: profileData.profileComplete ? '#10b981' : '#ef4444',
+    backgroundColor: profileData?.profileComplete ? '#10b981' : '#ef4444',
     color: '#fff',
     borderRadius: '12px',
     fontSize: '10px',
@@ -137,20 +121,21 @@ export default function DashboardHome() {
 
   return (
     <div style={containerStyle}>
-      {/* Main column */}
       <div style={mainStyle}>
         <div style={greetingRow}>
-          <img
-            src={profileData.photoURL || '/avatar.png'}
-            alt="Profile"
-            style={avatarStyle}
-          />
-          <div>
-            <h1 style={greetingStyle}>Welcome back, {profileData.displayName}!</h1>
-            <span style={badgeStyle}>
-              {profileData.profileComplete ? 'Profile Complete' : 'Incomplete Profile'}
-            </span>
-          </div>
+          {profileData?.photoURL && (
+            <img
+              src={profileData.photoURL}
+              alt="Profile"
+              style={{ width: '40px', height: '40px', borderRadius: '50%' }}
+            />
+          )}
+          <h1 style={greetingStyle}>
+            Welcome back, {profileData?.displayName || 'User'}!
+          </h1>
+          <span style={badgeStyle}>
+            {profileData?.profileComplete ? 'Profile Complete' : 'Incomplete Profile'}
+          </span>
         </div>
 
         <p style={subtitleStyle}>
@@ -159,9 +144,15 @@ export default function DashboardHome() {
         <p style={lastUpdatedStyle}>Last updated: {lastUpdated}</p>
 
         <div style={quickActionsStyle}>
-          <Link to="/contracts/new" style={quickButton}>Add Contract</Link>
-          <Link to="/po/new" style={quickButton}>Create PO</Link>
-          <Link to="/projects/new" style={quickButton}>Add Project</Link>
+          <Link to="/contracts/new" style={quickButton}>
+            Add Contract
+          </Link>
+          <Link to="/po/new" style={quickButton}>
+            Create PO
+          </Link>
+          <Link to="/projects/new" style={quickButton}>
+            Add Project
+          </Link>
         </div>
 
         <h2 style={sectionTitle}>Key Metrics</h2>
@@ -186,12 +177,30 @@ export default function DashboardHome() {
         <ProjectPlanningTable projects={projects} />
 
         <h2 style={sectionTitle}>Recent Activity</h2>
-        <ul style={{ fontSize: '14px', backgroundColor: '#1f2937', padding: '10px', borderRadius: '8px' }}>
-          {activities.map((a, idx) => (
-            <li key={idx} style={{ marginBottom: '6px', borderBottom: '1px solid #374151', paddingBottom: '4px' }}>
-              {a}
-            </li>
-          ))}
+        <ul
+          style={{
+            fontSize: '14px',
+            backgroundColor: '#1f2937',
+            padding: '10px',
+            borderRadius: '8px',
+          }}
+        >
+          {activities?.length > 0 ? (
+            activities.map((a, idx) => (
+              <li
+                key={idx}
+                style={{
+                  marginBottom: '6px',
+                  borderBottom: '1px solid #374151',
+                  paddingBottom: '4px',
+                }}
+              >
+                {a}
+              </li>
+            ))
+          ) : (
+            <li style={{ color: '#9ca3af' }}>No recent activity</li>
+          )}
           <li>
             <Link to="/activity" style={{ color: '#f97316', fontSize: '12px' }}>
               View All Activity
@@ -200,7 +209,6 @@ export default function DashboardHome() {
         </ul>
       </div>
 
-      {/* Sidebar column */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
         <h2 style={sectionTitle}>Alerts Summary</h2>
         <AlertsSummary alerts={alerts} />
@@ -208,11 +216,9 @@ export default function DashboardHome() {
         <h2 style={sectionTitle}>Upcoming Contract Renewals</h2>
         <ContractRenewals renewals={renewals} />
 
-        <h2 style={sectionTitle}>IMPACT Assistant</h2>
-        <ImpactAssistant />
+        <ImpactAssistant /> {/* ✅ NEW */}
       </div>
 
-      {/* Floating AI ChatBox */}
       <AIChatBox
         style={{
           position: 'fixed',
