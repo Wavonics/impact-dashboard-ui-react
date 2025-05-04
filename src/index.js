@@ -1,9 +1,8 @@
-// src/index.js
+// index.js
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './ThemeContext';
-
 import LandingPage from './components/LandingPage';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
@@ -13,7 +12,7 @@ import ResetConfirmation from './components/ResetConfirmation';
 import Profile from './components/Profile';
 import AuditLogs from './components/AuditLogs';
 import App from './App';
-import ImpactAssistant from './components/ImpactAssistant';  // ✅ import new component
+import ImpactAssistant from './components/ImpactAssistant'; // ✅ new import
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -30,8 +29,8 @@ root.render(
         <Route path="/profile" element={<Profile />} />
         <Route path="/audit-logs" element={<AuditLogs />} />
         <Route path="/dashboard/*" element={<App />} />
-        <Route path="/impact-assistant" element={<ImpactAssistant />} /> {/* ✅ new route */}
-        <Route path="*" element={<LandingPage />} />  {/* fallback */}
+        <Route path="/assistant" element={<ImpactAssistant />} /> {/* ✅ add assistant route */}
+        <Route path="*" element={<LandingPage />} />
       </Routes>
     </ThemeProvider>
   </BrowserRouter>
