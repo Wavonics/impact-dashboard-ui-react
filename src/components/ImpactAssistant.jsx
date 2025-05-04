@@ -1,6 +1,6 @@
 // src/components/ImpactAssistant.jsx
 import React, { useState, useEffect } from 'react';
-import './DashboardWidgets.css'; // ✅ import CSS for shared widget styles
+import '../DashboardWidgets.css'; // ✅ import CSS for shared widget styles
 
 export default function ImpactAssistant({ buttonLabel = 'Ask IMPACT' }) {
   const [query, setQuery] = useState('');
