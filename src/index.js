@@ -28,6 +28,7 @@ root.render(
         <Route path="/profile" element={<Profile />} />
         <Route path="/audit-logs" element={<AuditLogs />} />
         <Route path="/dashboard/*" element={<App />} />
+        <Route path="/quick-search" element={<AIChatBox style={{ width: 400 }} />} />
         <Route path="/assistant" element={<ImpactAssistant />} />
         <Route path="*" element={<LandingPage />} /> {/* fallback route */}
       </Routes>
