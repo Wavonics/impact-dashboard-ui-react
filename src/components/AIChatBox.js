@@ -6,9 +6,17 @@ export default function AIChatBox({ style = {}, buttonLabel = 'Ask IMPACT' }) {
   const [response, setResponse] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const suggestions = [
+    "expiring contracts in 30 days",
+    "current procurement methods",
+    "budget utilization by department",
+    "pending purchase orders",
+    "contracts in pipeline pending legal review and approval"
+  ];
+
   const fakeAIQuery = async (input) => {
     return new Promise((resolve) => {
-      setTimeout(() => resolve(`Insight: Found 3 contracts matching "${input}"`), 1500);
+      setTimeout(() => resolve(`Insight: Found 3 results for "${input}"`), 1500);
     });
   };
 
@@ -21,12 +29,27 @@ export default function AIChatBox({ style = {}, buttonLabel = 'Ask IMPACT' }) {
     setLoading(false);
   };
 
+  const handleSuggestionClick = (suggestion) => {
+    setQuery(suggestion);
+  };
+
   const containerStyle = {
     backgroundColor: '#1f2937',
     borderRadius: '12px',
     padding: '20px',
     color: '#fff',
-    ...style // allow parent to override position, etc.
+    ...style
+  };
+
+  const suggestionButtonStyle = {
+    backgroundColor: '#374151',
+    color: '#fff',
+    border: 'none',
+    borderRadius: '20px',
+    padding: '6px 12px',
+    fontSize: '12px',
+    margin: '4px 4px 0 0',
+    cursor: 'pointer'
   };
 
   return (
@@ -39,7 +62,7 @@ export default function AIChatBox({ style = {}, buttonLabel = 'Ask IMPACT' }) {
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search contracts, e.g., 'expiring soon'"
+          placeholder="Search contracts, budgets, POs..."
           disabled={loading}
           style={{
             padding: '10px',
@@ -51,6 +74,18 @@ export default function AIChatBox({ style = {}, buttonLabel = 'Ask IMPACT' }) {
             color: loading ? '#9ca3af' : '#000'
           }}
         />
+        <div style={{ marginBottom: '10px' }}>
+          {suggestions.map((s, i) => (
+            <button
+              key={i}
+              type="button"
+              style={suggestionButtonStyle}
+              onClick={() => handleSuggestionClick(s)}
+            >
+              {s}
+            </button>
+          ))}
+        </div>
         <button
           type="submit"
           disabled={loading}
