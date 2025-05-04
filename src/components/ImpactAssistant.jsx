@@ -47,14 +47,14 @@ export default function ImpactAssistant({ style = {}, buttonLabel = 'Ask Agentic
     setViewHistory(false);
   };
 
-  const containerStyle = {
+  const sharedContainerStyle = {
     backgroundColor: '#1f2937',
     borderRadius: '12px',
     padding: '20px',
     color: '#fff',
     width: '100%',
     maxWidth: '400px',
-    margin: '0 auto', // ✅ center horizontally like AIChatBox
+    margin: '0 auto',
     ...style
   };
 
@@ -65,10 +65,10 @@ export default function ImpactAssistant({ style = {}, buttonLabel = 'Ask Agentic
     borderRadius: '20px',
     padding: '6px 12px',
     fontSize: '12px',
-    margin: '4px auto', // ✅ center horizontally
+    margin: '4px auto',
     cursor: 'pointer',
     display: 'block',
-    width: '80%' // ✅ max 80% width
+    width: '80%'
   };
 
   const messageStyle = {
@@ -95,8 +95,8 @@ export default function ImpactAssistant({ style = {}, buttonLabel = 'Ask Agentic
   };
 
   return (
-    <div style={{ flex: 1, padding: '20px' }}>
-      <div style={containerStyle}>
+    <div className="impact-assistant-container" style={{ flex: 1, padding: '20px' }}>
+      <div style={sharedContainerStyle}>
         <h3 style={{ textAlign: 'center' }}>IMPACT Agentic Assistant</h3>
         <button onClick={() => setViewHistory(!viewHistory)} style={toggleButton}>
           {viewHistory ? 'Switch to Input' : 'View Chat History'}
@@ -125,7 +125,7 @@ export default function ImpactAssistant({ style = {}, buttonLabel = 'Ask Agentic
               disabled={loading}
               style={{
                 padding: '10px',
-                width: '80%', // ✅ input 80% width
+                width: '80%',
                 borderRadius: '6px',
                 border: '1px solid #374151',
                 marginBottom: '10px',
