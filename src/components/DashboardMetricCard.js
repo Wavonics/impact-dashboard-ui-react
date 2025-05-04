@@ -1,8 +1,12 @@
 // src/components/DashboardMetricCard.js
 import React from 'react';
-import { FaMoneyBillWave, FaFileContract, FaProjectDiagram, FaFileInvoice, FaBell, FaCubes } from 'react-icons/fa';
+import CountUp from 'react-countup';
+import {
+  FaMoneyBillWave, FaFileContract, FaProjectDiagram, FaFileInvoice,
+  FaBell, FaCubes, FaClipboardList
+} from 'react-icons/fa';
 
-export default function DashboardMetricCard({ label, value, iconKey, color }) {
+export default function DashboardMetricCard({ label, value, iconKey, color, badge }) {
   // Icon mapping
   const iconMap = {
     money: <FaMoneyBillWave />,
@@ -11,7 +15,8 @@ export default function DashboardMetricCard({ label, value, iconKey, color }) {
     po: <FaFileInvoice />,
     alerts: <FaBell />,
     assets: <FaCubes />,
-    // add more mappings as needed
+    procurement: <FaClipboardList />
+    // add more as needed
   };
 
   const cardStyle = {
@@ -23,6 +28,7 @@ export default function DashboardMetricCard({ label, value, iconKey, color }) {
     flex: '1 1 200px',
     boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
     margin: '10px',
+    position: 'relative'
   };
 
   const iconStyle = {
@@ -43,12 +49,31 @@ export default function DashboardMetricCard({ label, value, iconKey, color }) {
     fontWeight: '500',
   };
 
+  const badgeStyle = {
+    position: 'absolute',
+    top: '8px',
+    right: '8px',
+    backgroundColor: '#ef4444',
+    color: '#fff',
+    borderRadius: '50%',
+    width: '20px',
+    height: '20px',
+    fontSize: '12px',
+    display: badge ? 'flex' : 'none',
+    justifyContent: 'center',
+    alignItems: 'center',
+    boxShadow: '0 0 4px rgba(0,0,0,0.5)'
+  };
+
   return (
-    <div style={cardStyle}>
+    <div style={cardStyle} aria-label={`Metric card for ${label}`}>
+      <div style={badgeStyle}>{badge}</div>
       <div style={iconStyle}>
-        {iconMap[iconKey] || <FaCubes />} {/* fallback icon */}
+        {iconMap[iconKey] || <FaCubes />}
       </div>
-      <div style={valueStyle}>{value}</div>
+      <div style={valueStyle}>
+        <CountUp end={value} duration={1.5} separator="," />
+      </div>
       <div style={labelStyle}>{label}</div>
     </div>
   );
