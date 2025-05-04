@@ -216,18 +216,11 @@ export default function DashboardHome() {
         <h2 style={sectionTitle}>Upcoming Contract Renewals</h2>
         <ContractRenewals renewals={renewals} />
 
-        <ImpactAssistant /> {/* ✅ NEW */}
-      </div>
+        <ImpactAssistant />
 
-      <AIChatBox
-        style={{
-          position: 'fixed',
-          bottom: '20px',
-          right: '20px',
-          zIndex: 1000,
-        }}
-        buttonLabel="Ask IMPACT"
-      />
+        {/* ✅ AIChatBox now inline instead of fixed */}
+        <AIChatBox style={{ marginTop: '20px' }} buttonLabel="Ask IMPACT" />
+      </div>
     </div>
   );
 }
