@@ -19,7 +19,7 @@ export default function App() {
   return (
     <div style={{ display: 'flex' }}>
       <NavBar />
-      <div style={{ flex: 1, padding: '20px' }}>
+      <div style={{ flex: 1, padding: '20px', display: 'block' }}>
         <Routes>
           <Route index element={<DashboardHome />} />  {/* ✅ <-- THIS handles /dashboard */}
           <Route path="assets" element={<Assets />} />
