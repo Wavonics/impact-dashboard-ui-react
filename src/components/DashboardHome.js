@@ -28,7 +28,7 @@ export default function DashboardHome() {
       setAlerts(dummyData.alerts);
       setRenewals(dummyData.contractRenewals);
       setProjects(dummyData.projects);
-      setActivities(dummyData.recentActivity);
+      setActivities(dummyData.activities);
       setProfileData(dummyData.userProfile);
       setLastUpdated(new Date().toLocaleString());
       setLoading(false);
