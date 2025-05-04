@@ -74,7 +74,12 @@ export default function AIChatBox({ style = {}, buttonLabel = 'Ask IMPACT' }) {
             color: loading ? '#9ca3af' : '#000'
           }}
         />
-        <div style={{ marginBottom: '10px' }}>
+        <div style={{
+          marginBottom: '10px',
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: '6px'
+        }}>
           {suggestions.map((s, i) => (
             <button
               key={i}
