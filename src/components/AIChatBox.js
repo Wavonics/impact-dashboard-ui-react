@@ -1,5 +1,5 @@
 // components/AIChatBox.js
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 export default function AIChatBox({
   style = {},
@@ -9,14 +9,15 @@ export default function AIChatBox({
     "current procurement methods",
     "budget utilization by department",
     "pending purchase orders",
-    "contracts pending legal review"
+    "contracts in pipeline pending legal review and approval"
   ],
   onQuerySubmit
 }) {
   const [query, setQuery] = useState('');
   const [response, setResponse] = useState('');
   const [loading, setLoading] = useState(false);
-  const [show, setShow] = useState(true); // ✅ new state to toggle visibility
+  const [collapsed, setCollapsed] = useState(false); // ✅ collapse state
+  const contentRef = useRef(null);
 
   const fakeAIQuery = async (input) => {
     return new Promise((resolve) => {
@@ -41,19 +42,10 @@ export default function AIChatBox({
 
   const outerContainerStyle = {
     display: 'flex',
-    justifyContent: 'center',
+    flexDirection: 'column',
+    alignItems: 'center',
     width: '100%',
     marginTop: '30px'
-  };
-
-  const containerStyle = {
-    backgroundColor: '#1f2937',
-    borderRadius: '12px',
-    padding: '20px',
-    color: '#fff',
-    width: '100%',
-    maxWidth: '500px',
-    ...style
   };
 
   const toggleButtonStyle = {
@@ -64,6 +56,19 @@ export default function AIChatBox({
     borderRadius: '6px',
     cursor: 'pointer',
     marginBottom: '10px'
+  };
+
+  const containerStyle = {
+    backgroundColor: '#1f2937',
+    borderRadius: '12px',
+    padding: '20px',
+    color: '#fff',
+    width: '100%',
+    maxWidth: '500px',
+    overflow: 'hidden',
+    transition: 'max-height 0.4s ease, opacity 0.4s ease',
+    maxHeight: collapsed ? '0' : contentRef.current ? `${contentRef.current.scrollHeight}px` : '9999px',
+    opacity: collapsed ? 0 : 1
   };
 
   const suggestionButtonStyle = {
@@ -79,15 +84,12 @@ export default function AIChatBox({
 
   return (
     <div style={outerContainerStyle}>
-      <div style={containerStyle}>
-        <button
-          onClick={() => setShow(!show)}
-          style={toggleButtonStyle}
-        >
-          {show ? 'Hide Query Box' : 'Show Query Box'}
-        </button>
+      <button onClick={() => setCollapsed(!collapsed)} style={toggleButtonStyle}>
+        {collapsed ? 'Show Quick Query' : 'Hide Quick Query'}
+      </button>
 
-        {show && (
+      <div style={containerStyle} ref={contentRef}>
+        {!collapsed && (
           <>
             <h3 style={{ marginBottom: '8px' }}>IMPACT Quick Query</h3>
             <form onSubmit={handleSubmit}>
