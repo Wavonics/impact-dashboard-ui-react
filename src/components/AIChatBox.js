@@ -17,6 +17,7 @@ export default function AIChatBox({
   const [response, setResponse] = useState('');
   const [loading, setLoading] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
+  const [hoverIndex, setHoverIndex] = useState(-1); // ✅ track hover state
   const contentRef = useRef(null);
 
   const fakeAIQuery = async (input) => {
@@ -73,20 +74,22 @@ export default function AIChatBox({
   const suggestionContainerStyle = {
     marginBottom: '10px',
     display: 'flex',
-    justifyContent: 'center', // ✅ center suggestions
+    justifyContent: 'center',
     flexWrap: 'wrap',
     gap: '6px'
   };
 
-  const suggestionButtonStyle = {
-    backgroundColor: '#374151',
+  const getSuggestionButtonStyle = (isHovered) => ({
+    backgroundColor: isHovered ? '#4b5563' : '#374151', // ✅ darker on hover
     color: '#fff',
     border: 'none',
     borderRadius: '20px',
     padding: '6px 12px',
     fontSize: '12px',
-    cursor: 'pointer'
-  };
+    cursor: 'pointer',
+    transition: 'all 0.2s ease', // ✅ smooth transition
+    transform: isHovered ? 'scale(1.05)' : 'scale(1)'
+  });
 
   return (
     <div style={outerContainerStyle}>
@@ -109,8 +112,8 @@ export default function AIChatBox({
                 disabled={loading}
                 style={{
                   padding: '10px',
-                  width: '80%',               // ✅ limit input to 80%
-                  display: 'block',           // ✅ center input
+                  width: '80%',
+                  display: 'block',
                   margin: '0 auto 10px auto',
                   borderRadius: '6px',
                   border: '1px solid #374151',
@@ -123,8 +126,10 @@ export default function AIChatBox({
                   <button
                     key={i}
                     type="button"
-                    style={suggestionButtonStyle}
+                    style={getSuggestionButtonStyle(hoverIndex === i)}
                     onClick={() => handleSuggestionClick(s)}
+                    onMouseEnter={() => setHoverIndex(i)} // ✅ track hover
+                    onMouseLeave={() => setHoverIndex(-1)}
                   >
                     {s}
                   </button>
