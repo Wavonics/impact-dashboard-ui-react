@@ -1,5 +1,5 @@
 import React from 'react';
-import './DashboardWidgets.css'; // ✅ keep this import
+import '../DashboardWidgets.css'; // ✅ keep this import
 
 export default function ContractRenewals({ renewals }) {
   const listStyle = {
