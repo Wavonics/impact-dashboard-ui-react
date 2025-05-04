@@ -1,29 +1,32 @@
-// data/dummyData.js
+// src/data/dummyData.js
 const dummyData = {
   metrics: [
-    { label: "Contracts", value: 12, iconKey: "contracts", color: "#f97316" },
-    { label: "Budget", value: "$1.2M", iconKey: "money", color: "#10b981" },
-    { label: "POs", value: 50, iconKey: "po", color: "#3b82f6" },
-    { label: "Projects", value: 8, iconKey: "projects", color: "#ef4444" },
+    { label: 'Total Assets', value: 120, color: '#00ff00' },
+    { label: 'Total Contracts', value: 58, color: '#f97316' },
+    { label: 'Active Projects', value: 14, color: '#00ffff' },
+    { label: 'Open POs', value: 22, color: '#0000ff' },
+    { label: 'Budget Utilization', value: 75, color: '#10b981' },
+    { label: 'Budget Line Utilization', value: 82, color: '#fb923c' },
   ],
   alerts: [
-    { id: 1, message: 'Contract #123 expires in 5 days.' },
-    { id: 2, message: 'Budget overrun detected in Dept A.' },
+    { type: 'Critical', date: '2025-04-29', snippet: 'PO #123 exceeded limit.' },
+    { type: 'Warning', date: '2025-04-28', snippet: 'Contract expiring soon.' },
   ],
   contractRenewals: [
-    { contractId: 'C-001', vendor: 'ABC Corp', renewalDate: '2025-05-10' },
-    { contractId: 'C-002', vendor: 'XYZ Inc', renewalDate: '2025-05-15' },
-  ],
-  chartData: [
-    { department: 'Finance', budget: 1000000, actual: 950000 },
-    { department: 'IT', budget: 800000, actual: 850000 },
-    { department: 'Public Works', budget: 1200000, actual: 1100000 },
-    { department: 'Parks', budget: 600000, actual: 500000 },
+    { contract: 'Vendor ABC', expiryDate: '2025-05-30', daysLeft: 31 },
+    { contract: 'Vendor XYZ', expiryDate: '2025-06-15', daysLeft: 47 },
   ],
   projects: [
-    { id: 'PIP-01', name: 'Network Upgrade', type: 'PIP', status: 'In Progress' },
-    { id: 'CIP-05', name: 'New City Hall', type: 'CIP', status: 'Planning' },
-    { id: 'ENH-02', name: 'ERP Enhancement', type: 'Enhancement', status: 'Completed' },
+    { name: 'PIP-001 Upgrade', status: 'In Progress' },
+    { name: 'Enhancement-004', status: 'Planned' },
+    { name: 'CIP-12 Water Plant', status: 'Completed' },
+  ],
+  activities: [
+    'Added Contract ABC',
+    'Approved PO #456',
+    'Updated Project CIP-12',
+    'Added new Asset IT-Server',
+    'User John updated profile',
   ],
 };
 
