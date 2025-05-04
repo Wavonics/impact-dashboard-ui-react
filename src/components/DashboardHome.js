@@ -15,16 +15,17 @@ export default function DashboardHome() {
   const [renewals, setRenewals] = useState([]);
   const [projects, setProjects] = useState([]);
   const [activities, setActivities] = useState([]);
-  const [profileData, setProfileData] = useState({ displayName: 'User', profileComplete: true });
+  const [profileData, setProfileData] = useState({
+    displayName: '',
+    photoURL: '',
+    profileComplete: false
+  });
   const [loading, setLoading] = useState(true);
   const [lastUpdated, setLastUpdated] = useState(null);
 
   useEffect(() => {
     setTimeout(() => {
-      setMetrics([
-        ...dummyData.metrics,
-        { label: 'Budget Line Utilization', value: 82, iconKey: 'money', color: '#10b981', badge: null }
-      ]);
+      setMetrics(dummyData.metrics);
       setAlerts(dummyData.alerts);
       setRenewals(dummyData.contractRenewals);
       setProjects(dummyData.projects);
@@ -78,6 +79,14 @@ export default function DashboardHome() {
     gap: '12px'
   };
 
+  const avatarStyle = {
+    width: '40px',
+    height: '40px',
+    borderRadius: '50%',
+    objectFit: 'cover',
+    border: '2px solid #f97316'
+  };
+
   const greetingStyle = {
     fontSize: '22px',
     fontWeight: '700',
@@ -129,9 +138,17 @@ export default function DashboardHome() {
     <div style={containerStyle}>
       <div style={mainStyle}>
         <div style={greetingRow}>
-          <h1 style={greetingStyle}>Welcome back, {profileData.displayName}!</h1>
-          <span style={badgeStyle}>{profileData.profileComplete ? 'Profile Complete' : 'Incomplete Profile'}</span>
+          {profileData.photoURL && (
+            <img src={profileData.photoURL} alt="Profile" style={avatarStyle} />
+          )}
+          <div>
+            <h1 style={greetingStyle}>Welcome back, {profileData.displayName}!</h1>
+            <span style={badgeStyle}>
+              {profileData.profileComplete ? 'Profile Complete' : 'Incomplete Profile'}
+            </span>
+          </div>
         </div>
+
         <p style={subtitleStyle}>Your central hub for IT Procurement, Budget Tracking, and Contract Visibility.</p>
         <p style={lastUpdatedStyle}>Last updated: {lastUpdated}</p>
 
@@ -163,13 +180,24 @@ export default function DashboardHome() {
         <ProjectPlanningTable projects={projects} />
 
         <h2 style={sectionTitle}>Recent Activity</h2>
-        <ul style={{ fontSize: '14px', backgroundColor: '#1f2937', padding: '10px', borderRadius: '8px' }}>
+        <ul style={{
+          fontSize: '14px',
+          backgroundColor: '#1f2937',
+          padding: '10px',
+          borderRadius: '8px'
+        }}>
           {activities.map((a, idx) => (
-            <li key={idx} style={{ marginBottom: '6px', borderBottom: '1px solid #374151', paddingBottom: '4px' }}>
+            <li key={idx} style={{
+              marginBottom: '6px',
+              borderBottom: '1px solid #374151',
+              paddingBottom: '4px'
+            }}>
               {a}
             </li>
           ))}
-          <li><Link to="/activity" style={{ color: '#f97316', fontSize: '12px' }}>View All Activity</Link></li>
+          <li>
+            <Link to="/activity" style={{ color: '#f97316', fontSize: '12px' }}>View All Activity</Link>
+          </li>
         </ul>
       </div>
 
@@ -181,14 +209,15 @@ export default function DashboardHome() {
         <ContractRenewals renewals={renewals} />
       </div>
 
-      {/* Fixed AI Chat */}
-      <AIChatBox style={{
-        position: 'fixed',
-        bottom: '20px',
-        right: '20px',
-        zIndex: 1000,
-        buttonLabel: 'Ask IMPACT'
-      }} />
+      <AIChatBox
+        style={{
+          position: 'fixed',
+          bottom: '20px',
+          right: '20px',
+          zIndex: 1000
+        }}
+        buttonLabel="Ask IMPACT"
+      />
     </div>
   );
 }
