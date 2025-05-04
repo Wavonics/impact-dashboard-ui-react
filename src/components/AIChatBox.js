@@ -1,7 +1,5 @@
 // components/AIChatBox.js
 import React, { useState } from 'react';
-// Optional: import centralized suggestions if you have aiUtils.js
-// import { suggestions as defaultSuggestions } from '../utils/aiUtils';
 
 export default function AIChatBox({
   style = {},
@@ -13,49 +11,38 @@ export default function AIChatBox({
     "pending purchase orders",
     "contracts in pipeline pending legal review and approval"
   ],
-  onQuerySubmit // optional callback if wrapping this in ImpactAssistant
+  onQuerySubmit
 }) {
   const [query, setQuery] = useState('');
   const [response, setResponse] = useState('');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
 
-  // TEMP: Replace with getAIResponse() for real API
   const fakeAIQuery = async (input) => {
     return new Promise((resolve) => {
       setTimeout(() => resolve(`Insight: Found 3 results for "${input}"`), 1500);
     });
   };
 
-  const handleSubmit = async (e, inputQuery) => {
+  const handleSubmit = async (e) => {
     e?.preventDefault();
-    const finalQuery = inputQuery || query;
-    if (!finalQuery.trim()) return;
-
+    if (!query.trim()) return;
     setLoading(true);
-    setError(null);
-    try {
-      const result = await fakeAIQuery(finalQuery);
-      setResponse(result);
-      if (onQuerySubmit) onQuerySubmit(finalQuery, result);
-    } catch (err) {
-      setError(`Error: ${err.message}`);
-      setResponse('');
-    } finally {
-      setLoading(false);
-    }
+    const result = await fakeAIQuery(query);
+    setResponse(result);
+    setLoading(false);
+    if (onQuerySubmit) onQuerySubmit(query, result);
   };
 
   const handleSuggestionClick = (suggestion) => {
     setQuery(suggestion);
-    handleSubmit(null, suggestion); // pass clicked suggestion directly
+    handleSubmit(null, suggestion);
   };
 
   const outerContainerStyle = {
     display: 'flex',
     justifyContent: 'center',
     width: '100%',
-    marginTop: '20px'
+    marginTop: '30px'
   };
 
   const containerStyle = {
@@ -64,7 +51,7 @@ export default function AIChatBox({
     padding: '20px',
     color: '#fff',
     width: '100%',
-    maxWidth: '600px',
+    maxWidth: '500px', // ✅ cap the width
     ...style
   };
 
@@ -114,7 +101,6 @@ export default function AIChatBox({
                 type="button"
                 style={suggestionButtonStyle}
                 onClick={() => handleSuggestionClick(s)}
-                aria-label={`Use suggestion: ${s}`}
               >
                 {s}
               </button>
@@ -135,24 +121,16 @@ export default function AIChatBox({
             {loading ? 'Searching…' : buttonLabel}
           </button>
         </form>
-        {error && (
-          <div style={{
-            marginTop: '10px',
-            backgroundColor: '#dc2626',
-            padding: '10px',
-            borderRadius: '8px'
-          }}>
-            {error}
-          </div>
-        )}
         {response && (
-          <div style={{
-            marginTop: '10px',
-            backgroundColor: '#111827',
-            padding: '10px',
-            borderRadius: '8px',
-            minHeight: '50px'
-          }}>
+          <div
+            style={{
+              marginTop: '10px',
+              backgroundColor: '#111827',
+              padding: '10px',
+              borderRadius: '8px',
+              minHeight: '50px'
+            }}
+          >
             {response}
           </div>
         )}
