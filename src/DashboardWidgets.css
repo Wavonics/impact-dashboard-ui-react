@@ -1,0 +1,20 @@
+.widget-container {
+  background-color: #1f2937;
+  color: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  overflow: hidden;
+  transition: none;
+  transform: none;
+  box-shadow: none;
+}
+
+.widget-container:hover {
+  background-color: inherit;
+  transform: none;
+  box-shadow: none;
+}
