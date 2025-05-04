@@ -1,5 +1,5 @@
 import React from 'react';
-import './DashboardWidgets.css'; // ✅ CSS import stays
+import '../DashboardWidgets.css'; // ✅ CSS import stays
 
 export default function AlertsSummary({ alerts }) {
   const listStyle = {
