@@ -1,18 +1,21 @@
 // components/AIChatBox.js
 import React, { useState } from 'react';
 
-export default function AIChatBox({ style = {}, buttonLabel = 'Ask IMPACT' }) {
-  const [query, setQuery] = useState('');
-  const [response, setResponse] = useState('');
-  const [loading, setLoading] = useState(false);
-
-  const suggestions = [
+export default function AIChatBox({
+  style = {},
+  buttonLabel = 'Ask IMPACT',
+  suggestions = [
     "expiring contracts in 30 days",
     "current procurement methods",
     "budget utilization by department",
     "pending purchase orders",
     "contracts in pipeline pending legal review and approval"
-  ];
+  ],
+  onQuerySubmit // optional callback if wrapping this in ImpactAssistant
+}) {
+  const [query, setQuery] = useState('');
+  const [response, setResponse] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const fakeAIQuery = async (input) => {
     return new Promise((resolve) => {
@@ -21,16 +24,18 @@ export default function AIChatBox({ style = {}, buttonLabel = 'Ask IMPACT' }) {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e?.preventDefault();
     if (!query.trim()) return;
     setLoading(true);
     const result = await fakeAIQuery(query);
     setResponse(result);
     setLoading(false);
+    if (onQuerySubmit) onQuerySubmit(query, result); // optional callback
   };
 
   const handleSuggestionClick = (suggestion) => {
     setQuery(suggestion);
+    handleSubmit(); // auto-submit on suggestion click
   };
 
   const containerStyle = {
@@ -54,7 +59,7 @@ export default function AIChatBox({ style = {}, buttonLabel = 'Ask IMPACT' }) {
 
   return (
     <div style={containerStyle}>
-      <h3>IMPACT Assistant</h3>
+      <h3 style={{ marginBottom: '8px' }}>IMPACT Assistant</h3>
       <form onSubmit={handleSubmit}>
         <label htmlFor="ai-query" style={{ display: 'none' }}>Query</label>
         <input
@@ -112,7 +117,8 @@ export default function AIChatBox({ style = {}, buttonLabel = 'Ask IMPACT' }) {
             marginTop: '10px',
             backgroundColor: '#111827',
             padding: '10px',
-            borderRadius: '8px'
+            borderRadius: '8px',
+            minHeight: '50px'
           }}
         >
           {response}
