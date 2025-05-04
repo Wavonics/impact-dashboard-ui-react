@@ -1,7 +1,15 @@
 // src/components/DashboardMetricCard.js
 import React from 'react';
+import { FaMoneyBillWave, FaFileContract, FaClipboardList, FaChartLine } from 'react-icons/fa';
 
 export default function DashboardMetricCard({ label, value, icon, color }) {
+  const iconMap = {
+    money: <FaMoneyBillWave />,
+    contracts: <FaFileContract />,
+    procurement: <FaClipboardList />,
+    projects: <FaChartLine />
+  };
+
   const cardStyle = {
     backgroundColor: '#1f2937',
     color: '#fff',
@@ -33,7 +41,7 @@ export default function DashboardMetricCard({ label, value, icon, color }) {
 
   return (
     <div style={cardStyle}>
-      <div style={iconStyle}>{icon}</div>
+      <div style={iconStyle}>{iconMap[icon]}</div>
       <div style={valueStyle}>{value}</div>
       <div style={labelStyle}>{label}</div>
     </div>
