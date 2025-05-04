@@ -1,5 +1,6 @@
 // components/AIChatBox.js
 import React, { useState, useRef } from 'react';
+import './DashboardWidgets.css'; // 👈 import CSS file
 
 export default function AIChatBox({
   style = {},
