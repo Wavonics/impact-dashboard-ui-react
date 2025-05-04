@@ -1,6 +1,6 @@
 // components/AIChatBox.js
 import React, { useState, useRef } from 'react';
-import './DashboardWidgets.css'; // ✅ CSS import
+import '../DashboardWidgets.css'; // ✅ CSS import
 
 export default function AIChatBox({
   buttonLabel = 'Ask IMPACT',
