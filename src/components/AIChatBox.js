@@ -1,5 +1,5 @@
 // components/AIChatBox.js
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 
 export default function AIChatBox({
   style = {},
@@ -16,7 +16,7 @@ export default function AIChatBox({
   const [query, setQuery] = useState('');
   const [response, setResponse] = useState('');
   const [loading, setLoading] = useState(false);
-  const [collapsed, setCollapsed] = useState(false); // ✅ collapse state
+  const [collapsed, setCollapsed] = useState(false);
   const contentRef = useRef(null);
 
   const fakeAIQuery = async (input) => {
@@ -42,8 +42,8 @@ export default function AIChatBox({
 
   const outerContainerStyle = {
     display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
     width: '100%',
     marginTop: '30px'
   };
@@ -63,12 +63,15 @@ export default function AIChatBox({
     borderRadius: '12px',
     padding: '20px',
     color: '#fff',
-    width: '100%',
-    maxWidth: '500px',
+    width: 'auto',          // ✅ auto width: shrink to fit content
+    maxWidth: '500px',      // ✅ cap at 500px
+    boxSizing: 'border-box',
     overflow: 'hidden',
     transition: 'max-height 0.4s ease, opacity 0.4s ease',
     maxHeight: collapsed ? '0' : contentRef.current ? `${contentRef.current.scrollHeight}px` : '9999px',
-    opacity: collapsed ? 0 : 1
+    opacity: collapsed ? 0 : 1,
+    flexShrink: 0,
+    alignSelf: 'flex-start'
   };
 
   const suggestionButtonStyle = {
@@ -84,80 +87,82 @@ export default function AIChatBox({
 
   return (
     <div style={outerContainerStyle}>
-      <button onClick={() => setCollapsed(!collapsed)} style={toggleButtonStyle}>
-        {collapsed ? 'Show Quick Query' : 'Hide Quick Query'}
-      </button>
+      <div>
+        <button onClick={() => setCollapsed(!collapsed)} style={toggleButtonStyle}>
+          {collapsed ? 'Show Quick Query' : 'Hide Quick Query'}
+        </button>
 
-      <div style={containerStyle} ref={contentRef}>
-        {!collapsed && (
-          <>
-            <h3 style={{ marginBottom: '8px' }}>IMPACT Quick Query</h3>
-            <form onSubmit={handleSubmit}>
-              <label htmlFor="ai-query" style={{ display: 'none' }}>Query</label>
-              <input
-                id="ai-query"
-                type="text"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search contracts, budgets, POs..."
-                disabled={loading}
-                style={{
-                  padding: '10px',
-                  width: '100%',
-                  borderRadius: '6px',
-                  border: '1px solid #374151',
+        <div style={containerStyle} ref={contentRef}>
+          {!collapsed && (
+            <>
+              <h3 style={{ marginBottom: '8px' }}>IMPACT Quick Query</h3>
+              <form onSubmit={handleSubmit}>
+                <label htmlFor="ai-query" style={{ display: 'none' }}>Query</label>
+                <input
+                  id="ai-query"
+                  type="text"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Search contracts, budgets, POs..."
+                  disabled={loading}
+                  style={{
+                    padding: '10px',
+                    width: '100%',
+                    borderRadius: '6px',
+                    border: '1px solid #374151',
+                    marginBottom: '10px',
+                    backgroundColor: loading ? '#374151' : '#fff',
+                    color: loading ? '#9ca3af' : '#000'
+                  }}
+                />
+                <div style={{
                   marginBottom: '10px',
-                  backgroundColor: loading ? '#374151' : '#fff',
-                  color: loading ? '#9ca3af' : '#000'
-                }}
-              />
-              <div style={{
-                marginBottom: '10px',
-                display: 'flex',
-                flexWrap: 'wrap',
-                gap: '6px'
-              }}>
-                {suggestions.map((s, i) => (
-                  <button
-                    key={i}
-                    type="button"
-                    style={suggestionButtonStyle}
-                    onClick={() => handleSuggestionClick(s)}
-                  >
-                    {s}
-                  </button>
-                ))}
-              </div>
-              <button
-                type="submit"
-                disabled={loading}
-                style={{
-                  backgroundColor: '#f97316',
-                  color: '#fff',
-                  border: 'none',
-                  padding: '10px 20px',
-                  borderRadius: '6px',
-                  cursor: loading ? 'not-allowed' : 'pointer'
-                }}
-              >
-                {loading ? 'Searching…' : buttonLabel}
-              </button>
-            </form>
-            {response && (
-              <div
-                style={{
-                  marginTop: '10px',
-                  backgroundColor: '#111827',
-                  padding: '10px',
-                  borderRadius: '8px',
-                  minHeight: '50px'
-                }}
-              >
-                {response}
-              </div>
-            )}
-          </>
-        )}
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: '6px'
+                }}>
+                  {suggestions.map((s, i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      style={suggestionButtonStyle}
+                      onClick={() => handleSuggestionClick(s)}
+                    >
+                      {s}
+                    </button>
+                  ))}
+                </div>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  style={{
+                    backgroundColor: '#f97316',
+                    color: '#fff',
+                    border: 'none',
+                    padding: '10px 20px',
+                    borderRadius: '6px',
+                    cursor: loading ? 'not-allowed' : 'pointer'
+                  }}
+                >
+                  {loading ? 'Searching…' : buttonLabel}
+                </button>
+              </form>
+              {response && (
+                <div
+                  style={{
+                    marginTop: '10px',
+                    backgroundColor: '#111827',
+                    padding: '10px',
+                    borderRadius: '8px',
+                    minHeight: '50px'
+                  }}
+                >
+                  {response}
+                </div>
+              )}
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
