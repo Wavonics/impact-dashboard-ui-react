@@ -1,10 +1,10 @@
 // data/dummyData.js
 const dummyData = {
   metrics: [
-    { label: 'Total Budget', value: '$5,000,000', icon: 'money', color: '#f97316' },
-    { label: 'Active Contracts', value: '87', icon: 'contracts', color: '#3b82f6' },
-    { label: 'Procurement Methods', value: '5', icon: 'procurement', color: '#10b981' },
-    { label: 'Active Projects', value: '12', icon: 'projects', color: '#ef4444' },
+    { label: "Contracts", value: 12, iconKey: "contracts", color: "#f97316" },
+    { label: "Budget", value: "$1.2M", iconKey: "money", color: "#10b981" },
+    { label: "POs", value: 50, iconKey: "po", color: "#3b82f6" },
+    { label: "Projects", value: 8, iconKey: "projects", color: "#ef4444" },
   ],
   alerts: [
     { id: 1, message: 'Contract #123 expires in 5 days.' },
