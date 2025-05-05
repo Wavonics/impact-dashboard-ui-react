@@ -2,24 +2,10 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
-  FaHome,
-  FaCubes,
-  FaFileContract,
-  FaProjectDiagram,
-  FaFileInvoice,
-  FaMoneyBillWave,
-  FaWarehouse,
-  FaClipboardList,
-  FaPiggyBank,
-  FaBuilding,
-  FaLightbulb,
-  FaHistory,
-  FaBell,
-  FaComments,
-  FaMoon,
-  FaSun,
-  FaUserCircle,
-  FaSignOutAlt
+  FaHome, FaCubes, FaFileContract, FaProjectDiagram, FaFileInvoice,
+  FaMoneyBillWave, FaWarehouse, FaClipboardList, FaPiggyBank, FaBuilding,
+  FaLightbulb, FaHistory, FaBell, FaComments, FaMoon, FaSun,
+  FaUserCircle, FaSignOutAlt
 } from 'react-icons/fa';
 import { ThemeContext } from '../ThemeContext';
 import { auth } from '../firebase';
@@ -32,33 +18,29 @@ export default function NavBar() {
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
-      if (currentUser && currentUser.photoURL) {
-        setProfilePic(currentUser.photoURL);
-      }
+      if (currentUser?.photoURL) setProfilePic(currentUser.photoURL);
     });
     return unsubscribe;
   }, []);
 
   const navStyle = {
-    padding: '16px 0',
     backgroundColor: theme === 'dark' ? '#0f172a' : '#e5e7eb',
     color: theme === 'dark' ? '#fff' : '#111827',
-    height: '100vh',
+    minHeight: '100vh',
     width: '240px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     borderRight: '1px solid #1f2937',
     boxSizing: 'border-box',
-    fontFamily: "'Inter', 'Segoe UI', 'Helvetica', sans-serif'"
+    paddingTop: '16px'
   };
 
   const logoContainerStyle = {
     border: '2px solid #f97316',
     borderRadius: '8px',
     padding: '8px',
-    marginTop: '18px',
-    marginBottom: '8px',
+    margin: '18px 0 8px',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -67,7 +49,6 @@ export default function NavBar() {
 
   const logoStyle = {
     width: '225px',
-    height: 'auto',
     objectFit: 'contain'
   };
 
@@ -77,44 +58,15 @@ export default function NavBar() {
     textAlign: 'center',
     maxWidth: '200px',
     marginBottom: '22px',
-    fontWeight: '700',
+    fontWeight: 700,
     letterSpacing: '0.4px',
     lineHeight: '1.4'
   };
 
-  const listStyle = {
-    listStyle: 'none',
-    padding: 0,
-    width: '100%',
-    margin: 0,
-    flexGrow: 1
-  };
-
-  const linkStyle = (path, isHovered) => ({
-    display: 'flex',
-    alignItems: 'center',
-    textDecoration: 'none',
-    color: theme === 'dark' ? '#fff' : '#111827',
-    fontSize: '15px',
-    padding: '10px 18px',
-    borderLeft: '4px solid', // always reserve 4px
-    borderLeftColor: location.pathname === path || isHovered ? '#f97316' : 'transparent',
-    backgroundColor:
-      location.pathname === path
-        ? (theme === 'dark' ? '#1f2937' : '#f3f4f6')
-        : isHovered
-        ? (theme === 'dark' ? '#1f2937' : '#f9fafb')
-        : 'transparent',
-    fontWeight: location.pathname === path ? '600' : '500',
-    transition: 'all 0.2s ease',
-    marginBottom: '3px',
-    width: '100%',
-    boxSizing: 'border-box',
-    cursor: 'pointer'
-  });
+  const listStyle = { listStyle: 'none', padding: 0, margin: 0, width: '100%', flexGrow: 1 };
 
   const iconColors = {
-    '/': theme === 'dark' ? '#ffffff' : '#111827',
+    '/': theme === 'dark' ? '#fff' : '#111827',
     '/assets': '#00ff00',
     '/contracts': '#f97316',
     '/projects': '#00ffff',
@@ -131,6 +83,29 @@ export default function NavBar() {
     '/profile': '#fb923c'
   };
 
+  const linkStyle = (path, hovered) => ({
+    display: 'flex',
+    alignItems: 'center',
+    textDecoration: 'none',
+    color: theme === 'dark' ? '#fff' : '#111827',
+    fontSize: '15px',
+    padding: '10px 18px',
+    borderLeft: '4px solid',
+    borderLeftColor: location.pathname === path || hovered ? '#f97316' : 'transparent',
+    backgroundColor:
+      location.pathname === path
+        ? theme === 'dark' ? '#1f2937' : '#f3f4f6'
+        : hovered
+        ? theme === 'dark' ? '#1f2937' : '#f9fafb'
+        : 'transparent',
+    fontWeight: location.pathname === path ? '600' : '500',
+    transition: 'all 0.2s ease',
+    marginBottom: '3px',
+    width: '100%',
+    boxSizing: 'border-box',
+    cursor: 'pointer'
+  });
+
   const iconStyle = (path) => ({
     marginRight: '8px',
     fontSize: '20px',
@@ -141,7 +116,7 @@ export default function NavBar() {
     display: 'flex',
     justifyContent: 'space-between',
     width: '80%',
-    marginTop: '18px',
+    margin: '18px 0',
     gap: '10px'
   };
 
@@ -198,14 +173,14 @@ export default function NavBar() {
 
       <ul style={listStyle}>
         {navItems.map((item) => {
-          const [isHovered, setIsHovered] = useState(false);
+          const [hovered, setHovered] = useState(false);
           return (
             <li key={item.path}>
               <Link
                 to={item.path}
-                style={linkStyle(item.path, isHovered)}
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
+                style={linkStyle(item.path, hovered)}
+                onMouseEnter={() => setHovered(true)}
+                onMouseLeave={() => setHovered(false)}
               >
                 <span style={iconStyle(item.path)}>{item.icon}</span>
                 {item.label}
@@ -217,9 +192,7 @@ export default function NavBar() {
 
       <div style={buttonRowStyle}>
         <button
-          onClick={() => {
-            auth.signOut().then(() => navigate('/login'));
-          }}
+          onClick={() => auth.signOut().then(() => navigate('/login'))}
           style={smallButtonStyle}
           title="Logout"
         >
