@@ -1,128 +1,189 @@
 const dummyData = {
   metrics: [
-    { 
-      label: 'Total Assets', value: 120, iconKey: 'cubes', color: '#00ff00', tooltip: 'Total assets tracked in the system',
+    {
+      label: 'Total Assets',
+      value: 120,
+      iconKey: 'assets',
+      color: '#00ff00',
+      tooltip: 'Total assets tracked in the system',
       chartType: 'bar',
-      xAxisKey: 'category', yAxisKey: 'count',
+      xAxisKey: 'x',
+      yAxisKey: 'y',
       chartData: [
-        { category: 'Servers', count: 40 },
-        { category: 'Laptops', count: 50 },
-        { category: 'Network', count: 30 }
+        { x: 'Servers', y: 40 },
+        { x: 'Laptops', y: 50 },
+        { x: 'Network', y: 30 }
       ]
     },
-    { 
-      label: 'Total Contracts', value: 58, iconKey: 'fileContract', color: '#f97316', tooltip: 'Total vendor contracts managed',
+    {
+      label: 'Total Contracts',
+      value: 58,
+      iconKey: 'contracts',
+      color: '#f97316',
+      tooltip: 'Total vendor contracts managed',
       chartType: 'line',
-      xAxisKey: 'quarter', yAxisKey: 'contracts',
+      xAxisKey: 'x',
+      yAxisKey: 'y',
       chartData: [
-        { quarter: 'Q1', contracts: 10 },
-        { quarter: 'Q2', contracts: 15 },
-        { quarter: 'Q3', contracts: 20 },
-        { quarter: 'Q4', contracts: 13 }
+        { x: 'Q1', y: 10 },
+        { x: 'Q2', y: 15 },
+        { x: 'Q3', y: 20 },
+        { x: 'Q4', y: 13 }
       ]
     },
-    { 
-      label: 'Active Projects', value: 14, iconKey: 'projectDiagram', color: '#00ffff', tooltip: 'Ongoing strategic and CIP projects',
+    {
+      label: 'Active Projects',
+      value: 14,
+      iconKey: 'projects',
+      color: '#00ffff',
+      tooltip: 'Ongoing strategic and CIP projects',
       chartType: 'pie',
-      xAxisKey: null, yAxisKey: null,
+      xAxisKey: 'name', // pie charts use nameKey and value
+      yAxisKey: 'value',
       chartData: [
         { name: 'In Progress', value: 8 },
         { name: 'Planned', value: 4 },
         { name: 'Completed', value: 2 }
       ]
     },
-    { 
-      label: 'Open POs', value: 22, iconKey: 'fileInvoice', color: '#0000ff', tooltip: 'Purchase Orders awaiting processing',
+    {
+      label: 'Open POs',
+      value: 22,
+      iconKey: 'po',
+      color: '#0000ff',
+      tooltip: 'Purchase Orders awaiting processing',
       chartType: 'bar',
-      xAxisKey: 'month', yAxisKey: 'poCount',
+      xAxisKey: 'x',
+      yAxisKey: 'y',
       chartData: [
-        { month: 'Jan', poCount: 3 },
-        { month: 'Feb', poCount: 5 },
-        { month: 'Mar', poCount: 7 },
-        { month: 'Apr', poCount: 4 }
+        { x: 'Jan', y: 3 },
+        { x: 'Feb', y: 5 },
+        { x: 'Mar', y: 7 },
+        { x: 'Apr', y: 4 }
       ]
     },
-    { 
-      label: 'Budget Utilization', value: 75, iconKey: 'moneyBillWave', color: '#10b981', tooltip: 'Overall budget utilization (%)',
+    {
+      label: 'Budget Utilization',
+      value: 75,
+      iconKey: 'money',
+      color: '#10b981',
+      tooltip: 'Overall budget utilization (%)',
       chartType: 'line',
-      xAxisKey: 'quarter', yAxisKey: 'utilization',
+      xAxisKey: 'x',
+      yAxisKey: 'y',
       chartData: [
-        { quarter: 'Q1', utilization: 60 },
-        { quarter: 'Q2', utilization: 70 },
-        { quarter: 'Q3', utilization: 80 },
-        { quarter: 'Q4', utilization: 75 }
+        { x: 'Q1', y: 60 },
+        { x: 'Q2', y: 70 },
+        { x: 'Q3', y: 80 },
+        { x: 'Q4', y: 75 }
       ]
     },
-    { 
-      label: 'Budget Line Utilization', value: 82, iconKey: 'moneyBillWaveAlt', color: '#fb923c', tooltip: 'Budget line-level utilization (%)',
+    {
+      label: 'Budget Line Utilization',
+      value: 82,
+      iconKey: 'money',
+      color: '#fb923c',
+      tooltip: 'Budget line-level utilization (%)',
       chartType: 'bar',
-      xAxisKey: 'line', yAxisKey: 'utilization',
+      xAxisKey: 'x',
+      yAxisKey: 'y',
       chartData: [
-        { line: 'Line A', utilization: 90 },
-        { line: 'Line B', utilization: 85 },
-        { line: 'Line C', utilization: 70 }
+        { x: 'Line A', y: 90 },
+        { x: 'Line B', y: 85 },
+        { x: 'Line C', y: 70 }
       ]
     },
-    { 
-      label: 'Expiring Contracts (30d)', value: 5, iconKey: 'fileContract', color: '#facc15', tooltip: 'Contracts expiring within 30 days', badge: '⚠️',
+    {
+      label: 'Expiring Contracts (30d)',
+      value: 5,
+      iconKey: 'contracts',
+      color: '#facc15',
+      tooltip: 'Contracts expiring within 30 days',
+      badge: '⚠️',
       chartType: 'pie',
-      xAxisKey: null, yAxisKey: null,
+      xAxisKey: 'name',
+      yAxisKey: 'value',
       chartData: [
         { name: 'Vendor A', value: 2 },
         { name: 'Vendor B', value: 1 },
         { name: 'Vendor C', value: 2 }
       ]
     },
-    { 
-      label: 'Pending Procurement Requests', value: 8, iconKey: 'clipboardList', color: '#fb923c', tooltip: 'Procurement requests not finalized',
+    {
+      label: 'Pending Procurement Requests',
+      value: 8,
+      iconKey: 'procurement',
+      color: '#fb923c',
+      tooltip: 'Procurement requests not finalized',
       chartType: 'bar',
-      xAxisKey: 'department', yAxisKey: 'requests',
+      xAxisKey: 'x',
+      yAxisKey: 'y',
       chartData: [
-        { department: 'IT', requests: 3 },
-        { department: 'Finance', requests: 2 },
-        { department: 'Public Works', requests: 3 }
+        { x: 'IT', y: 3 },
+        { x: 'Finance', y: 2 },
+        { x: 'Public Works', y: 3 }
       ]
     },
-    { 
-      label: 'Registered Vendors', value: 132, iconKey: 'building', color: '#8b5cf6', tooltip: 'Vendors registered in the procurement system',
+    {
+      label: 'Registered Vendors',
+      value: 132,
+      iconKey: 'building',
+      color: '#8b5cf6',
+      tooltip: 'Vendors registered in the procurement system',
       chartType: 'line',
-      xAxisKey: 'month', yAxisKey: 'vendorCount',
+      xAxisKey: 'x',
+      yAxisKey: 'y',
       chartData: [
-        { month: 'Jan', vendorCount: 120 },
-        { month: 'Feb', vendorCount: 125 },
-        { month: 'Mar', vendorCount: 130 },
-        { month: 'Apr', vendorCount: 132 }
+        { x: 'Jan', y: 120 },
+        { x: 'Feb', y: 125 },
+        { x: 'Mar', y: 130 },
+        { x: 'Apr', y: 132 }
       ]
     },
-    { 
-      label: 'Total Spend YTD', value: '$4.5M', iconKey: 'moneyBill', color: '#0ea5e9', tooltip: 'Total year-to-date spend across contracts and POs',
+    {
+      label: 'Total Spend YTD',
+      value: '$4.5M',
+      iconKey: 'money',
+      color: '#0ea5e9',
+      tooltip: 'Total year-to-date spend across contracts and POs',
       chartType: 'bar',
-      xAxisKey: 'quarter', yAxisKey: 'spend',
+      xAxisKey: 'x',
+      yAxisKey: 'y',
       chartData: [
-        { quarter: 'Q1', spend: 1000000 },
-        { quarter: 'Q2', spend: 1200000 },
-        { quarter: 'Q3', spend: 1300000 },
-        { quarter: 'Q4', spend: 1000000 }
+        { x: 'Q1', y: 1000000 },
+        { x: 'Q2', y: 1200000 },
+        { x: 'Q3', y: 1300000 },
+        { x: 'Q4', y: 1000000 }
       ]
     },
-    { 
-      label: 'Avg. PO Processing Time', value: '7d', iconKey: 'clock', color: '#ec4899', tooltip: 'Average PO processing time in days',
+    {
+      label: 'Avg. PO Processing Time',
+      value: '7d',
+      iconKey: 'clock',
+      color: '#ec4899',
+      tooltip: 'Average PO processing time in days',
       chartType: 'line',
-      xAxisKey: 'month', yAxisKey: 'days',
+      xAxisKey: 'x',
+      yAxisKey: 'y',
       chartData: [
-        { month: 'Jan', days: 8 },
-        { month: 'Feb', days: 7 },
-        { month: 'Mar', days: 6 },
-        { month: 'Apr', days: 7 }
+        { x: 'Jan', y: 8 },
+        { x: 'Feb', y: 7 },
+        { x: 'Mar', y: 6 },
+        { x: 'Apr', y: 7 }
       ]
     },
-    { 
-      label: 'Compliance Issues', value: 1, iconKey: 'exclamationTriangle', color: '#ef4444', tooltip: 'Contracts flagged for compliance review', badge: '⚠️',
+    {
+      label: 'Compliance Issues',
+      value: 1,
+      iconKey: 'alerts',
+      color: '#ef4444',
+      tooltip: 'Contracts flagged for compliance review',
+      badge: '⚠️',
       chartType: 'pie',
-      xAxisKey: null, yAxisKey: null,
+      xAxisKey: 'name',
+      yAxisKey: 'value',
       chartData: [
-        { name: 'Open', value: 1 },
-        { name: 'Resolved', value: 0 }
+        { name: 'Critical', value: 1 }
       ]
     }
   ],
@@ -150,14 +211,7 @@ const dummyData = {
     displayName: 'Nicholas',
     photoURL: '/avatar.png',
     profileComplete: true
-  },
-  chartData: [
-    { department: 'IT', budget: 50000, actual: 42000 },
-    { department: 'Finance', budget: 40000, actual: 38000 },
-    { department: 'HR', budget: 30000, actual: 25000 },
-    { department: 'Procurement', budget: 35000, actual: 33000 },
-    { department: 'Public Works', budget: 60000, actual: 58000 }
-  ]
+  }
 };
 
 export default dummyData;
