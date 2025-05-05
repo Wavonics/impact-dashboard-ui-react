@@ -8,6 +8,7 @@ import AlertsSummary from './AlertsSummary';
 import ContractRenewals from './ContractRenewals';
 import ImpactAssistant from './ImpactAssistant';
 import AIChatBox from './AIChatBox';
+import MetricDetailsModal from './MetricDetailsModal';  // ✅ import modal
 import dummyData from '../data/dummyData';
 import '../DashboardWidgets.css';
 
@@ -20,13 +21,14 @@ export default function DashboardHome() {
   const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [lastUpdated, setLastUpdated] = useState(null);
-
   const [expandedGroups, setExpandedGroups] = useState({
     procurement: true,
     budget: true,
     asset: true,
     other: true
   });
+
+  const [selectedMetric, setSelectedMetric] = useState(null); // ✅ modal state
 
   const navigate = useNavigate();
 
@@ -91,18 +93,9 @@ export default function DashboardHome() {
   const assetMetrics = metrics.filter(m => ['Total Assets'].includes(m.label));
   const additionalMetrics = metrics.filter(m => !['Total Contracts', 'Open POs', 'Budget Utilization', 'Budget Line Utilization', 'Total Assets'].includes(m.label));
 
-  const handleMetricClick = (label) => {
-    console.log(`Clicked metric: ${label}`);
-    navigate(`/metrics/${label.replace(/\s+/g, '-').toLowerCase()}`);
+  const handleMetricClick = (metric) => {
+    setSelectedMetric(metric); // ✅ open modal
   };
-
-  if (loading) {
-    return (
-      <div style={{ ...containerStyle, justifyContent: 'center', alignItems: 'center' }}>
-        <p>Loading dashboard...</p>
-      </div>
-    );
-  }
 
   const renderMetricGroup = (title, metricsArray, groupKey) => (
     <div style={metricsGroupStyle}>
@@ -133,14 +126,22 @@ export default function DashboardHome() {
               iconKey={iconKeyMap[m.label] || 'clipboardList'}
               color={m.color}
               badge={m.badge}
-              tooltip={`Click to view details for ${m.label}`}
-              onClick={() => handleMetricClick(m.label)}
+              tooltip={`Click for details about ${m.label}`}
+              onClick={() => handleMetricClick(m)} // ✅ trigger modal
             />
           ))}
         </div>
       )}
     </div>
   );
+
+  if (loading) {
+    return (
+      <div style={{ ...containerStyle, justifyContent: 'center', alignItems: 'center' }}>
+        <p>Loading dashboard...</p>
+      </div>
+    );
+  }
 
   return (
     <div style={containerStyle}>
@@ -149,7 +150,9 @@ export default function DashboardHome() {
           {profileData?.photoURL && (
             <img src={profileData.photoURL} alt="Profile" style={{ width: '40px', height: '40px', borderRadius: '50%' }} />
           )}
-          <h1 style={{ fontSize: '22px', fontWeight: '700' }}>Welcome back, {profileData?.displayName || 'User'}!</h1>
+          <h1 style={{ fontSize: '22px', fontWeight: '700' }}>
+            Welcome back, {profileData?.displayName || 'User'}!
+          </h1>
           <span style={{
             backgroundColor: profileData?.profileComplete ? '#10b981' : '#ef4444',
             color: '#fff',
@@ -201,6 +204,18 @@ export default function DashboardHome() {
         <div className="widget-container"><ImpactAssistant /></div>
         <div className="widget-container"><AIChatBox /></div>
       </div>
+
+      {/* ✅ modal rendering */}
+      {selectedMetric && (
+        <MetricDetailsModal
+          metric={selectedMetric}
+          onClose={() => setSelectedMetric(null)}
+          onNavigate={() => {
+            setSelectedMetric(null);
+            navigate(`/metrics/${selectedMetric.label.replace(/\s+/g, '-').toLowerCase()}`);
+          }}
+        />
+      )}
     </div>
   );
 }
