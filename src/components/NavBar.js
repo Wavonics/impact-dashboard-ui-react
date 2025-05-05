@@ -90,17 +90,21 @@ export default function NavBar() {
     flexGrow: 1
   };
 
-  const linkStyle = (path) => ({
+  const linkStyle = (path, isHovered) => ({
     display: 'flex',
     alignItems: 'center',
     textDecoration: 'none',
     color: theme === 'dark' ? '#fff' : '#111827',
     fontSize: '15px',
     padding: '10px 18px',
-    borderLeft: location.pathname === path ? '4px solid #f97316' : '4px solid transparent',
-    backgroundColor: location.pathname === path
-      ? (theme === 'dark' ? '#1f2937' : '#d1d5db')
-      : 'transparent',
+    borderLeft: '4px solid', // always reserve 4px
+    borderLeftColor: location.pathname === path || isHovered ? '#f97316' : 'transparent',
+    backgroundColor:
+      location.pathname === path
+        ? (theme === 'dark' ? '#1f2937' : '#f3f4f6')
+        : isHovered
+        ? (theme === 'dark' ? '#1f2937' : '#f9fafb')
+        : 'transparent',
     fontWeight: location.pathname === path ? '600' : '500',
     transition: 'all 0.2s ease',
     marginBottom: '3px',
@@ -149,6 +153,24 @@ export default function NavBar() {
     cursor: 'pointer'
   };
 
+  const navItems = [
+    { path: '/', label: 'Home', icon: <FaHome /> },
+    { path: '/assets', label: 'Assets', icon: <FaCubes /> },
+    { path: '/contracts', label: 'Contracts', icon: <FaFileContract /> },
+    { path: '/projects', label: 'Projects', icon: <FaProjectDiagram /> },
+    { path: '/po', label: 'Purchase Orders', icon: <FaFileInvoice /> },
+    { path: '/budget-lines', label: 'Budget Lines', icon: <FaMoneyBillWave /> },
+    { path: '/ownership', label: 'Ownership', icon: <FaWarehouse /> },
+    { path: '/procurement-methods', label: 'Procurement Methods', icon: <FaClipboardList /> },
+    { path: '/funding-sources', label: 'Funding Sources', icon: <FaPiggyBank /> },
+    { path: '/departments', label: 'Departments', icon: <FaBuilding /> },
+    { path: '/strategic-plans', label: 'Strategic Plans', icon: <FaLightbulb /> },
+    { path: '/audit-logs', label: 'Audit Logs', icon: <FaHistory /> },
+    { path: '/alerts', label: 'Alerts', icon: <FaBell /> },
+    { path: '/assistant', label: 'Assistant', icon: <FaComments /> },
+    { path: '/profile', label: 'Profile', icon: <FaUserCircle /> }
+  ];
+
   return (
     <nav style={navStyle}>
       <div style={logoContainerStyle}>
@@ -175,81 +197,22 @@ export default function NavBar() {
       </p>
 
       <ul style={listStyle}>
-        <li>
-          <Link to="/" style={linkStyle('/')}>
-            <FaHome style={iconStyle('/')} /> Home
-          </Link>
-        </li>
-        <li>
-          <Link to="/assets" style={linkStyle('/assets')}>
-            <FaCubes style={iconStyle('/assets')} /> Assets
-          </Link>
-        </li>
-        <li>
-          <Link to="/contracts" style={linkStyle('/contracts')}>
-            <FaFileContract style={iconStyle('/contracts')} /> Contracts
-          </Link>
-        </li>
-        <li>
-          <Link to="/projects" style={linkStyle('/projects')}>
-            <FaProjectDiagram style={iconStyle('/projects')} /> Projects
-          </Link>
-        </li>
-        <li>
-          <Link to="/po" style={linkStyle('/po')}>
-            <FaFileInvoice style={iconStyle('/po')} /> Purchase Orders
-          </Link>
-        </li>
-        <li>
-          <Link to="/budget-lines" style={linkStyle('/budget-lines')}>
-            <FaMoneyBillWave style={iconStyle('/budget-lines')} /> Budget Lines
-          </Link>
-        </li>
-        <li>
-          <Link to="/ownership" style={linkStyle('/ownership')}>
-            <FaWarehouse style={iconStyle('/ownership')} /> Ownership
-          </Link>
-        </li>
-        <li>
-          <Link to="/procurement-methods" style={linkStyle('/procurement-methods')}>
-            <FaClipboardList style={iconStyle('/procurement-methods')} /> Procurement Methods
-          </Link>
-        </li>
-        <li>
-          <Link to="/funding-sources" style={linkStyle('/funding-sources')}>
-            <FaPiggyBank style={iconStyle('/funding-sources')} /> Funding Sources
-          </Link>
-        </li>
-        <li>
-          <Link to="/departments" style={linkStyle('/departments')}>
-            <FaBuilding style={iconStyle('/departments')} /> Departments
-          </Link>
-        </li>
-        <li>
-          <Link to="/strategic-plans" style={linkStyle('/strategic-plans')}>
-            <FaLightbulb style={iconStyle('/strategic-plans')} /> Strategic Plans
-          </Link>
-        </li>
-        <li>
-          <Link to="/audit-logs" style={linkStyle('/audit-logs')}>
-            <FaHistory style={iconStyle('/audit-logs')} /> Audit Logs
-          </Link>
-        </li>
-        <li>
-          <Link to="/alerts" style={linkStyle('/alerts')}>
-            <FaBell style={iconStyle('/alerts')} /> Alerts
-          </Link>
-        </li>
-        <li>
-          <Link to="/assistant" style={linkStyle('/assistant')}>
-            <FaComments style={iconStyle('/assistant')} /> Assistant
-          </Link>
-        </li>
-        <li>
-          <Link to="/profile" style={linkStyle('/profile')}>
-            <FaUserCircle style={iconStyle('/profile')} /> Profile
-          </Link>
-        </li>
+        {navItems.map((item) => {
+          const [isHovered, setIsHovered] = useState(false);
+          return (
+            <li key={item.path}>
+              <Link
+                to={item.path}
+                style={linkStyle(item.path, isHovered)}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+              >
+                <span style={iconStyle(item.path)}>{item.icon}</span>
+                {item.label}
+              </Link>
+            </li>
+          );
+        })}
       </ul>
 
       <div style={buttonRowStyle}>
@@ -268,5 +231,5 @@ export default function NavBar() {
         </button>
       </div>
     </nav>
-);
+  );
 }
