@@ -1,11 +1,17 @@
 const dummyData = {
   metrics: [
-    { label: 'Total Assets', value: 120, color: '#00ff00' },
-    { label: 'Total Contracts', value: 58, color: '#f97316' },
-    { label: 'Active Projects', value: 14, color: '#00ffff' },
-    { label: 'Open POs', value: 22, color: '#0000ff' },
-    { label: 'Budget Utilization', value: 75, color: '#10b981' },
-    { label: 'Budget Line Utilization', value: 82, color: '#fb923c' }
+    { label: 'Total Assets', value: 120, iconKey: 'cubes', color: '#00ff00', tooltip: 'Total assets tracked in the system' },
+    { label: 'Total Contracts', value: 58, iconKey: 'fileContract', color: '#f97316', tooltip: 'Total vendor contracts managed' },
+    { label: 'Active Projects', value: 14, iconKey: 'projectDiagram', color: '#00ffff', tooltip: 'Ongoing strategic and CIP projects' },
+    { label: 'Open POs', value: 22, iconKey: 'fileInvoice', color: '#0000ff', tooltip: 'Purchase Orders awaiting processing' },
+    { label: 'Budget Utilization', value: 75, iconKey: 'moneyBillWave', color: '#10b981', tooltip: 'Overall budget utilization (%)' },
+    { label: 'Budget Line Utilization', value: 82, iconKey: 'moneyBillWaveAlt', color: '#fb923c', tooltip: 'Budget line-level utilization (%)' },
+    { label: 'Expiring Contracts (30d)', value: 5, iconKey: 'fileContract', color: '#facc15', tooltip: 'Contracts expiring within 30 days', badge: '⚠️' },
+    { label: 'Pending Procurement Requests', value: 8, iconKey: 'clipboardList', color: '#fb923c', tooltip: 'Procurement requests not finalized' },
+    { label: 'Registered Vendors', value: 132, iconKey: 'building', color: '#8b5cf6', tooltip: 'Vendors registered in the procurement system' },
+    { label: 'Total Spend YTD', value: '$4.5M', iconKey: 'moneyBill', color: '#0ea5e9', tooltip: 'Total year-to-date spend across contracts and POs' },
+    { label: 'Avg. PO Processing Time', value: '7d', iconKey: 'clock', color: '#ec4899', tooltip: 'Average PO processing time in days' },
+    { label: 'Compliance Issues', value: 1, iconKey: 'exclamationTriangle', color: '#ef4444', tooltip: 'Contracts flagged for compliance review', badge: '⚠️' }
   ],
   alerts: [
     { type: 'Critical', date: '2025-04-29', snippet: 'PO #123 exceeded limit.' },
@@ -29,7 +35,7 @@ const dummyData = {
   ],
   userProfile: {
     displayName: 'Nicholas',
-    photoURL: '/avatar.png',  // ✅ path or actual image URL
+    photoURL: '/avatar.png',
     profileComplete: true
   },
   chartData: [
