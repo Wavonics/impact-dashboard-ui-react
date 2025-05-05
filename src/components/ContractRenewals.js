@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+// components/ContractRenewals.js
+import React, { useState, useRef } from 'react';
 import '../DashboardWidgets.css'; // ✅ keep this import
 
 export default function ContractRenewals({ renewals }) {
   const [collapsed, setCollapsed] = useState(false);
+  const contentRef = useRef(null);
 
   const listStyle = {
     listStyle: 'none',
@@ -17,10 +19,20 @@ export default function ContractRenewals({ renewals }) {
     color: '#d1d5db'
   };
 
+  const collapsibleContentStyle = {
+    overflow: 'hidden',
+    transition: 'max-height 0.4s ease, opacity 0.4s ease, padding 0.4s ease',
+    maxHeight: collapsed
+      ? '0'
+      : contentRef.current
+      ? `${contentRef.current.scrollHeight}px`
+      : '9999px',
+    opacity: collapsed ? 0 : 1
+  };
+
   return (
     <div className="widget-container contract-renewals-container">
       <h3 style={{ textAlign: 'center', marginBottom: '10px' }}>Upcoming Contract Renewals</h3>
-
       <button
         onClick={() => setCollapsed(!collapsed)}
         style={{
@@ -30,14 +42,16 @@ export default function ContractRenewals({ renewals }) {
           padding: '6px 12px',
           borderRadius: '6px',
           cursor: 'pointer',
+          marginBottom: '10px',
           display: 'block',
-          margin: '0 auto 10px auto'
+          marginLeft: 'auto',
+          marginRight: 'auto'
         }}
       >
         {collapsed ? 'Expand' : 'Collapse'}
       </button>
 
-      {!collapsed && (
+      <div style={collapsibleContentStyle} ref={contentRef}>
         <ul style={listStyle}>
           {renewals.length > 0 ? (
             renewals.map((r, idx) => (
@@ -49,7 +63,7 @@ export default function ContractRenewals({ renewals }) {
             <li style={{ color: '#9ca3af' }}>No upcoming renewals</li>
           )}
         </ul>
-      )}
+      </div>
     </div>
   );
 }
