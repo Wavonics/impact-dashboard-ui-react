@@ -108,26 +108,36 @@ export default function DashboardHome() {
     );
   }
 
-  // 👉 Select a metric to visualize in "Trends & Insights"
-  const trendsMetric = metrics.find(m => m.label === 'Budget Utilization') || metrics[0];
+  // 🔥 COMBINE CHART DATA FROM ALL 'line' CHART METRICS
+  const lineMetrics = metrics.filter(m => m.chartType === 'line');
+  const combinedData = {};
+
+  lineMetrics.forEach(metric => {
+    metric.chartData.forEach(point => {
+      const xKey = point[metric.xAxisKey];
+      if (!combinedData[xKey]) combinedData[xKey] = { [metric.xAxisKey]: xKey };
+      combinedData[xKey][metric.label] = point[metric.yAxisKey];
+    });
+  });
+
+  const combinedChartData = Object.values(combinedData);
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '3fr 1fr', gap: '20px', padding: '20px', backgroundColor: '#111827', color: '#fff', minHeight: '100vh' }}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-        {/* ✅ profile header, buttons, etc */}
         {renderMetricGroup('Procurement Metrics', procurementMetrics, 'procurement')}
         {renderMetricGroup('Budget Metrics', budgetMetrics, 'budget')}
         {renderMetricGroup('Asset Metrics', assetMetrics, 'asset')}
         {additionalMetrics.length > 0 && renderMetricGroup('Other Metrics', additionalMetrics, 'other')}
 
         <h2 style={{ color: '#f97316', fontSize: '18px', fontWeight: '600', margin: '10px 0' }}>Trends & Insights</h2>
-        {trendsMetric ? (
+        {combinedChartData.length > 0 ? (
           <DashboardChart
-            data={trendsMetric.chartData}
-            chartType={trendsMetric.chartType}
-            xAxisKey={trendsMetric.xAxisKey}
-            yAxisKey={trendsMetric.yAxisKey}
-            title={`Trends & Insights: ${trendsMetric.label}`}
+            data={combinedChartData}
+            chartType="line"
+            xAxisKey={lineMetrics[0]?.xAxisKey || 'x'}
+            yAxisKey={lineMetrics.map(m => m.label)}  // pass array of keys for multiple lines
+            title="Trends & Insights (Combined)"
           />
         ) : (
           <p style={{ color: '#9ca3af' }}>No data available</p>
