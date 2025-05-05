@@ -19,9 +19,21 @@ export default function AlertsSummary({ alerts }) {
 
   return (
     <div className="widget-container alerts-summary-container">
-      <div className="widget-header">
-        <h3>Alerts Summary</h3>
-        <button className="widget-toggle" onClick={() => setCollapsed(!collapsed)}>
+      <h3 style={{ textAlign: 'center', marginBottom: '10px' }}>Alerts Summary</h3>
+
+      {/* ✅ centered button */}
+      <div style={{ textAlign: 'center', marginBottom: '10px' }}>
+        <button
+          onClick={() => setCollapsed(!collapsed)}
+          style={{
+            backgroundColor: '#f97316',
+            color: '#fff',
+            border: 'none',
+            padding: '6px 12px',
+            borderRadius: '6px',
+            cursor: 'pointer'
+          }}
+        >
           {collapsed ? 'Expand' : 'Collapse'}
         </button>
       </div>
