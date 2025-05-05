@@ -1,6 +1,6 @@
 // components/DashboardHome.js
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import DashboardMetricCard from './DashboardMetricCard';
 import DashboardChart from './DashboardChart';
 import ProjectPlanningTable from './ProjectPlanningTable';
@@ -21,6 +21,15 @@ export default function DashboardHome() {
   const [loading, setLoading] = useState(true);
   const [lastUpdated, setLastUpdated] = useState(null);
 
+  const [expandedGroups, setExpandedGroups] = useState({
+    procurement: true,
+    budget: true,
+    asset: true,
+    other: true
+  });
+
+  const navigate = useNavigate();
+
   useEffect(() => {
     setTimeout(() => {
       setMetrics(dummyData.metrics);
@@ -33,6 +42,10 @@ export default function DashboardHome() {
       setLoading(false);
     }, 1000);
   }, []);
+
+  const toggleGroup = (group) => {
+    setExpandedGroups(prev => ({ ...prev, [group]: !prev[group] }));
+  };
 
   const containerStyle = {
     display: 'grid',
@@ -65,6 +78,24 @@ export default function DashboardHome() {
     marginBottom: '20px'
   };
 
+  const iconKeyMap = {
+    'Total Contracts': 'contracts',
+    'Open POs': 'po',
+    'Budget Utilization': 'money',
+    'Budget Line Utilization': 'money',
+    'Total Assets': 'assets'
+  };
+
+  const procurementMetrics = metrics.filter(m => ['Total Contracts', 'Open POs'].includes(m.label));
+  const budgetMetrics = metrics.filter(m => ['Budget Utilization', 'Budget Line Utilization'].includes(m.label));
+  const assetMetrics = metrics.filter(m => ['Total Assets'].includes(m.label));
+  const additionalMetrics = metrics.filter(m => !['Total Contracts', 'Open POs', 'Budget Utilization', 'Budget Line Utilization', 'Total Assets'].includes(m.label));
+
+  const handleMetricClick = (label) => {
+    console.log(`Clicked metric: ${label}`);
+    navigate(`/metrics/${label.replace(/\s+/g, '-').toLowerCase()}`);
+  };
+
   if (loading) {
     return (
       <div style={{ ...containerStyle, justifyContent: 'center', alignItems: 'center' }}>
@@ -73,40 +104,52 @@ export default function DashboardHome() {
     );
   }
 
-  // 🎯 define metric groups
-  const procurementMetrics = metrics.filter(m => ['Total Contracts', 'Open POs'].includes(m.label));
-  const budgetMetrics = metrics.filter(m => ['Budget Utilization', 'Budget Line Utilization'].includes(m.label));
-  const assetMetrics = metrics.filter(m => ['Total Assets'].includes(m.label));
-  const additionalMetrics = metrics.filter(m => ![
-    'Total Contracts',
-    'Open POs',
-    'Budget Utilization',
-    'Budget Line Utilization',
-    'Total Assets'
-  ].includes(m.label));
-
-  // 🎯 iconKey mapping for each label
-  const iconKeyMap = {
-    'Total Contracts': 'contracts',
-    'Open POs': 'po',
-    'Budget Utilization': 'money',
-    'Budget Line Utilization': 'money',
-    'Total Assets': 'assets',
-    'Total Funding': 'funding',
-    'Total Departments': 'departments'
-  };
+  const renderMetricGroup = (title, metricsArray, groupKey) => (
+    <div style={metricsGroupStyle}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h2 style={sectionTitle}>{title}</h2>
+        <button
+          onClick={() => toggleGroup(groupKey)}
+          style={{
+            backgroundColor: '#f97316',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '6px',
+            fontSize: '12px',
+            padding: '4px 8px',
+            cursor: 'pointer'
+          }}
+        >
+          {expandedGroups[groupKey] ? 'Collapse' : 'Expand'}
+        </button>
+      </div>
+      {expandedGroups[groupKey] && (
+        <div style={metricsGrid}>
+          {metricsArray.map(m => (
+            <DashboardMetricCard
+              key={m.label}
+              label={m.label}
+              value={m.value}
+              iconKey={iconKeyMap[m.label] || 'clipboardList'}
+              color={m.color}
+              badge={m.badge}
+              tooltip={`Click to view details for ${m.label}`}
+              onClick={() => handleMetricClick(m.label)}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
 
   return (
     <div style={containerStyle}>
-      {/* Main left column */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           {profileData?.photoURL && (
             <img src={profileData.photoURL} alt="Profile" style={{ width: '40px', height: '40px', borderRadius: '50%' }} />
           )}
-          <h1 style={{ fontSize: '22px', fontWeight: '700', marginBottom: '4px' }}>
-            Welcome back, {profileData?.displayName || 'User'}!
-          </h1>
+          <h1 style={{ fontSize: '22px', fontWeight: '700' }}>Welcome back, {profileData?.displayName || 'User'}!</h1>
           <span style={{
             backgroundColor: profileData?.profileComplete ? '#10b981' : '#ef4444',
             color: '#fff',
@@ -114,12 +157,10 @@ export default function DashboardHome() {
             fontSize: '10px',
             padding: '2px 6px',
             fontWeight: '600'
-          }}>
-            {profileData?.profileComplete ? 'Profile Complete' : 'Incomplete Profile'}
-          </span>
+          }}>{profileData?.profileComplete ? 'Profile Complete' : 'Incomplete Profile'}</span>
         </div>
 
-        <p style={{ fontSize: '14px', color: '#9ca3af', marginBottom: '12px' }}>
+        <p style={{ fontSize: '14px', color: '#9ca3af' }}>
           Your central hub for IT Procurement, Budget Tracking, and Contract Visibility.
         </p>
         <p style={{ fontSize: '12px', color: '#9ca3af', marginTop: '-10px', marginBottom: '10px' }}>
@@ -132,79 +173,10 @@ export default function DashboardHome() {
           <Link to="/projects/new" style={{ backgroundColor: '#f97316', color: '#fff', border: 'none', borderRadius: '6px', padding: '6px 12px', fontSize: '12px', textDecoration: 'none' }}>Add Project</Link>
         </div>
 
-        {/* 🎯 Procurement Metrics */}
-        <div style={metricsGroupStyle}>
-          <h2 style={sectionTitle}>Procurement Metrics</h2>
-          <div style={metricsGrid}>
-            {procurementMetrics.map(m => (
-              <DashboardMetricCard
-                key={m.label}
-                label={m.label}
-                value={m.value}
-                iconKey={iconKeyMap[m.label] || 'contracts'}
-                color={m.color}
-                badge={m.badge}
-                tooltip={`Metric: ${m.label}`}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* 🎯 Budget Metrics */}
-        <div style={metricsGroupStyle}>
-          <h2 style={sectionTitle}>Budget Metrics</h2>
-          <div style={metricsGrid}>
-            {budgetMetrics.map(m => (
-              <DashboardMetricCard
-                key={m.label}
-                label={m.label}
-                value={m.value}
-                iconKey={iconKeyMap[m.label] || 'money'}
-                color={m.color}
-                badge={m.badge}
-                tooltip={`Metric: ${m.label}`}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* 🎯 Asset Metrics */}
-        <div style={metricsGroupStyle}>
-          <h2 style={sectionTitle}>Asset Metrics</h2>
-          <div style={metricsGrid}>
-            {assetMetrics.map(m => (
-              <DashboardMetricCard
-                key={m.label}
-                label={m.label}
-                value={m.value}
-                iconKey={iconKeyMap[m.label] || 'assets'}
-                color={m.color}
-                badge={m.badge}
-                tooltip={`Metric: ${m.label}`}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* 🎯 Additional Metrics */}
-        {additionalMetrics.length > 0 && (
-          <div style={metricsGroupStyle}>
-            <h2 style={sectionTitle}>Other Metrics</h2>
-            <div style={metricsGrid}>
-              {additionalMetrics.map(m => (
-                <DashboardMetricCard
-                  key={m.label}
-                  label={m.label}
-                  value={m.value}
-                  iconKey={iconKeyMap[m.label] || 'clipboardList'}
-                  color={m.color}
-                  badge={m.badge}
-                  tooltip={`Metric: ${m.label}`}
-                />
-              ))}
-            </div>
-          </div>
-        )}
+        {renderMetricGroup('Procurement Metrics', procurementMetrics, 'procurement')}
+        {renderMetricGroup('Budget Metrics', budgetMetrics, 'budget')}
+        {renderMetricGroup('Asset Metrics', assetMetrics, 'asset')}
+        {additionalMetrics.length > 0 && renderMetricGroup('Other Metrics', additionalMetrics, 'other')}
 
         <h2 style={sectionTitle}>Trends & Insights</h2>
         <DashboardChart />
@@ -223,7 +195,6 @@ export default function DashboardHome() {
         </ul>
       </div>
 
-      {/* Right side widgets */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
         <div className="widget-container"><AlertsSummary alerts={alerts} /></div>
         <div className="widget-container"><ContractRenewals renewals={renewals} /></div>
