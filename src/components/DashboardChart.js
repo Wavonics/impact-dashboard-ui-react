@@ -1,4 +1,3 @@
-// components/DashboardChart.js
 import React from 'react';
 import {
   BarChart, Bar,
@@ -9,17 +8,21 @@ import {
 
 const COLORS = ['#f97316', '#3b82f6', '#10b981', '#eab308', '#ef4444'];
 
-export default function DashboardChart({ data, chartType = 'bar', title = 'Metric Details' }) {
+export default function DashboardChart({ data, chartType = 'bar', xAxisKey = 'x', yAxisKey = 'y', title = 'Metric Details' }) {
   const renderChart = () => {
+    if (!data || data.length === 0) {
+      return <p style={{ color: '#9ca3af' }}>No data available</p>;
+    }
+
     switch (chartType) {
       case 'line':
         return (
           <LineChart data={data}>
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-            <XAxis dataKey="x" stroke="#9ca3af" />
+            <XAxis dataKey={xAxisKey} stroke="#9ca3af" />
             <YAxis stroke="#9ca3af" />
             <Tooltip />
-            <Line type="monotone" dataKey="y" stroke="#f97316" />
+            <Line type="monotone" dataKey={yAxisKey} stroke="#f97316" />
           </LineChart>
         );
       case 'pie':
@@ -48,10 +51,10 @@ export default function DashboardChart({ data, chartType = 'bar', title = 'Metri
         return (
           <BarChart data={data}>
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-            <XAxis dataKey="x" stroke="#9ca3af" />
+            <XAxis dataKey={xAxisKey} stroke="#9ca3af" />
             <YAxis stroke="#9ca3af" />
             <Tooltip />
-            <Bar dataKey="y" fill="#f97316" />
+            <Bar dataKey={yAxisKey} fill="#f97316" />
           </BarChart>
         );
     }
