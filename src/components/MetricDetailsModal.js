@@ -1,49 +1,52 @@
 // components/MetricDetailsModal.js
 import React from 'react';
 
-export default function MetricDetailsModal({ metric, onClose }) {
+export default function MetricDetailsModal({ metric, onClose, onNavigate }) {
   if (!metric) return null;
 
-  const overlayStyle = {
+  const modalOverlay = {
     position: 'fixed',
-    top: 0, left: 0, right: 0, bottom: 0,
-    backgroundColor: 'rgba(0,0,0,0.6)',
+    top: 0, left: 0,
+    width: '100vw', height: '100vh',
+    backgroundColor: 'rgba(0,0,0,0.5)',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    zIndex: 999
+    zIndex: 1000
   };
 
-  const modalStyle = {
+  const modalContent = {
     backgroundColor: '#1f2937',
     color: '#fff',
     padding: '20px',
     borderRadius: '12px',
     width: '90%',
     maxWidth: '400px',
-    boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
-    position: 'relative'
+    textAlign: 'center',
+    boxShadow: '0 4px 16px rgba(0,0,0,0.5)'
   };
 
-  const closeButton = {
-    position: 'absolute',
-    top: '10px',
-    right: '10px',
-    background: 'transparent',
-    border: 'none',
+  const buttonStyle = {
+    backgroundColor: '#f97316',
     color: '#fff',
-    fontSize: '20px',
-    cursor: 'pointer'
+    border: 'none',
+    borderRadius: '6px',
+    padding: '8px 16px',
+    margin: '10px 5px',
+    cursor: 'pointer',
+    fontSize: '14px'
   };
 
   return (
-    <div style={overlayStyle} onClick={onClose}>
-      <div style={modalStyle} onClick={e => e.stopPropagation()}>
-        <button style={closeButton} onClick={onClose}>&times;</button>
+    <div style={modalOverlay} onClick={onClose}>
+      <div style={modalContent} onClick={e => e.stopPropagation()}>
         <h2>{metric.label}</h2>
         <p><strong>Value:</strong> {metric.value}</p>
-        <p><strong>Color:</strong> {metric.color}</p>
-        <p>Additional details or insights about <em>{metric.label}</em> can go here.</p>
+        <p><em>{metric.tooltip || 'Additional info about this metric.'}</em></p>
+        <div>
+          <button style={buttonStyle} onClick={onClose}>Close</button>
+          <button style={buttonStyle} onClick={onNavigate}>View More</button>
+        </div>
       </div>
     </div>
   );
