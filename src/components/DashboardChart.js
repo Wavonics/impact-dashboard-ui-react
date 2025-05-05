@@ -1,14 +1,11 @@
 // components/DashboardChart.js
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import dummyData from '../data/dummyData';
 
-export default function DashboardChart() {
-  const data = dummyData.chartData;
-
+export default function DashboardChart({ data, title = 'Budget vs Actual' }) {
   return (
     <div style={{ backgroundColor: '#1f2937', borderRadius: '12px', padding: '20px', color: '#fff' }}>
-      <h3 style={{ marginBottom: '10px' }}>Budget vs Actual</h3>
+      <h3 style={{ marginBottom: '10px' }}>{title}</h3>
       <ResponsiveContainer width="100%" height={300}>
         <BarChart data={data}>
           <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
