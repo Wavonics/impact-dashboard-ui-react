@@ -1,7 +1,9 @@
-import React from 'react';
-import '../DashboardWidgets.css'; // ✅ CSS import stays
+import React, { useState } from 'react';
+import '../DashboardWidgets.css'; // ✅ CSS import
 
 export default function AlertsSummary({ alerts }) {
+  const [collapsed, setCollapsed] = useState(false);
+
   const listStyle = {
     listStyle: 'none',
     paddingLeft: 0,
@@ -17,14 +19,22 @@ export default function AlertsSummary({ alerts }) {
 
   return (
     <div className="widget-container alerts-summary-container">
-      <h3 style={{ textAlign: 'center', marginBottom: '10px' }}>Alerts Summary</h3>
-      <ul style={listStyle}>
-        {alerts.length > 0 ? alerts.map((a, idx) => (
-          <li key={idx} style={listItemStyle}>{a.message}</li>
-        )) : (
-          <li style={{ color: '#9ca3af' }}>No alerts</li>
-        )}
-      </ul>
+      <div className="widget-header">
+        <h3>Alerts Summary</h3>
+        <button className="widget-toggle" onClick={() => setCollapsed(!collapsed)}>
+          {collapsed ? 'Expand' : 'Collapse'}
+        </button>
+      </div>
+
+      {!collapsed && (
+        <ul style={listStyle}>
+          {alerts.length > 0 ? alerts.map((a, idx) => (
+            <li key={idx} style={listItemStyle}>{a.message}</li>
+          )) : (
+            <li style={{ color: '#9ca3af' }}>No alerts</li>
+          )}
+        </ul>
+      )}
     </div>
   );
 }
