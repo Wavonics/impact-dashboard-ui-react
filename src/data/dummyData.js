@@ -100,4 +100,52 @@ const dummyData = {
       chartType: 'line',
       chartData: [
         { x: 'Jan', y: 8 },
-        { x: 'Feb',
+        { x: 'Feb', y: 7 },
+        { x: 'Mar', y: 6 },
+        { x: 'Apr', y: 7 }
+      ]
+    },
+    { 
+      label: 'Compliance Issues', value: 1, iconKey: 'exclamationTriangle', color: '#ef4444', tooltip: 'Contracts flagged for compliance review', badge: '⚠️',
+      chartType: 'pie',
+      chartData: [
+        { name: 'Open', value: 1 },
+        { name: 'Resolved', value: 0 }
+      ]
+    }
+  ],
+  alerts: [
+    { type: 'Critical', date: '2025-04-29', snippet: 'PO #123 exceeded limit.' },
+    { type: 'Warning', date: '2025-04-28', snippet: 'Contract expiring soon.' }
+  ],
+  contractRenewals: [
+    { contract: 'Vendor ABC', expiryDate: '2025-05-30', daysLeft: 31 },
+    { contract: 'Vendor XYZ', expiryDate: '2025-06-15', daysLeft: 47 }
+  ],
+  projects: [
+    { name: 'PIP-001 Upgrade', status: 'In Progress' },
+    { name: 'Enhancement-004', status: 'Planned' },
+    { name: 'CIP-12 Water Plant', status: 'Completed' }
+  ],
+  activities: [
+    'Added Contract ABC',
+    'Approved PO #456',
+    'Updated Project CIP-12',
+    'Added new Asset IT-Server',
+    'User John updated profile'
+  ],
+  userProfile: {
+    displayName: 'Nicholas',
+    photoURL: '/avatar.png',
+    profileComplete: true
+  },
+  chartData: [
+    { department: 'IT', budget: 50000, actual: 42000 },
+    { department: 'Finance', budget: 40000, actual: 38000 },
+    { department: 'HR', budget: 30000, actual: 25000 },
+    { department: 'Procurement', budget: 35000, actual: 33000 },
+    { department: 'Public Works', budget: 60000, actual: 58000 }
+  ]
+};
+
+export default dummyData;
