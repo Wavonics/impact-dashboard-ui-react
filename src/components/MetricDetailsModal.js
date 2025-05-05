@@ -1,5 +1,5 @@
 import React from 'react';
-import DashboardChart from './DashboardChart';
+import DashboardChart from './DashboardChart'; // ✅ Import your chart component
 
 export default function MetricDetailsModal({ metric, onClose, onNavigate }) {
   const modalStyle = {
@@ -45,7 +45,7 @@ export default function MetricDetailsModal({ metric, onClose, onNavigate }) {
           Value: <strong>{metric.value}</strong>
         </p>
 
-        {/* ✅ Embedded chart with all dynamic props */}
+        {/* ✅ Embedded chart with correct props */}
         <div style={{ backgroundColor: '#374151', borderRadius: '8px', padding: '10px', minHeight: '150px', marginBottom: '10px' }}>
           <DashboardChart
             data={metric.chartData}
