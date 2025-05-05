@@ -1,5 +1,6 @@
+// components/AIChatBox.js
 import React, { useState, useRef } from 'react';
-import '../DashboardWidgets.css'; // ✅ import CSS
+import '../DashboardWidgets.css'; // ✅ CSS import
 
 export default function AIChatBox({
   buttonLabel = 'Ask IMPACT',
@@ -15,7 +16,7 @@ export default function AIChatBox({
   const [query, setQuery] = useState('');
   const [response, setResponse] = useState('');
   const [loading, setLoading] = useState(false);
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
   const contentRef = useRef(null);
   const [hoverIndex, setHoverIndex] = useState(-1);
 
@@ -71,75 +72,94 @@ export default function AIChatBox({
 
   return (
     <div className="widget-container ai-chatbox-container">
-      <div className="widget-header">
-        <h3>IMPACT Quick Query</h3>
-        <button className="widget-toggle" onClick={() => setCollapsed(!collapsed)}>
-          {collapsed ? 'Expand' : 'Collapse'}
+      <button
+        onClick={() => setCollapsed(!collapsed)}
+        style={{
+          backgroundColor: '#f97316',
+          color: '#fff',
+          border: 'none',
+          padding: '6px 12px',
+          borderRadius: '6px',
+          cursor: 'pointer',
+          marginBottom: '10px',
+          display: 'block',
+          marginLeft: 'auto',
+          marginRight: 'auto'
+        }}
+      >
+        {collapsed ? 'Show Quick Query' : 'Hide Quick Query'}
+      </button>
+
+      <form onSubmit={handleSubmit} style={{ textAlign: 'center' }}>
+        <h3 style={{ marginBottom: '8px' }}>IMPACT Quick Query</h3>
+
+        <input
+          id="ai-query"
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search contracts, budgets, POs..."
+          disabled={loading}
+          style={{
+            padding: '10px',
+            width: '80%',
+            display: 'block',
+            margin: '0 auto 10px auto',
+            borderRadius: '6px',
+            border: '1px solid #374151',
+            backgroundColor: loading ? '#374151' : '#fff',
+            color: loading ? '#9ca3af' : '#000'
+          }}
+        />
+
+        <button
+          type="submit"
+          disabled={loading}
+          style={{
+            backgroundColor: '#f97316',
+            color: '#fff',
+            border: 'none',
+            padding: '10px 20px',
+            borderRadius: '6px',
+            cursor: loading ? 'not-allowed' : 'pointer',
+            display: 'block',
+            margin: '0 auto 10px auto'
+          }}
+        >
+          {loading ? 'Searching…' : buttonLabel}
         </button>
-      </div>
 
-      {!collapsed && (
-        <form onSubmit={handleSubmit} style={{ textAlign: 'center' }}>
-          <input
-            id="ai-query"
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search contracts, budgets, POs..."
-            disabled={loading}
-            style={{
-              padding: '10px',
-              width: '80%',
-              display: 'block',
-              margin: '0 auto 10px auto',
-              borderRadius: '6px',
-              border: '1px solid #374151',
-              backgroundColor: loading ? '#374151' : '#fff',
-              color: loading ? '#9ca3af' : '#000'
-            }}
-          />
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="widget-toggle"
-            style={{ margin: '0 auto 10px auto' }}
-          >
-            {loading ? 'Searching…' : buttonLabel}
-          </button>
-
-          <div style={collapsibleContentStyle} ref={contentRef}>
-            <div style={suggestionContainerStyle}>
-              {suggestions.map((s, i) => (
-                <button
-                  key={i}
-                  type="button"
-                  style={getSuggestionButtonStyle(hoverIndex === i)}
-                  onClick={() => handleSuggestionClick(s)}
-                  onMouseEnter={() => setHoverIndex(i)}
-                  onMouseLeave={() => setHoverIndex(-1)}
-                >
-                  {s}
-                </button>
-              ))}
-            </div>
-
-            {response && (
-              <div
-                style={{
-                  backgroundColor: '#111827',
-                  padding: '10px',
-                  borderRadius: '8px',
-                  minHeight: '50px',
-                  marginTop: '10px'
-                }}
+        <div style={collapsibleContentStyle} ref={contentRef}>
+          <div style={suggestionContainerStyle}>
+            {suggestions.map((s, i) => (
+              <button
+                key={i}
+                type="button"
+                style={getSuggestionButtonStyle(hoverIndex === i)}
+                onClick={() => handleSuggestionClick(s)}
+                onMouseEnter={() => setHoverIndex(i)}
+                onMouseLeave={() => setHoverIndex(-1)}
               >
-                {response}
-              </div>
-            )}
+                {s}
+              </button>
+            ))}
           </div>
-        </form>
-      )}
+
+          {response && (
+            <div
+              style={{
+                backgroundColor: '#111827',
+                padding: '10px',
+                borderRadius: '8px',
+                minHeight: '50px',
+                marginTop: '10px'
+              }}
+            >
+              {response}
+            </div>
+          )}
+        </div>
+      </form>
     </div>
   );
 }
