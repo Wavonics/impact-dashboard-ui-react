@@ -63,7 +63,7 @@ export default function DashboardHome() {
   const additionalMetrics = metrics.filter(m => !['Total Contracts', 'Open POs', 'Budget Utilization', 'Budget Line Utilization', 'Total Assets'].includes(m.label));
 
   const handleMetricClick = (metric) => {
-    console.log('Clicked metric:', metric); // DEBUG
+    console.log('Clicked metric:', metric);
     setSelectedMetric(metric);
   };
 
@@ -91,7 +91,7 @@ export default function DashboardHome() {
           {metricsArray.map(m => (
             <DashboardMetricCard
               key={m.label}
-              metric={{ ...m, iconKey: iconKeyMap[m.label] || m.iconKey }} // ✅ pass entire metric + override iconKey if mapped
+              metric={{ ...m, iconKey: iconKeyMap[m.label] || m.iconKey }}
               onClick={() => handleMetricClick(m)}
             />
           ))}
@@ -111,9 +111,7 @@ export default function DashboardHome() {
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '3fr 1fr', gap: '20px', padding: '20px', backgroundColor: '#111827', color: '#fff', minHeight: '100vh' }}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-        {/* Header + Profile */}
-        {/* ... same header code ... */}
-
+        {/* ✅ profile header, buttons, etc */}
         {renderMetricGroup('Procurement Metrics', procurementMetrics, 'procurement')}
         {renderMetricGroup('Budget Metrics', budgetMetrics, 'budget')}
         {renderMetricGroup('Asset Metrics', assetMetrics, 'asset')}
@@ -125,7 +123,15 @@ export default function DashboardHome() {
         <h2 style={{ color: '#f97316', fontSize: '18px', fontWeight: '600', margin: '10px 0' }}>Project Planning</h2>
         <ProjectPlanningTable projects={projects} />
 
-        {/* ... activities list ... */}
+        <h2 style={{ color: '#f97316', fontSize: '18px', fontWeight: '600', margin: '10px 0' }}>Recent Activity</h2>
+        <ul style={{ fontSize: '14px', backgroundColor: '#1f2937', padding: '10px', borderRadius: '8px' }}>
+          {activities.length > 0 ? activities.map((a, idx) => (
+            <li key={idx} style={{ marginBottom: '6px', borderBottom: '1px solid #374151', paddingBottom: '4px' }}>{a}</li>
+          )) : (
+            <li style={{ color: '#9ca3af' }}>No recent activity</li>
+          )}
+          <li><Link to="/activity" style={{ color: '#f97316', fontSize: '12px' }}>View All Activity</Link></li>
+        </ul>
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
