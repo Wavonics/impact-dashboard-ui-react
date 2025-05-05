@@ -77,7 +77,24 @@ export default function DashboardHome() {
   const procurementMetrics = metrics.filter(m => ['Total Contracts', 'Open POs'].includes(m.label));
   const budgetMetrics = metrics.filter(m => ['Budget Utilization', 'Budget Line Utilization'].includes(m.label));
   const assetMetrics = metrics.filter(m => ['Total Assets'].includes(m.label));
-  const additionalMetrics = metrics.filter(m => !['Total Contracts', 'Open POs', 'Budget Utilization', 'Budget Line Utilization', 'Total Assets'].includes(m.label));
+  const additionalMetrics = metrics.filter(m => ![
+    'Total Contracts',
+    'Open POs',
+    'Budget Utilization',
+    'Budget Line Utilization',
+    'Total Assets'
+  ].includes(m.label));
+
+  // 🎯 iconKey mapping for each label
+  const iconKeyMap = {
+    'Total Contracts': 'contracts',
+    'Open POs': 'po',
+    'Budget Utilization': 'money',
+    'Budget Line Utilization': 'money',
+    'Total Assets': 'assets',
+    'Total Funding': 'funding',
+    'Total Departments': 'departments'
+  };
 
   return (
     <div style={containerStyle}>
@@ -115,43 +132,75 @@ export default function DashboardHome() {
           <Link to="/projects/new" style={{ backgroundColor: '#f97316', color: '#fff', border: 'none', borderRadius: '6px', padding: '6px 12px', fontSize: '12px', textDecoration: 'none' }}>Add Project</Link>
         </div>
 
-        {/* 🎯 Group: Procurement Metrics */}
+        {/* 🎯 Procurement Metrics */}
         <div style={metricsGroupStyle}>
           <h2 style={sectionTitle}>Procurement Metrics</h2>
           <div style={metricsGrid}>
             {procurementMetrics.map(m => (
-              <DashboardMetricCard key={m.label} {...m} iconKey="fileContract" />
+              <DashboardMetricCard
+                key={m.label}
+                label={m.label}
+                value={m.value}
+                iconKey={iconKeyMap[m.label] || 'contracts'}
+                color={m.color}
+                badge={m.badge}
+                tooltip={`Metric: ${m.label}`}
+              />
             ))}
           </div>
         </div>
 
-        {/* 🎯 Group: Budget Metrics */}
+        {/* 🎯 Budget Metrics */}
         <div style={metricsGroupStyle}>
           <h2 style={sectionTitle}>Budget Metrics</h2>
           <div style={metricsGrid}>
             {budgetMetrics.map(m => (
-              <DashboardMetricCard key={m.label} {...m} iconKey="money" />
+              <DashboardMetricCard
+                key={m.label}
+                label={m.label}
+                value={m.value}
+                iconKey={iconKeyMap[m.label] || 'money'}
+                color={m.color}
+                badge={m.badge}
+                tooltip={`Metric: ${m.label}`}
+              />
             ))}
           </div>
         </div>
 
-        {/* 🎯 Group: Asset Metrics */}
+        {/* 🎯 Asset Metrics */}
         <div style={metricsGroupStyle}>
           <h2 style={sectionTitle}>Asset Metrics</h2>
           <div style={metricsGrid}>
             {assetMetrics.map(m => (
-              <DashboardMetricCard key={m.label} {...m} iconKey="cubes" />
+              <DashboardMetricCard
+                key={m.label}
+                label={m.label}
+                value={m.value}
+                iconKey={iconKeyMap[m.label] || 'assets'}
+                color={m.color}
+                badge={m.badge}
+                tooltip={`Metric: ${m.label}`}
+              />
             ))}
           </div>
         </div>
 
-        {/* 🎯 Optional: Any additional metrics */}
+        {/* 🎯 Additional Metrics */}
         {additionalMetrics.length > 0 && (
           <div style={metricsGroupStyle}>
             <h2 style={sectionTitle}>Other Metrics</h2>
             <div style={metricsGrid}>
               {additionalMetrics.map(m => (
-                <DashboardMetricCard key={m.label} {...m} iconKey="clipboardList" />
+                <DashboardMetricCard
+                  key={m.label}
+                  label={m.label}
+                  value={m.value}
+                  iconKey={iconKeyMap[m.label] || 'clipboardList'}
+                  color={m.color}
+                  badge={m.badge}
+                  tooltip={`Metric: ${m.label}`}
+                />
               ))}
             </div>
           </div>
@@ -176,18 +225,10 @@ export default function DashboardHome() {
 
       {/* Right side widgets */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-        <div className="widget-container">
-          <AlertsSummary alerts={alerts} />
-        </div>
-        <div className="widget-container">
-          <ContractRenewals renewals={renewals} />
-        </div>
-        <div className="widget-container">
-          <ImpactAssistant />
-        </div>
-        <div className="widget-container">
-          <AIChatBox />
-        </div>
+        <div className="widget-container"><AlertsSummary alerts={alerts} /></div>
+        <div className="widget-container"><ContractRenewals renewals={renewals} /></div>
+        <div className="widget-container"><ImpactAssistant /></div>
+        <div className="widget-container"><AIChatBox /></div>
       </div>
     </div>
   );
