@@ -2,21 +2,35 @@
 import React from 'react';
 import CountUp from 'react-countup';
 import {
-  FaMoneyBillWave, FaFileContract, FaProjectDiagram, FaFileInvoice,
-  FaBell, FaCubes, FaClipboardList
+  FaMoneyBillWave,
+  FaFileContract,
+  FaProjectDiagram,
+  FaFileInvoice,
+  FaBell,
+  FaCubes,
+  FaClipboardList,
+  FaBuilding,
+  FaLightbulb,
+  FaPiggyBank,
+  FaClock,
+  FaExclamationTriangle
 } from 'react-icons/fa';
 
-export default function DashboardMetricCard({ label, value, iconKey, color, badge }) {
-  // Icon mapping
+export default function DashboardMetricCard({ label, value, iconKey, color, badge, tooltip }) {
+  // Expanded icon mapping
   const iconMap = {
     money: <FaMoneyBillWave />,
-    contracts: <FaFileContract />,
-    projects: <FaProjectDiagram />,
-    po: <FaFileInvoice />,
+    fileContract: <FaFileContract />,
+    projectDiagram: <FaProjectDiagram />,
+    fileInvoice: <FaFileInvoice />,
     alerts: <FaBell />,
-    assets: <FaCubes />,
-    procurement: <FaClipboardList />
-    // add more as needed
+    cubes: <FaCubes />,
+    clipboardList: <FaClipboardList />,
+    building: <FaBuilding />,
+    lightbulb: <FaLightbulb />,
+    piggyBank: <FaPiggyBank />,
+    clock: <FaClock />,
+    exclamationTriangle: <FaExclamationTriangle />
   };
 
   const cardStyle = {
@@ -28,25 +42,26 @@ export default function DashboardMetricCard({ label, value, iconKey, color, badg
     flex: '1 1 200px',
     boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
     margin: '10px',
-    position: 'relative'
+    position: 'relative',
+    cursor: tooltip ? 'help' : 'default'
   };
 
   const iconStyle = {
     fontSize: '32px',
     marginBottom: '10px',
-    color: color || '#f97316',
+    color: color || '#f97316'
   };
 
   const valueStyle = {
     fontSize: '28px',
     fontWeight: '700',
-    marginBottom: '8px',
+    marginBottom: '8px'
   };
 
   const labelStyle = {
     fontSize: '14px',
     color: '#9ca3af',
-    fontWeight: '500',
+    fontWeight: '500'
   };
 
   const badgeStyle = {
@@ -66,13 +81,14 @@ export default function DashboardMetricCard({ label, value, iconKey, color, badg
   };
 
   return (
-    <div style={cardStyle} aria-label={`Metric card for ${label}`}>
-      <div style={badgeStyle}>{badge}</div>
+    <div style={cardStyle} title={tooltip || ''} aria-label={`Metric card: ${label}`}>
+      {badge && <div style={badgeStyle}>{badge}</div>}
       <div style={iconStyle}>
-        {iconMap[iconKey] || <FaCubes />}
+        {iconMap[iconKey] || <FaCubes />} {/* fallback icon */}
       </div>
       <div style={valueStyle}>
-        <CountUp end={value} duration={1.5} separator="," />
+        <CountUp end={typeof value === 'number' ? value : 0} duration={1.5} separator="," />
+        {typeof value === 'string' && !isFinite(value) && <span>{value}</span>} {/* handles string values like "$4.5M" */}
       </div>
       <div style={labelStyle}>{label}</div>
     </div>
