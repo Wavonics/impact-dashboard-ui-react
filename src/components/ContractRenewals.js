@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../DashboardWidgets.css'; // ✅ keep this import
 
 export default function ContractRenewals({ renewals }) {
+  const [collapsed, setCollapsed] = useState(false);
+
   const listStyle = {
     listStyle: 'none',
     paddingLeft: 0,
@@ -18,15 +20,36 @@ export default function ContractRenewals({ renewals }) {
   return (
     <div className="widget-container contract-renewals-container">
       <h3 style={{ textAlign: 'center', marginBottom: '10px' }}>Upcoming Contract Renewals</h3>
-      <ul style={listStyle}>
-        {renewals.length > 0 ? renewals.map((r, idx) => (
-          <li key={idx} style={listItemStyle}>
-            <strong>{r.contractName}</strong> expiring on <em>{r.expiryDate}</em>
-          </li>
-        )) : (
-          <li style={{ color: '#9ca3af' }}>No upcoming renewals</li>
-        )}
-      </ul>
+
+      <button
+        onClick={() => setCollapsed(!collapsed)}
+        style={{
+          backgroundColor: '#f97316',
+          color: '#fff',
+          border: 'none',
+          padding: '6px 12px',
+          borderRadius: '6px',
+          cursor: 'pointer',
+          display: 'block',
+          margin: '0 auto 10px auto'
+        }}
+      >
+        {collapsed ? 'Expand' : 'Collapse'}
+      </button>
+
+      {!collapsed && (
+        <ul style={listStyle}>
+          {renewals.length > 0 ? (
+            renewals.map((r, idx) => (
+              <li key={idx} style={listItemStyle}>
+                <strong>{r.contractName}</strong> expiring on <em>{r.expiryDate}</em>
+              </li>
+            ))
+          ) : (
+            <li style={{ color: '#9ca3af' }}>No upcoming renewals</li>
+          )}
+        </ul>
+      )}
     </div>
   );
 }
