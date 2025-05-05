@@ -9,7 +9,7 @@ import ContractRenewals from './ContractRenewals';
 import ImpactAssistant from './ImpactAssistant';
 import AIChatBox from './AIChatBox';
 import dummyData from '../data/dummyData';
-import '../DashboardWidgets.css'; // ✅ import shared CSS
+import '../DashboardWidgets.css';
 
 export default function DashboardHome() {
   const [metrics, setMetrics] = useState([]);
@@ -109,6 +109,7 @@ export default function DashboardHome() {
 
   return (
     <div style={containerStyle}>
+      {/* Main content left */}
       <div style={mainStyle}>
         <div style={greetingRow}>
           {profileData?.photoURL && (
@@ -184,7 +185,7 @@ export default function DashboardHome() {
         </ul>
       </div>
 
-      {/* Right column widgets all share className="widget-container" */}
+      {/* Right side widgets */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
         <div className="widget-container">
           <AlertsSummary alerts={alerts} />
