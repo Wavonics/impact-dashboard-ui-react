@@ -6,8 +6,9 @@ import {
   FaBell, FaCubes, FaClipboardList, FaPiggyBank, FaBuilding
 } from 'react-icons/fa';
 
-export default function DashboardMetricCard({ label, value, iconKey, color, badge, tooltip }) {
-  // Icon mapping
+export default function DashboardMetricCard({ metric, onClick }) {
+  const { label, value, iconKey, color, badge, tooltip } = metric;
+
   const iconMap = {
     money: <FaMoneyBillWave />,
     contracts: <FaFileContract />,
@@ -28,7 +29,7 @@ export default function DashboardMetricCard({ label, value, iconKey, color, badg
     textAlign: 'center',
     position: 'relative',
     boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
-    cursor: tooltip ? 'help' : 'default'
+    cursor: tooltip ? 'help' : 'pointer'  // 👈 added pointer
   };
 
   const iconStyle = {
@@ -66,7 +67,7 @@ export default function DashboardMetricCard({ label, value, iconKey, color, badg
   };
 
   return (
-    <div style={cardStyle} title={tooltip || label}>
+    <div style={cardStyle} title={tooltip || label} onClick={onClick}>
       <div style={badgeStyle}>{badge}</div>
       <div style={iconStyle}>
         {iconMap[iconKey] || <FaCubes />}
