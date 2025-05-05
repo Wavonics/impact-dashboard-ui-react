@@ -1,3 +1,4 @@
+/* Keep existing container baseline */
 .widget-container {
   background-color: #1f2937;
   color: #fff;
@@ -13,8 +14,53 @@
   box-shadow: none;
 }
 
+/* Disable hover-induced changes */
 .widget-container:hover {
   background-color: inherit;
   transform: none;
   box-shadow: none;
+}
+
+/* NEW: header alignment for title + toggle button */
+.widget-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+/* NEW: shared toggle button style (can override inline if needed) */
+.widget-toggle {
+  background-color: #f97316;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.2s ease;
+}
+
+.widget-toggle:hover {
+  background-color: #fb923c;
+}
+
+/* NEW: suggestion button standard (from inline JS) */
+.widget-suggestion {
+  background-color: #374151;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 6px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  width: 80%;
+  margin: 4px auto;
+  display: block;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.widget-suggestion:hover {
+  background-color: #4b5563;
+  transform: scale(1.05);
 }
