@@ -2,28 +2,26 @@
 import React from 'react';
 
 export default function MetricDetailsModal({ metric, onClose, onNavigate }) {
-  if (!metric) return null;
-
-  const modalOverlay = {
+  const modalStyle = {
     position: 'fixed',
-    top: 0, left: 0,
-    width: '100vw', height: '100vh',
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 1000
-  };
-
-  const modalContent = {
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
     backgroundColor: '#1f2937',
     color: '#fff',
     padding: '20px',
     borderRadius: '12px',
+    zIndex: 1000,
     width: '90%',
-    maxWidth: '400px',
-    textAlign: 'center',
-    boxShadow: '0 4px 16px rgba(0,0,0,0.5)'
+    maxWidth: '500px',
+    boxShadow: '0 4px 20px rgba(0,0,0,0.5)'
+  };
+
+  const overlayStyle = {
+    position: 'fixed',
+    top: 0, left: 0, right: 0, bottom: 0,
+    backgroundColor: 'rgba(0,0,0,0.7)',
+    zIndex: 999
   };
 
   const buttonStyle = {
@@ -31,23 +29,33 @@ export default function MetricDetailsModal({ metric, onClose, onNavigate }) {
     color: '#fff',
     border: 'none',
     borderRadius: '6px',
-    padding: '8px 16px',
-    margin: '10px 5px',
+    padding: '8px 12px',
+    fontSize: '12px',
     cursor: 'pointer',
-    fontSize: '14px'
+    marginTop: '10px',
+    marginRight: '10px'
   };
 
   return (
-    <div style={modalOverlay} onClick={onClose}>
-      <div style={modalContent} onClick={e => e.stopPropagation()}>
-        <h2>{metric.label}</h2>
-        <p><strong>Value:</strong> {metric.value}</p>
-        <p><em>{metric.tooltip || 'Additional info about this metric.'}</em></p>
-        <div>
-          <button style={buttonStyle} onClick={onClose}>Close</button>
+    <>
+      <div style={overlayStyle} onClick={onClose}></div>
+      <div style={modalStyle}>
+        <h2 style={{ marginBottom: '12px', color: '#f97316' }}>{metric.label}</h2>
+        <p style={{ fontSize: '14px', marginBottom: '10px' }}>
+          Value: <strong>{metric.value}</strong>
+        </p>
+
+        {/* Optional: placeholder for embedded chart */}
+        <div style={{ backgroundColor: '#374151', borderRadius: '8px', padding: '10px', minHeight: '150px', marginBottom: '10px' }}>
+          {/* You can later replace this with <DashboardChart data={metric.chartData} /> */}
+          <p style={{ color: '#9ca3af', fontSize: '12px' }}>(Chart or details go here)</p>
+        </div>
+
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
           <button style={buttonStyle} onClick={onNavigate}>View More</button>
+          <button style={{ ...buttonStyle, backgroundColor: '#374151' }} onClick={onClose}>Close</button>
         </div>
       </div>
-    </div>
+    </>
   );
 }
