@@ -8,7 +8,13 @@ import {
 
 const COLORS = ['#f97316', '#3b82f6', '#10b981', '#eab308', '#ef4444'];
 
-export default function DashboardChart({ data, chartType = 'bar', xAxisKey = 'x', yAxisKey = 'y', title = 'Metric Details' }) {
+export default function DashboardChart({
+  data,
+  chartType = 'bar',
+  xAxisKey = 'x',
+  yAxisKey = 'y',
+  title = 'Metric Details'
+}) {
   const renderChart = () => {
     if (!data || data.length === 0) {
       return <p style={{ color: '#9ca3af' }}>No data available</p>;
@@ -22,8 +28,41 @@ export default function DashboardChart({ data, chartType = 'bar', xAxisKey = 'x'
             <XAxis dataKey={xAxisKey} stroke="#9ca3af" />
             <YAxis stroke="#9ca3af" />
             <Tooltip />
-            <Line type="monotone" dataKey={yAxisKey} stroke="#f97316" />
+            <Legend />
+            {Array.isArray(yAxisKey) ? (
+              yAxisKey.map((key, index) => (
+                <Line
+                  key={key}
+                  type="monotone"
+                  dataKey={key}
+                  stroke={COLORS[index % COLORS.length]}
+                />
+              ))
+            ) : (
+              <Line type="monotone" dataKey={yAxisKey} stroke="#f97316" />
+            )}
           </LineChart>
+        );
+      case 'bar':
+        return (
+          <BarChart data={data}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+            <XAxis dataKey={xAxisKey} stroke="#9ca3af" />
+            <YAxis stroke="#9ca3af" />
+            <Tooltip />
+            <Legend />
+            {Array.isArray(yAxisKey) ? (
+              yAxisKey.map((key, index) => (
+                <Bar
+                  key={key}
+                  dataKey={key}
+                  fill={COLORS[index % COLORS.length]}
+                />
+              ))
+            ) : (
+              <Bar dataKey={yAxisKey} fill="#f97316" />
+            )}
+          </BarChart>
         );
       case 'pie':
         return (
@@ -46,17 +85,8 @@ export default function DashboardChart({ data, chartType = 'bar', xAxisKey = 'x'
             </Pie>
           </PieChart>
         );
-      case 'bar':
       default:
-        return (
-          <BarChart data={data}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-            <XAxis dataKey={xAxisKey} stroke="#9ca3af" />
-            <YAxis stroke="#9ca3af" />
-            <Tooltip />
-            <Bar dataKey={yAxisKey} fill="#f97316" />
-          </BarChart>
-        );
+        return <p>Unsupported chart type</p>;
     }
   };
 
