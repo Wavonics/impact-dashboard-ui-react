@@ -1,6 +1,5 @@
-// components/MetricDetailsModal.js
 import React from 'react';
-import DashboardChart from './DashboardChart'; // ✅ Import your chart component
+import DashboardChart from './DashboardChart';
 
 export default function MetricDetailsModal({ metric, onClose, onNavigate }) {
   const modalStyle = {
@@ -46,9 +45,15 @@ export default function MetricDetailsModal({ metric, onClose, onNavigate }) {
           Value: <strong>{metric.value}</strong>
         </p>
 
-        {/* ✅ Embedded chart */}
+        {/* ✅ Embedded chart with all dynamic props */}
         <div style={{ backgroundColor: '#374151', borderRadius: '8px', padding: '10px', minHeight: '150px', marginBottom: '10px' }}>
-          <DashboardChart data={metric.chartData} />
+          <DashboardChart
+            data={metric.chartData}
+            chartType={metric.chartType}
+            xAxisKey={metric.xAxisKey}
+            yAxisKey={metric.yAxisKey}
+            title={`Details for ${metric.label}`}
+          />
         </div>
 
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
