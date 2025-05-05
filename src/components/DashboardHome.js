@@ -108,6 +108,9 @@ export default function DashboardHome() {
     );
   }
 
+  // 👉 Select a metric to visualize in "Trends & Insights"
+  const trendsMetric = metrics.find(m => m.label === 'Budget Utilization') || metrics[0];
+
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '3fr 1fr', gap: '20px', padding: '20px', backgroundColor: '#111827', color: '#fff', minHeight: '100vh' }}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
@@ -118,7 +121,17 @@ export default function DashboardHome() {
         {additionalMetrics.length > 0 && renderMetricGroup('Other Metrics', additionalMetrics, 'other')}
 
         <h2 style={{ color: '#f97316', fontSize: '18px', fontWeight: '600', margin: '10px 0' }}>Trends & Insights</h2>
-        <DashboardChart />
+        {trendsMetric ? (
+          <DashboardChart
+            data={trendsMetric.chartData}
+            chartType={trendsMetric.chartType}
+            xAxisKey={trendsMetric.xAxisKey}
+            yAxisKey={trendsMetric.yAxisKey}
+            title={`Trends & Insights: ${trendsMetric.label}`}
+          />
+        ) : (
+          <p style={{ color: '#9ca3af' }}>No data available</p>
+        )}
 
         <h2 style={{ color: '#f97316', fontSize: '18px', fontWeight: '600', margin: '10px 0' }}>Project Planning</h2>
         <ProjectPlanningTable projects={projects} />
